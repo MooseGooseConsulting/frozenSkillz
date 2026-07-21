@@ -1,0 +1,16 @@
+{
+  "_comment": "PreToolUse wiring for the Unity editor-lock guard. This is a DOCUMENTATION snippet, not an auto-installed config: the skill is gated in _incubator/ and installs nothing. To use it, merge this `hooks` block into the consuming project's Claude Code settings.json and point `command` at wherever unity_lock_guard.py is deployed. The matcher fires the guard before any unityMCP / aura-unity tool call; the guard itself lets read-only tools through. Verbatim from ProjectBroadside's .claude/settings.json.",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "mcp__unityMCP__.*|mcp__aura-unity__.*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python .claude/hooks/unity_lock_guard.py"
+          }
+        ]
+      }
+    ]
+  }
+}

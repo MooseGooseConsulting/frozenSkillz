@@ -57,6 +57,7 @@ A skill may be promoted when it meets the bar set by `doppler` (the reference st
 | `session-skill-inferencer` | C | MOO-569 | 🛑 gated · **highest concern** | `_incubator/frozen-skills/skills/` | Fix generation quality before any promotion (see below). |
 | `skill-injector` (was skill-classifier) | C | MOO-570 | 🧪 **registered · experimental/UNTESTED** | `plugins/skill-injector/` | Test end-to-end before enabling; finish internal rename (scripts/module + ADR/doc prose still say "classifier"). |
 | `icepanel-api` | A | — | 🛑 gated · **incubating** | `_incubator/frozen-skills/skills/icepanel-api/` | Live-validate diagram push on a real landscape; attach PNG/share proof to examples; run layout/push scripts; trim description to the ~300-char bar before promotion. |
+| `unity-editor-mcp` | A | — (needs Linear issue) | 🛑 gated · **incubating** (2026-07-21) | `_incubator/frozen-skills/skills/unity-editor-mcp/` | Grade transferable value (see note). Verify portability of the framing-contract + burns beyond Broadside; run the framing-contract checks on a second Unity project before de-Broadside-ifying further; confirm cross-links; consider whether the lock hook belongs in an active enforcement plugin vs a reference. |
 
 Legend: ✅ active · 🛑 gated (in `_incubator/`) · 🧪 inert/experimental · Tier A = strong reference, B = functional/narrow, C = rework.
 
@@ -190,6 +191,34 @@ UPID. Exact power, snapshot, migration, and task commands are in the shipped ref
 - **Fidelity gap (adversarial review 2026-07-16):** `schemas.md` enums/required-field lists and the response keys in
   `examples.md` (`{url,defaultUrl,shareLink}`, `.diagramExportImage.id`, `fileUrls.png`) are hand-transcribed and not
   yet diffed against the live IcePanel OpenAPI. Verify each against a real response before promotion.
+
+### `unity-editor-mcp` — incubating (authored candidate, 2026-07-21)
+
+- **Provenance:** distilled from ProjectBroadside's in-repo `.claude/skills/unity/SKILL.md` +
+  `.claude/hooks/unity_lock_guard.py` (Unity `6000.6.0b4` / HDRP `17.6.0` naval game). Not an external
+  scout intake — authored by the same operator in a project repo, ingested here for corpus grading.
+  Source commits: Broadside `873914d` → `4d99ad2` → `0193a9c` (dual adversarial review) and `d19d993`.
+- **Structure:** lean `SKILL.md` (portable core: single-mutating-controller + mechanical lock,
+  telemetry-over-pixels, resource-first ladder, the four MCP burns, capture validation, the framing
+  contract, vision-subagent dispatch, model-tier discipline) → `references/` (the faithful lessons/
+  provenance doc, the framing-and-vision standard, and the Broadside worked example) + `hooks/`
+  (the PreToolUse lock guard + its settings wiring). Progressive disclosure respected.
+- **Generalization call:** kept as a **project-scoped candidate presented as portable-core +
+  worked-example** — transferable rules lifted to engine/Unity-MCP-general phrasing, Broadside
+  specifics preserved verbatim as evidence in `references/worked-example-broadside.md`. Not silently
+  genericized. The one code change on intake (two env-var overrides on the lock hook, defaults
+  reproducing Broadside behavior) was re-tested against nine cases before adoption.
+- **What the grader should evaluate:** effectiveness/transferable value. The whole point of intake is
+  that portability is **unproven** — every rule is validated in Broadside, not yet on a second Unity
+  project or engine. The novel, most-gradeable idea is the engine-side **framing contract** (prove
+  subject presence/coverage/occlusion before any VLM grade; the survey found no existing Unity MCP
+  loop does this). The provenance doc is deliberately faithful about three self-corrections the
+  authoring agent made (Sonnet-suffices asserted-then-earned; a false lock-"violation" retracted; a
+  broken R5 fixture) — those are the highest-value effectiveness evidence.
+- **Before any promotion to `plugins/`:** de-Broadside-ify the portable core further where a specific
+  path leaked; validate the framing contract + burns on a second Unity project; decide whether the
+  lock hook ships as an active enforcement plugin (it is currently reference-only, installs nothing);
+  file the Linear sub-issue; trim/verify description against the ~300-char bar.
 
 ---
 

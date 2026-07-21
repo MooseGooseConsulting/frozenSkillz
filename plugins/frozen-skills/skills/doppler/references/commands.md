@@ -2,6 +2,17 @@
 
 Use this reference when the root skill does not contain enough detail. Validate current syntax with `doppler <command> --help` before editing durable scripts.
 
+## Contents
+
+- Authentication
+- Setup And Configuration
+- Secret Management
+- Mounting Secrets
+- Template Substitution
+- Secret References
+- Environment Variables
+- Troubleshooting
+
 ## Authentication
 
 ```shell
@@ -53,6 +64,18 @@ POSIX multiline upload:
 ```shell
 cat ./secret.pem | doppler secrets set SECRET_PEM
 ```
+
+## Mounting Secrets
+
+`doppler run --mount ...` exposes secrets through an ephemeral mounted file path and does not inject the secrets into the environment. The path is available as `DOPPLER_CLI_SECRETS_PATH`.
+
+```shell
+doppler run --mount secrets.json -- cat secrets.json
+doppler run --mount .env --format env -- ./start.sh
+doppler run --mount config.yml --mount-template config.yml.tmpl -- ./start.sh
+```
+
+Some frameworks reject named pipes or ephemeral files. If that happens, use environment injection with plain `doppler run -- ...`.
 
 ## Template Substitution
 

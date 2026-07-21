@@ -1,22 +1,22 @@
 ---
 name: doppler
-description: "CRITICAL: You must load this skill before working with secrets, tokens, API keys, .env files, CI credentials, or Doppler secret injection."
+description: >-
+  Manage secrets with the Doppler CLI: doppler run injection, names-only
+  diagnostics, set/upload secrets, service tokens for CI, and no-print hygiene.
+  Use when the user mentions Doppler, doppler run, service tokens, secret
+  injection, or asks to store, rotate, or verify API keys, tokens, passwords,
+  or .env credentials. Do not use for ordinary non-secret environment variables
+  or general app config unrelated to credentials.
 ---
 
 # Doppler
 
-## Critical Trigger
-
-You must load this skill before any action involving secrets: API keys, tokens, passwords, private keys, `.env` files, service tokens, OAuth credentials, webhook secrets, cloud credentials, signed URLs, cookies, auth headers, or environment variables that may carry credentials.
-
-If unsure whether a value is a secret, treat it as a secret. Keep secret values out of chat, logs, diffs, committed files, and durable docs.
-
-Use Doppler as a secrets injection layer. Prefer CLI-driven environment injection (`doppler run -- ...`) over in-process SDK calls, vault enumeration, or committed secret files.
+If unsure whether a value is a secret, treat it as a secret. Prefer CLI injection (`doppler run -- ...`) over SDKs, vault dumps, or committed secret files.
 
 ## Operating Rules
 
 - Do not print secret values into transcripts unless the user explicitly asks for the value.
-- Prefer storing application and workstation secrets in Doppler. CI and production systems should store only the scoped `DOPPLER_TOKEN` or platform-required bootstrap credential.
+- Prefer storing application and workstation secrets in Doppler. CI and production should store only the scoped `DOPPLER_TOKEN` or platform-required bootstrap credential.
 - Document secret names, projects/configs, and injection commands; do not document secret values or one-off local token state.
 - Prefer names-only or boolean checks: `doppler secrets --only-names`, `test -n "$VAR"`, or PowerShell `if ($env:VAR)`.
 - Do not commit `.env`, downloaded secret exports, service tokens, fallback files, or rendered config files containing credentials.
@@ -41,80 +41,17 @@ Use Doppler as a secrets injection layer. Prefer CLI-driven environment injectio
 
 Resolution order for most CLI commands is service token, explicit flags, local scoped config, then parent scoped config.
 
-## Quick Start
+## Intent → Action
 
-Install:
+| User wants to… | Do |
+|---|---|
+| See what exists without values | `doppler secrets --only-names` |
+| Run app/tests with secrets | `doppler run -- …` |
+| Check one var is set | `doppler run` + set/missing check (POSIX or PowerShell) |
+| Store a secret | `doppler secrets set …` (prefer pipe; `--silent` when mutating) |
+| CI/prod auth | Service token as `DOPPLER_TOKEN` only |
 
-```shell
-# Windows
-winget install doppler
-
-# macOS
-brew install dopplerhq/cli/doppler
-
-# Linux / CI
-(curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh || wget -t 3 -qO- https://cli.doppler.com/install.sh) | sh
-```
-
-Set up a repo:
-
-```shell
-doppler login
-doppler setup -p my-project -c dev
-doppler run -- python app.py
-```
-
-Commit a team setup file:
-
-```yaml
-setup:
-  project: my-project
-  config: dev
-
-flags:
-  analytics: false
-  env-warning: false
-  update-check: false
-```
-
-Then teammates can run:
-
-```shell
-doppler setup --no-interactive
-doppler run -- your-command
-```
-
-## Running Commands
-
-POSIX shells:
-
-```shell
-doppler run -- uv run pytest
-doppler run -p my-project -c dev -- ./scripts/test.sh
-doppler run --command './configure && ./process-jobs'
-```
-
-PowerShell:
-
-```powershell
-doppler run -- uv run pytest
-doppler run -p my-project -c dev -- powershell -NoProfile -File .\scripts\test.ps1
-doppler run --command "uv run pytest"
-```
-
-Use `--command` for shell operators, pipelines, and command strings. Use `-- ...` for normal argv forwarding.
-
-## Safe Diagnostics
-
-Check active config:
-
-```shell
-doppler configure
-doppler configure debug
-doppler secrets --only-names
-```
-
-Check whether a secret is injected without printing the value:
+Safe set/missing checks:
 
 ```shell
 doppler run -- sh -c 'test -n "$DATABASE_URL" && echo DATABASE_URL=set || echo DATABASE_URL=missing'
@@ -124,86 +61,24 @@ doppler run -- sh -c 'test -n "$DATABASE_URL" && echo DATABASE_URL=set || echo D
 doppler run -- powershell -NoProfile -Command "if ($env:DATABASE_URL) { 'DATABASE_URL=set' } else { 'DATABASE_URL=missing' }"
 ```
 
-Only use raw value commands for intentional secret handling:
+Only use `doppler secrets get SECRET_NAME --plain` when the user explicitly needs the raw value.
 
-```shell
-doppler secrets get SECRET_NAME --plain
-```
+## Workflow
 
-## Adding Secrets
-
-```shell
-doppler secrets set API_KEY value
-printf '%s' "$CERT_CONTENTS" | doppler secrets set CERT_PEM
-doppler secrets upload secrets.env
-```
-
-PowerShell:
-
-```powershell
-doppler secrets set API_KEY value
-Get-Content -Raw .\cert.pem | doppler secrets set CERT_PEM
-doppler secrets upload .\secrets.env
-```
-
-Prefer piping multiline values instead of pasting them into shell history.
-
-## CI And Production
-
-Create one service token per project/config and store it in the CI provider's secret store as `DOPPLER_TOKEN`:
-
-```shell
-doppler configs tokens create -p my-project -c prd ci-token --plain
-```
-
-GitHub Actions pattern:
-
-```yaml
-- name: Install Doppler CLI
-  run: (curl -Ls --tlsv1.2 --proto "=https" --retry 3 https://cli.doppler.com/install.sh || wget -t 3 -qO- https://cli.doppler.com/install.sh) | sh
-- name: Run tests
-  run: doppler run -- uv run pytest
-  env:
-    DOPPLER_TOKEN: ${{ secrets.DOPPLER_TOKEN }}
-```
-
-Service token project/config takes precedence over `doppler setup` and `-p`/`-c` flags.
-
-## Fallback Files
-
-Doppler may write encrypted fallback/cache files under the configured Doppler directory. Use them for availability, not as repo artifacts.
-
-```shell
-doppler run --fallback-only -- ./start.sh
-doppler run --no-fallback -- ./start.sh
-doppler run clean --dry-run
-```
-
-If a fallback must move between build and deploy stages, use a dedicated passphrase from the CI secret store, not a literal in YAML:
-
-```shell
-doppler secrets download --passphrase "$DOPPLER_FALLBACK_PASSPHRASE" -p my-project -c prd
-doppler run --fallback ./doppler.json --passphrase "$DOPPLER_FALLBACK_PASSPHRASE" -- ./start.sh
-```
-
-## Mounting Secrets
-
-`doppler run --mount ...` exposes secrets through an ephemeral mounted file path and does not inject the secrets into the environment. The path is available as `DOPPLER_CLI_SECRETS_PATH`.
-
-```shell
-doppler run --mount secrets.json -- cat secrets.json
-doppler run --mount .env --format env -- ./start.sh
-doppler run --mount config.yml --mount-template config.yml.tmpl -- ./start.sh
-```
-
-Some frameworks reject named pipes or ephemeral files. If that happens, use environment injection with plain `doppler run -- ...`.
+1. **Identify the task**: setup, list/diagnose, set/rotate, inject/run, or CI token.
+2. **Check prerequisites**: CLI installed (`doppler --version`); auth via `doppler me` or `DOPPLER_TOKEN`.
+3. **Resolve scope**: project/config via `doppler configure debug`, `doppler.yaml`, or `-p`/`-c`.
+4. **Act** using the intent table; prefer `doppler run -- ...` for execution.
+5. **Verify** with names-only or set/missing checks — never echo secret values.
 
 ## References
 
 Load these only when needed:
 
-- [references/commands.md](references/commands.md): command reference, platform notes, and troubleshooting.
-- [references/ci-fallbacks.md](references/ci-fallbacks.md): CI, service tokens, fallback files, and Docker patterns.
+- [references/setup.md](references/setup.md): install, login, `doppler.yaml`, basic `doppler run`.
+- [references/commands.md](references/commands.md): command reference, mount/templates, platform notes, troubleshooting.
+- [references/ci-fallbacks.md](references/ci-fallbacks.md): CI, service tokens, fallback files, Docker patterns.
+- [references/homelab-notes.md](references/homelab-notes.md): **only** when the task involves coldaine-infra, ESO/`ClusterSecretStore`, Shipwright, or GHCR PAT wiring.
 
 ## Review Checklist
 
@@ -214,23 +89,3 @@ Before promoting or committing Doppler work:
 - `doppler secrets --only-names`
 - Run the target command through `doppler run -- ...`
 - Confirm no secret values were added to files, logs, diffs, or transcripts.
-
-## Learnings
-
-### 2026-06-29
-
-#### What Worked
-- Reuse one **classic** GitHub PAT (`GHCR_BUILD_TOKEN`) for both GHCR push (`kubernetes.io/dockerconfigjson` → `ghcr-push`) and Shipwright private-repo clone (`kubernetes.io/basic-auth` → `git-clone`). No separate `GITHUB_CLONE_TOKEN` if the PAT has `repo` + `write:packages`.
-- Boolean Doppler checks without printing values: `doppler secrets get KEY -p PROJECT -c CONFIG --plain 2>$null` then test `$LASTEXITCODE` and `[string]::IsNullOrWhiteSpace($v)` / `$v.Length` — never echo the value.
-- `doppler secrets --only-names` across projects to reconcile manifest `remoteRef.key` names vs vault (e.g. `LLM_ARCHIVAL_DB_PASSWORD` vs `LLMARCHIVER_DB_PASSWORD`).
-- Audit scripts must call seed/bootstrap helpers with **read-only** flags (`-ReadOnly`); audits that invoke writers mutate production state.
-
-#### What Failed
-- Assuming credentials are missing before a Doppler names/existence audit — many keys already existed under `databases/dev` or `coldaine-k8s/dev_homelab`.
-- Fine-grained GitHub PAT UI for GHCR — **no** `write:packages` under per-repo permissions; use a **classic** PAT for `ghcr.io` push.
-- Treating `SOPS_AGE_KEY` as the age decrypt key when it was truncated; use `AGE_PRIVATE_KEY` when present and valid (`StartsWith('AGE-SECRET-KEY')`).
-
-#### Configuration Notes
-- ESO `ClusterSecretStore` only sees secrets in the **service token's** Doppler project/config. Keys in other projects (e.g. `secrets_managment/dev` for Proxmox, `databases/dev` for legacy names) require token scope alignment or manifest key migration to the cluster project (`coldaine-k8s/dev_homelab`).
-- Shipwright git clone failure (`could not read Username for 'https://github.com'`) is usually missing `spec.source.git.cloneSecret`, not a missing Doppler key — check wiring before creating new keys.
-- If user pastes a token in chat: store via `doppler secrets set ... --silent`, verify ESO sync, warn about rotation — do not repeat the token in the response.

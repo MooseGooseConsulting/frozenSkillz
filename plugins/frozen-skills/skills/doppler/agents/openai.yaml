@@ -1,4 +1,4 @@
 interface:
   display_name: "Doppler"
-  short_description: "Critical workflow for any secrets, tokens, API keys, and Doppler secret injection"
-  default_prompt: "CRITICAL: Use $doppler before working with secrets, tokens, API keys, .env files, CI credentials, or Doppler secret injection."
+  short_description: "Doppler CLI secrets: doppler run, names-only diagnostics, service tokens, no-print hygiene"
+  default_prompt: "Use $doppler for Doppler secret injection, names-only diagnostics, or storing/rotating API keys and tokens without printing values."

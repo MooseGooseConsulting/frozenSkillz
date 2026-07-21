@@ -9,11 +9,14 @@
 `pdm-cli-operations` are active and on the marketplace menu; older reference/workflow skills remain
 gated pending review.
 **Holding location:** `_incubator/` (in-repo, easy to promote back; not installable).
-**Linear:** planning lives in Linear — project **frozenSkillz** (under the *ClaudeReconfigurations*
-initiative, team Moosegoose/MOO), parent intake [MOO-561](https://linear.app/moosegoose/issue/MOO-561)
-+ one triage sub-issue per gated skill (MOO-562 … MOO-570). Also registered in Notion → Builder Lab →
-Projects (per the documented "Issues live in Linear; design/projects live in Builder Lab" split).
-This file stays the in-repo source of truth for required work; Linear tracks status. Keep them in sync.
+**Tracking:** this file is the tracking system — no external issue tracker required. Every gated skill
+is a row in the status board below (Tier, Status, Location, Required work); status changes are made
+here and committed, and this file's git history is the audit trail. See "Tracking convention" in
+"How this works" for how work items are recorded, how status is updated, and how a skill moves
+gated → incubating → promoted.
+*(An earlier version of this doc referenced a Notion "Builder Lab" mirror. Unconfirmed whether that's
+still used — if it exists, it is optional and not required for this file to be authoritative; flagged
+for the owner to confirm or drop.)*
 
 ---
 
@@ -26,6 +29,21 @@ This file stays the in-repo source of truth for required work; Linear tracks sta
    and bump the plugin version.
 4. Update this tracker when status changes.
 5. Scout snapshots live under `_incubator/scout/` until they are reconciled into the skill rows below or deleted.
+
+### Tracking convention (in-repo, no external tracker)
+
+6. **Recording work.** A skill's "Required work" cell *is* the work item — no external issue number
+   needed. When a skill needs more than a one-line summary, add or extend its dated entry under
+   "Per-skill notes" below; that entry is the issue thread (decisions, blockers, follow-ups).
+7. **Status vocabulary.** 🛑 `gated` is the default holding state (in `_incubator/`, un-registered).
+   A short qualifier after it (`· rework`, `· update`, `· incubating (<date>)`, `· highest concern`, …)
+   means the skill has active work in flight — this is the **incubating** phase. ✅ `ACTIVE` means
+   **promoted** (see step 3 above). 🧪 `registered · experimental` is a separate lane for code that's
+   merged/registered but deliberately left disabled (see `skill-injector`) — not a step in the
+   gated → incubating → promoted lifecycle.
+8. **Updating status.** Edit the Status cell (and Required work / Per-skill notes as needed) directly
+   in this file and commit. There is no second system to keep "in sync" — this file, plus normal git
+   history, is the complete record.
 
 ### Promotion bar ("ready")
 A skill may be promoted when it meets the bar set by `doppler` (the reference standard):
@@ -41,23 +59,23 @@ A skill may be promoted when it meets the bar set by `doppler` (the reference st
 
 ## Status board
 
-| Skill | Tier | Linear | Status | Location | Required work |
-|---|---|---|---|---|---|
-| `doppler` | A | — (done) | ✅ **ACTIVE** (on menu) | `plugins/frozen-skills/skills/doppler` | None — reference standard. |
-| `external-skill-intake` | A | — | ✅ **ACTIVE** (on menu) | `plugins/frozen-skills/skills/external-skill-intake` | Workflow for sandboxing, scoring, evaluating, and packaging external inspiration repos before promotion. |
-| `omc-reference` | A | — | ✅ **ACTIVE** (on menu) | `plugins/frozen-skills/skills/omc-reference` | Maintains the separate Oh My ClaudeCode installation; verified against the local OMC 4.14.4 source and explicitly excluded from ordinary Codex delegation, Git, commit, and unrelated-skill routing. |
-| `pdm-cli-operations` | A | — | ✅ **ACTIVE** (on menu) | `plugins/frozen-skills/skills/pdm-cli-operations` | Portable client contract + optional Windows bridge; env bindings gated; evals present. Live 1.1.6 qualification on 2026-07-20. |
-| `plugin-authoring-guide` ("skill guide") | A | MOO-562 | 🛑 gated · **rework** | `_incubator/frozen-skills/skills/` | **Rework** (user directive). |
-| `mcp-deployment-guide` ("MCP guide") | A | MOO-563 | 🛑 gated · **update** | `_incubator/frozen-skills/skills/` | **Update** (user directive). |
-| `agent-config-megaref` | A | MOO-564 | 🛑 gated · **light update** | `_incubator/frozen-skills/skills/` | Light update **+ confer/cross-reference with the LLM archiver project** (user directive). |
-| `setup-rules` | B | MOO-568 | 🛑 gated | `_incubator/frozen-rules/skills/` | Tiny fix + verify rule install flow. |
-| `gh-common-workflows` | B | MOO-565 | 🛑 gated | `_incubator/frozen-skills/skills/` | De-opinionate (remove NORTH_STAR / Codex-specific assumptions); verify refs. |
-| `stacked-pr-workflow` | B | MOO-566 | 🛑 gated | `_incubator/frozen-skills/skills/` | Run + verify the 7 PowerShell helpers; decide if niche is worth keeping. |
-| `skill-manager` | B | MOO-567 | 🛑 gated | `_incubator/skill-manager/` | Verify scripts + registry assumptions (`skills.sh`, `~/.agents/skills`). |
-| `session-skill-inferencer` | C | MOO-569 | 🛑 gated · **highest concern** | `_incubator/frozen-skills/skills/` | Fix generation quality before any promotion (see below). |
-| `skill-injector` (was skill-classifier) | C | MOO-570 | 🧪 **registered · experimental/UNTESTED** | `plugins/skill-injector/` | Test end-to-end before enabling; finish internal rename (scripts/module + ADR/doc prose still say "classifier"). |
-| `icepanel-api` | A | — | 🛑 gated · **incubating** | `_incubator/frozen-skills/skills/icepanel-api/` | Live-validate diagram push on a real landscape; attach PNG/share proof to examples; run layout/push scripts; trim description to the ~300-char bar before promotion. |
-| `unity-editor-mcp` | A | — (needs Linear issue) | 🛑 gated · **incubating** (2026-07-21) | `_incubator/frozen-skills/skills/unity-editor-mcp/` | Grade transferable value (see note). Verify portability of the framing-contract + burns beyond Broadside; run the framing-contract checks on a second Unity project before de-Broadside-ifying further; confirm cross-links; consider whether the lock hook belongs in an active enforcement plugin vs a reference. |
+| Skill | Tier | Status | Location | Required work |
+|---|---|---|---|---|
+| `doppler` | A | ✅ **ACTIVE** (on menu) | `plugins/frozen-skills/skills/doppler` | None — reference standard. |
+| `external-skill-intake` | A | ✅ **ACTIVE** (on menu) | `plugins/frozen-skills/skills/external-skill-intake` | Workflow for sandboxing, scoring, evaluating, and packaging external inspiration repos before promotion. |
+| `omc-reference` | A | ✅ **ACTIVE** (on menu) | `plugins/frozen-skills/skills/omc-reference` | Maintains the separate Oh My ClaudeCode installation; verified against the local OMC 4.14.4 source and explicitly excluded from ordinary Codex delegation, Git, commit, and unrelated-skill routing. |
+| `pdm-cli-operations` | A | ✅ **ACTIVE** (on menu) | `plugins/frozen-skills/skills/pdm-cli-operations` | Portable client contract + optional Windows bridge; env bindings gated; evals present. Live 1.1.6 qualification on 2026-07-20. |
+| `plugin-authoring-guide` ("skill guide") | A | 🛑 gated · **rework** | `_incubator/frozen-skills/skills/` | **Rework** (user directive). |
+| `mcp-deployment-guide` ("MCP guide") | A | 🛑 gated · **update** | `_incubator/frozen-skills/skills/` | **Update** (user directive). |
+| `agent-config-megaref` | A | 🛑 gated · **light update** | `_incubator/frozen-skills/skills/` | Light update **+ confer/cross-reference with the LLM archiver project** (user directive). |
+| `setup-rules` | B | 🛑 gated | `_incubator/frozen-rules/skills/` | Tiny fix + verify rule install flow. |
+| `gh-common-workflows` | B | 🛑 gated | `_incubator/frozen-skills/skills/` | De-opinionate (remove NORTH_STAR / Codex-specific assumptions); verify refs. |
+| `stacked-pr-workflow` | B | 🛑 gated | `_incubator/frozen-skills/skills/` | Run + verify the 7 PowerShell helpers; decide if niche is worth keeping. |
+| `skill-manager` | B | 🛑 gated | `_incubator/skill-manager/` | Verify scripts + registry assumptions (`skills.sh`, `~/.agents/skills`). |
+| `session-skill-inferencer` | C | 🛑 gated · **highest concern** | `_incubator/frozen-skills/skills/` | Fix generation quality before any promotion (see below). |
+| `skill-injector` (was skill-classifier) | C | 🧪 **registered · experimental/UNTESTED** | `plugins/skill-injector/` | Test end-to-end before enabling; finish internal rename (scripts/module + ADR/doc prose still say "classifier"). |
+| `icepanel-api` | A | 🛑 gated · **incubating** | `_incubator/frozen-skills/skills/icepanel-api/` | Live-validate diagram push on a real landscape; attach PNG/share proof to examples; run layout/push scripts; trim description to the ~300-char bar before promotion. |
+| `unity-editor-mcp` | A | 🛑 gated · **incubating** (2026-07-21) | `_incubator/frozen-skills/skills/unity-editor-mcp/` | Grade transferable value (see note). Verify portability of the framing-contract + burns beyond Broadside; run the framing-contract checks on a second Unity project before de-Broadside-ifying further; confirm cross-links; consider whether the lock hook belongs in an active enforcement plugin vs a reference. |
 
 Legend: ✅ active · 🛑 gated (in `_incubator/`) · 🧪 inert/experimental · Tier A = strong reference, B = functional/narrow, C = rework.
 
@@ -218,7 +236,7 @@ UPID. Exact power, snapshot, migration, and task commands are in the shipped ref
 - **Before any promotion to `plugins/`:** de-Broadside-ify the portable core further where a specific
   path leaked; validate the framing contract + burns on a second Unity project; decide whether the
   lock hook ships as an active enforcement plugin (it is currently reference-only, installs nothing);
-  file the Linear sub-issue; trim/verify description against the ~300-char bar.
+  trim/verify description against the ~300-char bar.
 
 ---
 

@@ -1,0 +1,90 @@
+{
+  "skill": "doppler",
+  "notes": "Labeled trigger prompts for description routing. Split ~60/40 train/validation. Run each query 3x in a fresh session; pass if trigger rate >= 0.5 when should_trigger, < 0.5 when not. Do not optimize description against validation.",
+  "train": [
+    {
+      "query": "Store this API key in Doppler for the dev config",
+      "should_trigger": true
+    },
+    {
+      "query": "Run pytest with secrets injected via doppler",
+      "should_trigger": true
+    },
+    {
+      "query": "Is DATABASE_URL set in Doppler without printing it?",
+      "should_trigger": true
+    },
+    {
+      "query": "Create a CI service token for the prd config",
+      "should_trigger": true
+    },
+    {
+      "query": "dont paste this token in chat, put it in doppler",
+      "should_trigger": true
+    },
+    {
+      "query": "Rotate the webhook secret and update Doppler",
+      "should_trigger": true
+    },
+    {
+      "query": "List secret names in the current Doppler project",
+      "should_trigger": true
+    },
+    {
+      "query": "Add a DEBUG=true flag to our Node config",
+      "should_trigger": false
+    },
+    {
+      "query": "What's the difference between process.env and dotenv?",
+      "should_trigger": false
+    },
+    {
+      "query": "Update the Dockerfile ENV for NODE_ENV=production",
+      "should_trigger": false
+    },
+    {
+      "query": "Document our public API base URL env var",
+      "should_trigger": false
+    },
+    {
+      "query": "Refactor how the app reads PORT",
+      "should_trigger": false
+    }
+  ],
+  "validation": [
+    {
+      "query": "Upload our local .env credentials into Doppler staging",
+      "should_trigger": true
+    },
+    {
+      "query": "Verify the Stripe API key exists in Doppler names-only",
+      "should_trigger": true
+    },
+    {
+      "query": "Wire GitHub Actions to use DOPPLER_TOKEN and doppler run",
+      "should_trigger": true
+    },
+    {
+      "query": "Set LOG_LEVEL=info in the app's default config object",
+      "should_trigger": false
+    },
+    {
+      "query": "Explain how Kubernetes ConfigMaps differ from Secrets",
+      "should_trigger": false
+    },
+    {
+      "query": "Change the compose file to pass NODE_ENV from the host",
+      "should_trigger": false
+    }
+  ],
+  "held_out": [
+    {
+      "query": "I accidentally pasted a GHCR token in chat — get it into Doppler silently and tell me to rotate",
+      "should_trigger": true
+    },
+    {
+      "query": "Rename the FEATURE_FLAG_FOO env key in our TypeScript settings module",
+      "should_trigger": false
+    }
+  ]
+}

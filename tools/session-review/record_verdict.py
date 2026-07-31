@@ -17,9 +17,12 @@ ENUMS = {
     "closing_sentiment": {"accepted", "neutral", "corrected", "frustrated", "abandoned"},
 }
 LEVELS = {"none", "some", "severe"}
+IMPL_LEVELS = {"sound", "questionable", "poor", "not_inspectable"}
+AFTERMATH_LEVELS = {"survived", "churned", "reverted", "too_recent", "none"}
 EFFECTS = {"shaped", "ignored", "hurt", "meta"}
 REQUIRED = ["rubric_version", "session_id", "goal", "goal_reached", "owner_visible_outcome",
-            "closing_sentiment", "thrash", "ceremony", "skills", "pushback", "verdict", "confidence"]
+            "closing_sentiment", "thrash", "ceremony", "skills", "pushback",
+            "implementation_quality", "aftermath", "claims_gap", "verdict", "confidence"]
 
 
 def fail(msg):
@@ -40,6 +43,12 @@ def main(path):
             fail(f"{k} needs {{level: none|some|severe, evidence}}")
     if not isinstance(v["skills"], list):
         fail("skills must be a list")
+    if v["implementation_quality"].get("level") not in IMPL_LEVELS:
+        fail("implementation_quality.level invalid")
+    if v["aftermath"].get("level") not in AFTERMATH_LEVELS:
+        fail("aftermath.level invalid")
+    if v["claims_gap"].get("level") not in LEVELS:
+        fail("claims_gap.level invalid")
     pb = v["pushback"]
     if not isinstance(pb, dict) or not isinstance(pb.get("count"), int):
         fail('pushback needs {count: int, worst: quote|null}')

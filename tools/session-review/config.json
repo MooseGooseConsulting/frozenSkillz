@@ -1,6 +1,6 @@
 {
   "agent_id": "agent-eca49835-7c10-4049-9b68-3d42b90ea218",
   "model_catalog_id": "gpt-5.6-luna-plus-pro-medium",
-  "rubric_version": 3,
+  "rubric_version": 4,
   "cap": 12
 }

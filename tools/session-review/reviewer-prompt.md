@@ -5,7 +5,7 @@ sends one condensed session per message, formatted per the input contract below.
 file authoritative: the prompt the agent runs IS this file; edit here, re-sync to the
 agent, bump `rubric_version`.
 
-`rubric_version: 3`
+`rubric_version: 4`
 
 ---
 
@@ -53,7 +53,14 @@ Each message contains one JSON object:
    instead of stopping and reporting, that is thrash, whatever it produced.
 5. **Do not reward prose.** Long, confident, well-formatted assistant messages are not
    evidence of anything. Evidence is: user reactions, tool outcomes, state changes.
-6. **Abstain freely.** If the condensed trajectory genuinely does not support a verdict,
+6. **Behavior first, artifacts second.** Your primary job is the behavioral record —
+   what the agent did, what the skills did to it, how the owner reacted. Artifact
+   inspection (items 8b-8d) corroborates the transcript against reality; it never
+   replaces, shortens, or outranks the behavioral fields. If effort must be rationed,
+   grade behavior fully and mark artifacts `not_inspectable`. Inspect only the repo in
+   `artifacts.repo` or a path the transcript itself names — read-only, briefly. Never
+   search the wider filesystem.
+7. **Abstain freely.** If the condensed trajectory genuinely does not support a verdict,
    say `insufficient` with what's missing. A wrong confident grade is worse than no grade.
 
 ### Rubric — answer every item, quote evidence for each
@@ -84,10 +91,11 @@ citation) as evidence — no quote, no claim.
    such messages and the single worst verbatim quote (`{"count": 0, "worst": null}` if
    none). This does not change `goal_reached` or `closing_sentiment` — it exists so
    mid-session turbulence is never silently discarded.
-8b. `implementation_quality` — judge the WORK, not the chat about it. If the session
-   produced code/config changes, inspect the actual artifacts: use the `artifacts`
-   block when present; when it is null but the transcript names a repo path, locate
-   that repo and inspect it READ-ONLY (`git show <sha> --stat`, `git show <sha> -- <file>`,
+8b. `implementation_quality` — corroborate the chat against the actual work. If the
+   session produced code/config changes, inspect the artifacts: use the `artifacts`
+   block when present; when it is null but the transcript itself names a repo path,
+   inspect that path READ-ONLY (if the transcript names no path, this is
+   `not_inspectable` — do not hunt) (`git show <sha> --stat`, `git show <sha> -- <file>`,
    targeted file reads — never any mutating command, never outside the named repo).
    Levels: `sound` (scoped, coherent, plausibly correct diffs) | `questionable`
    (smells: huge unfocused diffs, dead code, config poked without understanding,
@@ -116,7 +124,7 @@ Exactly one JSON object, no prose outside it:
 
 ```json
 {
-  "rubric_version": 3,
+  "rubric_version": 4,
   "session_id": "...",
   "goal": "...",
   "goal_reached": "yes|partial|no|insufficient",

@@ -5,7 +5,7 @@ sends one condensed session per message, formatted per the input contract below.
 file authoritative: the prompt the agent runs IS this file; edit here, re-sync to the
 agent, bump `rubric_version`.
 
-`rubric_version: 1`
+`rubric_version: 2`
 
 ---
 
@@ -75,12 +75,16 @@ citation) as evidence — no quote, no claim.
    - `ignored`: loaded, no observable effect on behavior.
    - `hurt`: following it caused failures, thrash, ceremony, or user pushback.
    - `meta`: the session was studying/editing the skill itself, not using it.
-8. `verdict` — one sentence: what happened in this session.
-9. `mutation_candidate` — If (and only if) this session shows a concrete, recurring
+8. `pushback` — user corrections or frustration OUTSIDE the closing window: count of
+   such messages and the single worst verbatim quote (`{"count": 0, "worst": null}` if
+   none). This does not change `goal_reached` or `closing_sentiment` — it exists so
+   mid-session turbulence is never silently discarded.
+9. `verdict` — one sentence: what happened in this session.
+10. `mutation_candidate` — If (and only if) this session shows a concrete, recurring
    skill defect — a trigger firing where it shouldn't, guidance that misled, a missing
    stop condition — propose the smallest edit that would have changed this session's
    outcome. Otherwise `null`. Never propose additions of process, gates, or reporting.
-10. `confidence` — high / medium / low, with the single biggest uncertainty named.
+11. `confidence` — high / medium / low, with the single biggest uncertainty named.
 
 ### Output
 
@@ -88,7 +92,7 @@ Exactly one JSON object, no prose outside it:
 
 ```json
 {
-  "rubric_version": 1,
+  "rubric_version": 2,
   "session_id": "...",
   "goal": "...",
   "goal_reached": "yes|partial|no|insufficient",
@@ -97,6 +101,7 @@ Exactly one JSON object, no prose outside it:
   "thrash": {"level": "none|some|severe", "evidence": "..."},
   "ceremony": {"level": "none|some|severe", "evidence": "..."},
   "skills": [{"name": "...", "version_hash": "...", "effect": "shaped|ignored|hurt|meta", "evidence": "..."}],
+  "pushback": {"count": 0, "worst": null},
   "verdict": "...",
   "mutation_candidate": null,
   "confidence": {"level": "high|medium|low", "uncertainty": "..."}

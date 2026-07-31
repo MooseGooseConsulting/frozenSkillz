@@ -19,7 +19,7 @@ ENUMS = {
 LEVELS = {"none", "some", "severe"}
 EFFECTS = {"shaped", "ignored", "hurt", "meta"}
 REQUIRED = ["rubric_version", "session_id", "goal", "goal_reached", "owner_visible_outcome",
-            "closing_sentiment", "thrash", "ceremony", "skills", "verdict", "confidence"]
+            "closing_sentiment", "thrash", "ceremony", "skills", "pushback", "verdict", "confidence"]
 
 
 def fail(msg):
@@ -40,6 +40,11 @@ def main(path):
             fail(f"{k} needs {{level: none|some|severe, evidence}}")
     if not isinstance(v["skills"], list):
         fail("skills must be a list")
+    pb = v["pushback"]
+    if not isinstance(pb, dict) or not isinstance(pb.get("count"), int):
+        fail('pushback needs {count: int, worst: quote|null}')
+    if pb["count"] > 0 and not pb.get("worst"):
+        fail("pushback count > 0 requires the worst quote")
     for s in v["skills"]:
         if s.get("effect") not in EFFECTS:
             fail(f"skill {s.get('name')} effect={s.get('effect')!r} invalid")

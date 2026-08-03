@@ -33,7 +33,10 @@ transcript-plus-artifact evidence can tell the difference.
 - **Schedule:** Letta cloud cron `nightly-session-review`, `0 8 * * *` UTC (~3am
   Central), targeting machine HEPHASTUS (deviceId `8a88a521-1410-4dae-acae-4b4a3cd684ac`).
 - **Runtime requirement:** a resident `letta server` on HEPHASTUS (auto-starts via the
-  user Startup folder entry `letta-server.cmd`). If offline at fire time, the wake falls
+  user Startup folder entry `letta-server.cmd`). The launcher must `cd /d` into
+  `D:\_projects\frozenSkillz-review` before starting Letta; otherwise the Windows Startup
+  context can be `C:\Windows\System32`, where Letta cannot persist project-local settings.
+  If offline at fire time, the wake falls
   back to the cloud sandbox and safely no-ops ("machine unavailable — skipped").
 - **Workspace:** the dedicated git worktree `D:\_projects\frozenSkillz-review` on branch
   `review/nightly-grades`. The agent never touches any other checkout or branch.

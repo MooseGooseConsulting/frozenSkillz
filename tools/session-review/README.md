@@ -1,5 +1,9 @@
 # Session review system
 
+> **Status (2026-08-03): decommissioned.** The Letta Cloud agent, its cloud cron, and
+> the HEPHASTUS Startup listener were deleted. This directory is retained only as
+> historical prompt and implementation material; it does not deploy or run a reviewer.
+
 A Letta cloud agent ("Session Reviewer") wakes nightly, reads condensed trajectories of
 skill-firing AI sessions from the AgentsView database, grades each against a versioned
 rubric, and accumulates verdicts and skill-mutation proposals in this repo. It exists
@@ -26,18 +30,13 @@ transcript-plus-artifact evidence can tell the difference.
 | `CALIBRATED` (marker) | Owner-created gate: until it exists, wakes only re-grade the golden sessions. The agent may never create it. |
 | `state.json` (local, gitignored) | Which sessions are already graded. |
 
-## Operations
+## Former operations
 
-- **Agent:** `agent-eca49835-7c10-4049-9b68-3d42b90ea218`, Letta Cloud, `gpt-5.6-luna`,
-  medium reasoning effort, ChatGPT-Pro/Codex OAuth provider.
-- **Schedule:** Letta cloud cron `nightly-session-review`, `0 8 * * *` UTC (~3am
-  Central), targeting machine HEPHASTUS (deviceId `8a88a521-1410-4dae-acae-4b4a3cd684ac`).
-- **Runtime requirement:** a resident `letta server` on HEPHASTUS (auto-starts via the
-  user Startup folder entry `letta-server.cmd`). The launcher must `cd /d` into
-  `D:\_projects\frozenSkillz-review` before starting Letta; otherwise the Windows Startup
-  context can be `C:\Windows\System32`, where Letta cannot persist project-local settings.
-  If offline at fire time, the wake falls
-  back to the cloud sandbox and safely no-ops ("machine unavailable — skipped").
+- **Agent:** Deleted Letta Cloud agent `agent-eca49835-7c10-4049-9b68-3d42b90ea218`.
+- **Schedule:** Deleted cloud cron `nightly-session-review` (`0 8 * * *` UTC).
+- **Runtime:** Deleted HEPHASTUS Startup entry `letta-server.cmd` and stopped its resident
+  `letta server`. A future Letta-native replacement must define its own environment and
+  schedule in Letta rather than relying on this retired launcher.
 - **Workspace:** the dedicated git worktree `D:\_projects\frozenSkillz-review` on branch
   `review/nightly-grades`. The agent never touches any other checkout or branch.
 - **No API key.** Native scheduled wakes run under the agent's own auth. `LETTA_API_KEY`

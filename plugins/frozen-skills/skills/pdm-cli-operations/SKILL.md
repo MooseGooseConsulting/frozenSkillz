@@ -24,7 +24,7 @@ Using native PVE/PBS for a capability gap is not a PDM failure and is not automa
 | Situation | Route |
 |---|---|
 | Environment-owned PDM launcher authenticates internally | Use the launcher directly; do not load Doppler just because it authenticates opaquely. |
-| Task directly reads, writes, configures, rotates, or troubleshoots secret storage or injection | Load the secrets-management skill before that direct work. Keep values out of arguments, output, and durable files. |
+| Task directly reads, writes, configures, rotates, or troubleshoots secret storage or injection | Load Doppler before that direct work. Keep values out of arguments, output, and durable files. |
 | PDM command or launcher fails before a request reaches PDM | First distinguish missing client, unselected launcher configuration, workstation identity/SSH failure, TLS/auth failure, and an unverified PDM result. Do not call every failure a credential failure or rotate a secret speculatively. |
 
 The launcher remains the normal PDM route. Loading Doppler is not a prerequisite for an ordinary
@@ -33,7 +33,7 @@ PDM read, lifecycle action, or launcher failure diagnosis.
 ## Operating Contract
 
 - Prefer the environment-owned PDM launcher when it obtains credentials opaquely; using that trusted launcher is ordinary PDM operation, not direct secret handling.
-- Load the applicable secrets-management skill only when the task directly reads, writes, configures, rotates, or troubleshoots the credential source or injection path. Do not load it merely because PDM authenticates behind the launcher.
+- Load Doppler only when the task directly reads, writes, configures, rotates, or troubleshoots the credential source or injection path. Do not load it merely because PDM authenticates behind the launcher.
 - Resolve the PDM endpoint, TLS trust, identity, remotes, nodes, and native access paths from the owning environment. Do not copy environment inventory into this skill.
 - The environment-owned launcher should still invoke the official `proxmox-datacenter-manager-client` and preserve output and exit status.
 - Verify the installed client/server versions and inspect `help --verbose` before assuming a command exists. PDM is evolving quickly; do not turn an old capability gap into permanent architecture.
@@ -69,8 +69,8 @@ The routing rule is not “never use `qm`, `pvesh`, the PVE API, or PBS-native t
 2. Confirm the PDM client/launcher and current version.
 3. If a trusted environment launcher exists, use it. Otherwise use the raw official
    `proxmox-datacenter-manager-client` with the environment's documented connection options. If
-   direct credential or injection work is actually required, load the applicable secrets-management
-   skill before proving connectivity with a small read such as `remote list`.
+   direct credential or injection work is actually required, load Doppler before proving
+   connectivity with a small read such as `remote list`.
 4. Identify the exact remote, node, resource ID, kind, and name.
 5. Confirm the requested operation exists in the installed PDM surface.
 6. Read pre-state, execute the requested action, follow any returned task to terminal success, and read post-state.

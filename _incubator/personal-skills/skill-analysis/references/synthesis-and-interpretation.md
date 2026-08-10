@@ -6,13 +6,14 @@ The corpus reader receives:
 
 - the candidate-manifest coverage summary;
 - the declared analysis-corpus manifest;
-- one completed memo per selected trajectory;
-- explicit exclusions and blocks;
+- one completed memo for each selected trajectory whose bounded source could be extracted;
+- a separately accounted list of every selected exclusion and block, including its reason;
 - skill version information; and
 - source pointers for targeted challenge.
 
 It does not receive a pile of raw transcripts. It must not invent a missing case analysis from
-manifest metadata.
+manifest metadata, treat an unextractable selected trajectory as memo-covered, or silently omit a
+block from the corpus account.
 
 ## Corpus-reader prompt
 
@@ -21,6 +22,10 @@ You are synthesizing individually reviewed deployments of one agent skill.
 
 Read the corpus coverage notes and every completed case memo. Do not overwrite case-level
 uncertainty or treat administrative manifest fields as evaluation labels.
+
+First confirm that every memo maps to one selected, extractable trajectory and that every selected
+trajectory without a memo is separately accounted as an exclusion or block. Do not infer findings
+from those unextracted trajectories.
 
 Explain:
 
@@ -48,8 +53,10 @@ and reviewer disagreement.
 
 ### Read every memo before clustering
 
-Do not synthesize incrementally from the first few cases. First confirm corpus completeness, then
-read each memo and build provisional themes. Keep source case identifiers attached to every theme.
+Do not synthesize incrementally from the first few cases. First confirm that every selected
+trajectory is either represented by one extractable case memo or separately accounted as blocked or
+excluded; then read each memo and build provisional themes. Keep source case identifiers attached to
+every theme.
 
 ### Build themes from explanations
 

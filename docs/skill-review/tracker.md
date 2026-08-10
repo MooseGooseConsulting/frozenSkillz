@@ -134,13 +134,14 @@ registered but never demonstrated a production nightly batch before it was decom
 appropriate-use rate, a causal effectiveness estimate, or evidence that monitoring is currently
 running. The replacement method is `docs/workflows/skill-evaluation.md`.
 
-How grading works: a skill's grade comes from subagents reading transcripts around recent
-fires — (1) did the guidance visibly shape the agent's actions, (2) was the owner's next
-message acceptance or a correction, and (3) did the session end with an owner-visible
-outcome — the owner's *closing* reaction is the ground truth, and self-written tests
-passing is not an outcome. AgentsView `health_score` is only a thrash detector
-(tool failures / edit churn; 85% of all sessions grade A) — never a success measure. A
-"fire" is usually just a SKILL.md read, so editing or studying a skill counts as usage.
+### Retired July grading rule (historical only)
+
+The July work used subagents to read transcripts around recent fires and treated the owner's
+closing reaction as a “ground truth” signal. That grading rule is removed: an explicit owner
+response is useful evidence, while silence is not acceptance, and it does not supply a global
+grade or causal conclusion. AgentsView `health_score` remains only a historical thrash detector
+(tool failures / edit churn; 85% of all sessions grade A), never a success measure. A historical
+“fire” was usually a `SKILL.md` read, so editing or studying a skill could count as usage.
 
 **2026-07-28 corpus analysis** (~7,300 sessions; instrument lives in the local
 `agent-control-plane` learnings repo — `projects/agent-ceremony-*.md`,

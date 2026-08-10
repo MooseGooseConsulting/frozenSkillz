@@ -33,8 +33,10 @@ grade. It does not claim causal improvement.
    activation evidence, recoverable skill identity, co-loaded skills, and owner/outcome signals.
 2. A deterministic declared sample is selected before usefulness is judged. The 2026-08 study used
    24 stratified `project-docs` episodes plus every PDM-centered episode.
-3. One reader receives one bounded episode and writes an open deployment debrief. The corpus
-   reader receives case memos and coverage only, not hundreds of raw chats.
+3. One reader receives each extractable bounded episode and writes an open deployment debrief.
+   Every selected episode without an extractable source is separately accounted as blocked or
+   excluded. The corpus reader receives only those case memos and coverage, not hundreds of raw
+   chats.
 4. `frozenSkillz` consumes the synthesis and applies only the supported language changes. It does
    not own AgentsView extraction, manifests, or aggregates.
 5. Validate the extractor with deterministic tests and the skill edits with focused repository

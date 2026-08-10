@@ -42,15 +42,15 @@ agent's independent overreach, or a combination.
 The directly observed harm is the unnecessary adjacent edit and explicit owner correction. It is
 not possible to establish from this trajectory alone whether the skill caused the overreach.
 
-Potential learning: retain permission to inspect relevant authority when needed, but make clearer
-that inspection does not authorize rewriting neighboring documents or assigning a purpose to a
-README.
+Potential learning, conditional on later confirming the historical skill version and exposed text:
+retain permission to inspect relevant authority when needed, but make clearer that inspection does
+not authorize rewriting neighboring documents or assigning a purpose to a README.
 
 ## Competing interpretation and unknowns
 
 The agent might have made the same scope expansion without the skill. The exact historical skill
 version, exposed text, and relevant active repository instructions must be checked before
-attributing the behavior.
+attributing the behavior or proposing a guidance change.
 
 A useful next case would be another README-only request where the skill loaded but the agent kept the
 scope bounded, or a comparable request where the skill did not load.

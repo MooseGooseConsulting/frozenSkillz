@@ -143,7 +143,8 @@ question. The corpus reader, not the case reader, performs cross-case comparison
 - Compare all relative file paths and SHA-256 hashes between live and incubator copies.
 - Run repository validation.
 - Forward-test corpus assembly with a candidate manifest larger than one reader can reasonably hold.
-- Confirm each selected deployment produces one memo before corpus synthesis begins.
+- Confirm each extractable selected deployment produces one memo before corpus synthesis begins,
+  while every unextractable selected deployment is separately accounted as blocked or excluded.
 - Confirm the corpus reader receives memos and coverage notes, not raw transcripts.
 - Confirm a consequential finding remains traceable to its source case and preserves a
   counterexample or uncertainty where one exists.

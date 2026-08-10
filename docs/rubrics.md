@@ -10,17 +10,19 @@ wording change is justified.
   are more useful than invented prompts.
 - Ask open questions: what the skill was meant to do, why it entered, what it changed, whether it
   helped or hurt, and what was vague, broad, or over-specific.
-- Treat the human response carefully. A correction is evidence about the misunderstanding; silence
+- Treat the owner's response carefully. A correction is evidence about the misunderstanding; silence
   is not acceptance.
 - Preserve counterexamples and competing explanations. A skill file read, a green test, or a
   later agent claim does not establish causation.
-- Use deterministic checks for tools and packaging. Use human judgment for whether guidance was
-  appropriate in a real conversation.
+- Use deterministic checks for tools and packaging. Use a qualitative agent deployment debrief for
+  whether guidance appeared appropriate in a real conversation; the owner's response is evidence,
+  not a human review or a verdict.
 
 This draws on the useful field-evaluation distinction in Anthropic’s
 [evaluation guidance](https://www.anthropic.com/engineering/demystifying-evals-for-ai-agents):
-automated checks and human review answer different questions. The historical deployment method
-uses the latter without turning it into a synthetic trial program or LLM-grading system.
+automated checks and qualitative case analysis answer different questions. The historical
+deployment method uses qualitative agent deployment debriefs without turning them into a synthetic
+trial program, human-review claim, or LLM-grading system.
 
 ## Process boundary
 

@@ -102,9 +102,10 @@ Process the queue in independent bounded assignments. Parallel execution is allo
 but each case reader receives one trajectory and produces one memo without seeing other cases or the
 emerging corpus conclusion.
 
-Independently double-read a case when its interpretation would drive a consequential skill change,
-when the first reader reports substantial ambiguity, or when the corpus reader identifies it as a
-key counterexample. Do not double-read an arbitrary quota merely to calculate agreement.
+Routine extractable cases receive one reader. Assign an independent second read when a case's
+interpretation would drive a consequential skill change, when the first reader reports substantial
+ambiguity, or when the corpus reader identifies it as a key counterexample. Do not double-read an
+arbitrary quota merely to calculate agreement.
 
 ## 4. Give each case reader a bounded source packet
 

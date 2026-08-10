@@ -56,7 +56,10 @@ The routing rule is not “never use `qm`, `pvesh`, the PVE API, or PBS-native t
 
 1. Read the owning environment’s fleet/access references.
 2. Confirm the PDM client/launcher and current version.
-3. Select the trusted environment launcher. If direct credential or injection work is actually required, load the applicable secrets-management skill before proving connectivity with a small read such as `remote list`.
+3. If a trusted environment launcher exists, use it. Otherwise use the raw official
+   `proxmox-datacenter-manager-client` with the environment's documented connection options. If
+   direct credential or injection work is actually required, load the applicable secrets-management
+   skill before proving connectivity with a small read such as `remote list`.
 4. Identify the exact remote, node, resource ID, kind, and name.
 5. Confirm the requested operation exists in the installed PDM surface.
 6. Read pre-state, execute the requested action, follow any returned task to terminal success, and read post-state.

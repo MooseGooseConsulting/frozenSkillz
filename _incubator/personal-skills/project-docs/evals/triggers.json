@@ -15,6 +15,10 @@
       "should_trigger": true
     },
     {
+      "query": "Review and critique my existing NORTH_STAR.md against the owner's stated goal",
+      "should_trigger": true
+    },
+    {
       "query": "Write my settled product goal into NORTH_STAR.md and reconcile only the directly conflicting router text",
       "should_trigger": true
     },

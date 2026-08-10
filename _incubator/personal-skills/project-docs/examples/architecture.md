@@ -80,7 +80,7 @@ The skill performs:
 
 | Component | Status | Responsibility | Detail |
 |---|---|---|---|
-| `project-docs/SKILL.md` | Current | Top-level workflow router for documentation tasks | skill root |
+| `project-docs/SKILL.md` | Current | Router for authority-document authoring, review, migration, reconciliation, and audits | skill root |
 | `references/north-star-guide.md` | Current | North Star writing/review rules | references/ |
 | `references/agents-md-guide.md` | Current | AGENTS.md router guidelines | references/ |
 | `references/architecture-md-guide.md` | Current | Architecture.md writing/review rules | references/ |

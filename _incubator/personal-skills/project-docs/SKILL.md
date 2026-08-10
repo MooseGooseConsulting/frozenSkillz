@@ -1,10 +1,10 @@
 ---
 name: project-docs
 description: >
-  Create or repair project authority docs only when explicitly asked to author,
-  rewrite, migrate, reconcile, or audit NORTH_STAR.md, architecture.md, AGENTS.md,
-  CLAUDE.md routing, or legacy PROGRESS.md. Do not use for ordinary repo work,
-  README edits, status checks, or incidental doc mentions.
+  Create, review, or repair project authority docs only when explicitly asked to
+  author, rewrite, critique, migrate, reconcile, or audit NORTH_STAR.md,
+  architecture.md, AGENTS.md, CLAUDE.md routing, or legacy PROGRESS.md. Do not
+  use for ordinary repo work, README edits, status checks, or incidental doc mentions.
 ---
 
 # Project Docs Authoring
@@ -12,8 +12,8 @@ description: >
 ## Trigger Gate
 
 Use this skill only when the requested deliverable is an authority-document draft,
-edit, migration, reconciliation, or documentation-authority audit. An explicit
-request to use `project-docs` also qualifies.
+edit, review/critique, migration, reconciliation, or documentation-authority audit.
+An explicit request to use `project-docs` also qualifies.
 
 Do not load it for general repository review, conversation completeness checks,
 implementation work, operational configuration, a README-only change, or merely

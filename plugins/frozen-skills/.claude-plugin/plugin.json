@@ -34,7 +34,7 @@
     {
       "name": "pdm-cli-operations",
       "path": "skills/pdm-cli-operations",
-      "description": "Inspect and operate Proxmox VE and PBS fleets through the official PDM client or an environment-owned wrapper. Use for inventory, guest lifecycle, tasks, metrics, snapshots, migration, and PDM troubleshooting; not native PVE/PBS break-glass work."
+      "description": "Operate Proxmox VE and PBS fleets with PDM as the primary centralized control plane. Use for fleet inventory, guest lifecycle, tasks, snapshots, migrations, PDM auth/trust, and deciding when to drill down to native PVE/PBS because PDM lacks the operation or is unavailable."
     }
   ]
 }

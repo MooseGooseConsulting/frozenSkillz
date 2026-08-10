@@ -103,7 +103,7 @@ What are you about to do?
 │  → GitHub Issues and/or docs/plans/ (whichever this repo uses)
 │  → architecture.md / topic docs for the subsystem
 │
-├─ Write or review documentation
+├─ Draft, migrate, reconcile, or audit authority documentation
 │  → Invoke the project-docs skill
 │
 ├─ Run a long procedure

@@ -12,7 +12,7 @@ description: >-
 
 Load this skill before directly handling secret material or its storage and injection path: API keys, tokens, passwords, private keys, `.env` files, service tokens, OAuth credentials, webhook secrets, cloud credentials, signed URLs, cookies, auth headers, or environment variables that may carry credentials.
 
-Do not load it merely because another trusted command, wrapper, or service authenticates internally. Running an environment-owned PDM launcher, `gh`, `kubectl`, or another already-configured client is ordinary use unless the task reaches into its credentials, secret configuration, or authentication failure. Keep the owning operational skill in control of the workflow.
+Do not load it merely because another trusted command, wrapper, or service authenticates internally. Running an environment-owned PDM launcher, `gh`, `kubectl`, or another already-configured client is ordinary use, including when that client reports an authentication failure. Load Doppler only if diagnosis actually reaches into credential material, secret configuration, or injection. Keep the owning operational skill in control of the workflow.
 
 If unsure whether a value is a secret, treat it as a secret. Keep secret values out of chat, logs, diffs, committed files, and durable docs.
 

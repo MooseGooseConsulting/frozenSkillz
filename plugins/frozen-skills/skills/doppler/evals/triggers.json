@@ -1,7 +1,7 @@
 {
   "skill": "doppler",
   "notes": "Direct secret and injection work triggers. Ordinary use of a trusted authenticated client or opaque launcher does not.",
-  "cases": [
+  "train": [
     {
       "query": "Add DATABASE_URL to the dev Doppler config without printing it",
       "should_trigger": true
@@ -26,5 +26,7 @@
       "query": "List Kubernetes pods with the existing kubeconfig",
       "should_trigger": false
     }
-  ]
+  ],
+  "validation": [],
+  "held_out": []
 }

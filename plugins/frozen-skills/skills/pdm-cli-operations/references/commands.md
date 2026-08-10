@@ -1,9 +1,13 @@
 # Official PDM client commands
 
-The authoritative references are the Proxmox Datacenter Manager
-[client description](https://pdm.proxmox.com/docs/sysadmin.html#proxmox-datacenter-manager-client),
-[command syntax](https://pdm.proxmox.com/docs/command-syntax.html#proxmox-datacenter-manager-client),
-and [package repository instructions](https://pdm.proxmox.com/docs/installation.html#debian-package-repositories).
+Primary upstream references:
+
+- [PDM introduction](https://pdm.proxmox.com/docs/introduction.html) — PDM is the high-level control plane and native remote UIs are the granular escape hatch.
+- [PDM client description](https://pdm.proxmox.com/docs/sysadmin.html#proxmox-datacenter-manager-client)
+- [PDM command syntax](https://pdm.proxmox.com/docs/command-syntax.html#proxmox-datacenter-manager-client)
+- [PDM package repositories](https://pdm.proxmox.com/docs/installation.html#debian-package-repositories)
+
+The upstream documentation is currently 1.1.7 (2026-07-15). Environments may legitimately run an earlier 1.1.x release. Always inspect the installed client and server before relying on examples below; version-specific notes are evidence, not permanent product limits.
 
 ## Contents
 
@@ -11,6 +15,7 @@ and [package repository instructions](https://pdm.proxmox.com/docs/installation.
 - [Environment launcher](#environment-launcher)
 - [Raw client login](#raw-client-login)
 - [Authority](#authority)
+- [Capability check and surface routing](#capability-check-and-surface-routing)
 - [Discovery and evidence](#discovery-and-evidence)
 - [Guest lifecycle and snapshots](#guest-lifecycle-and-snapshots)
 - [Migration](#migration)
@@ -19,74 +24,69 @@ and [package repository instructions](https://pdm.proxmox.com/docs/installation.
 
 ## Installation boundary
 
-The executable is `proxmox-datacenter-manager-client`. First check:
+The executable is `proxmox-datacenter-manager-client`. First inspect what is already installed:
 
 ```sh
 command -v proxmox-datacenter-manager-client
 dpkg-query -W -f='${Package} ${Version}\n' proxmox-datacenter-manager-client
 ```
 
-Install it only on a compatible Debian amd64 operator host from an official Proxmox PDM repository. Use the repository channel selected for that environment and the official signed keyring; do not silently enable `pdm-test`. Install only the client package, not a PDM server meta-package. Record the installed package version and confirm its major version matches the PDM server.
+Install it only on a compatible Debian amd64 operator host from an official Proxmox PDM repository selected by the owning environment. Do not silently enable a test repository. Install the client package, not a PDM server, when all that is needed is the process interface.
 
-Proxmox does not publish a native Windows build. On Windows, use the bundled PowerShell bridge to an environment-owned Linux runner that already exposes the official client. Do not add WSL or a local container solely for this skill.
+Proxmox does not publish a native Windows build. On Windows, use an environment-owned Linux runner or the bundled bridge if the environment has qualified one. Do not create WSL or a container solely to satisfy this skill unless the operator explicitly chooses that architecture.
 
 ## Environment launcher
 
-Prefer an environment-owned launcher when the owning repository provides one. Keep concrete launcher names and SSH runner hosts in [env-notes.md](env-notes.md); do not treat those names as part of this portable contract.
+Prefer an environment-owned launcher when the owning repository provides one. Keep concrete launcher names and SSH runner hosts in [env-notes.md](env-notes.md); they are not part of the portable skill contract.
 
 ```sh
 <launcher> --output-format json remote list
 <launcher> --output-format json resources
 ```
 
-The launcher contract is:
+A good launcher should:
 
 - retrieve the environment-selected identity without printing its credential;
-- retain the official client's persistent ticket cache separately from other identities;
-- seed only an independently verified TLS fingerprint;
-- invoke `proxmox-datacenter-manager-client` exactly once for the requested command;
-- preserve stdout, stderr, and the client exit code; and
-- impose no hidden read-only policy on an identity whose declared role is execution.
+- retain the official client's ticket cache separately from unrelated identities;
+- preserve TLS verification;
+- invoke `proxmox-datacenter-manager-client` for the requested PDM command; and
+- preserve stdout, stderr, and exit status.
+
+It must not impose an invented read-only policy on an identity whose owning environment authorizes mutation.
 
 ### Optional Windows SSH bridge
 
-Proxmox does not ship a native Windows client. The bundled adapter `scripts/pdm.ps1` forwards already-authenticated runner commands over SSH. It is optional and is not the skill itself.
+The bundled adapter `scripts/pdm.ps1` forwards PDM commands over SSH to an authorized Linux runner. It is optional and is not another management plane.
 
 Required environment:
 
 | Variable | Meaning |
 |---|---|
-| `PDM_CLI_SSH_TARGET` | `user@host` for the authorized runner (DNS or IPv4). Put non-default ports in `~/.ssh/config`. |
-| `PDM_CLI_REMOTE_PROGRAM` | Bare launcher/client name on the runner PATH, or an absolute POSIX path. No relative paths. |
+| `PDM_CLI_SSH_TARGET` | `user@host` for the authorized runner; put non-default ports in SSH config |
+| `PDM_CLI_REMOTE_PROGRAM` | Bare launcher/client name on PATH, or an absolute POSIX path |
 
 ```powershell
 $env:PDM_CLI_SSH_TARGET = 'operator@pdm-client-runner'
-$env:PDM_CLI_REMOTE_PROGRAM = 'proxmox-datacenter-manager-client'  # or the env launcher name
-# Resolve the bridge from the installed skill root (sync, plugin, or checkout) — not a hard-coded ~/.agents path.
+$env:PDM_CLI_REMOTE_PROGRAM = 'proxmox-datacenter-manager-client'
 & "<skill-root>/scripts/pdm.ps1" --output-format json remote list
 ```
 
-Bridge rules:
-
-- rejects option-like SSH targets and relative/`..` remote programs;
-- refuses `--password`, `--password-file`, and `--password-command` (login with secrets happens only on the runner);
-- uses `ssh -o BatchMode=yes` so missing host keys or interactive auth fail closed instead of hanging.
+The bridge rejects password flags and uses noninteractive SSH. Authentication that requires secrets happens on the Linux runner, not in the Windows SSH argv.
 
 ## Raw client login
 
-Global connection options precede the subcommand. Ordinary commands load a cached ticket; they do not use a supplied password to log in automatically.
+Global connection options precede the subcommand. Ordinary commands use a cached session; login is explicit.
 
 ```sh
 export XDG_CONFIG_HOME='<protected-state>/config'
 export XDG_CACHE_HOME='<protected-state>/cache'
 install -d -m 0700 "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME/proxmox-datacenter-client"
-printf '%s %s\n' '<pdm-host>' '<sha256-hex-without-colons>' \
-  > "$XDG_CACHE_HOME/proxmox-datacenter-client/fingerprints"
 
 proxmox-datacenter-manager-client \
   --host '<pdm-host>' \
   --port 8443 \
   --user '<user-id>' \
+  --fingerprint '<independently-verified-sha256-fingerprint>' \
   --password-command '<secret-manager command that writes only the password>' \
   login
 
@@ -98,17 +98,47 @@ proxmox-datacenter-manager-client \
   remote list
 ```
 
-For 1.1.6, `--fingerprint` parses but noninteractive `login` does not insert it into the verifier cache. The cache line is `<host> <64 SHA-256 hex characters>`; derive it only from an independently verified colon-delimited fingerprint. Stop on mismatch. Remove this workaround only after a newer installed client proves `--fingerprint` works.
+A live-qualified 1.1.6 environment observed that noninteractive login parsed `--fingerprint` but did not seed the verifier cache. That environment worked around the behavior by writing the independently verified fingerprint to the client's cache before login. Do not generalize that quirk to newer clients; first test the installed version.
 
-Do not use `--password-file` unless the owning environment creates it with mode `0600`, deletes it on every exit path, and never places it on a shared or committed filesystem. PDM API token IDs are not accepted by the 1.1.6 CLI `--user` schema.
+Do not put a password directly in argv. Use a protected password command or a short-lived mode-0600 password file created and removed by the owning environment.
 
 ## Authority
 
-PDM 1.1.6 has built-in `NoAccess`, `Auditor`, and `Administrator` roles; it cannot create a custom role. `Auditor` is an inspection role. A mutation requires `Administrator` on the applicable path, normally scoped to the relevant `/resource` subtree, plus sufficient permissions in the backing remote credential. The environment owns the identity and ACL choice; the skill must not substitute a different identity or turn an execution role into inspection-only behavior.
+PDM authorization and the backing remote's authorization both matter. The environment owns those identities and ACLs; this skill does not substitute a safer-looking but insufficient identity after an execution task was authorized.
+
+A successful read does not prove mutation authority. An authorization failure during a requested mutation means diagnose the assigned PDM/backing-remote permissions; it does not mean silently redefine the task as read-only.
+
+## Capability check and surface routing
+
+PDM is the default surface, but it is intentionally high-level. Before assuming PDM can or cannot do something:
+
+```sh
+<pdm> help --verbose
+<pdm> help pve --verbose
+<pdm> help pbs --verbose
+<pdm> help pve qemu --verbose
+<pdm> help pve lxc --verbose
+```
+
+Use current official command syntax when the installed help is ambiguous.
+
+Choose the surface this way:
+
+| Evidence | Surface |
+|---|---|
+| PDM exposes the requested fleet/guest/PBS operation | **PDM** |
+| PDM does not expose the required operation in the installed version | **Native PVE/PBS** for that operation |
+| Operation is inherently host-local or granular remote configuration | **Native PVE/PBS** |
+| PDM localizes a problem to one remote and deeper diagnosis is needed | **Native PVE/PBS** for diagnosis |
+| PDM itself is unreachable or needs repair | **Native PVE/PBS** for continued/recovery operation |
+
+Do not call a normal capability handoff “break-glass” merely because it uses `qm`, `pct`, `pvesh`, the PVE API, the PBS API, or a native web interface. Conversely, do not bypass a working PDM operation solely because the native command is familiar.
+
+This reference intentionally does not teach every native PVE/PBS command. Once routing selects a native surface, use the owning environment's native Proxmox runbook/skill and current PVE/PBS documentation.
 
 ## Discovery and evidence
 
-`<pdm>` below means the environment launcher or the raw client plus its global connection options.
+`<pdm>` means the environment launcher or the raw client plus its global connection options.
 
 ```sh
 <pdm> --output-format json remote list
@@ -125,11 +155,11 @@ PDM 1.1.6 has built-in `NoAccess`, `Auditor`, and `Administrator` roles; it cann
 <pdm> --output-format json pbs task list <remote>
 ```
 
-In 1.1.6 the fleet command is `resources`, not `resources list`. Guest configuration defaults to pending state, so specify `--state active` for current configuration evidence. Runtime state comes from the guest list or `pve resources`, not the configuration response.
+The fleet command is `resources`, not `resources list`, in the 1.1.x client family. Guest configuration may default to pending state, so request `--state active` when current configuration is the evidence you need. Runtime state comes from the guest/resource listing rather than the configuration response.
 
 ## Guest lifecycle and snapshots
 
-Read current guest state and active configuration immediately before execution. Confirm remote, node, VMID, and guest name together. Prefer graceful `shutdown`; `stop` is abrupt.
+Read current guest state and active configuration immediately before execution. Confirm remote, node, VMID, kind, and guest name together. Prefer graceful shutdown unless the task specifically needs an abrupt stop.
 
 ```sh
 # QEMU lifecycle
@@ -155,11 +185,11 @@ Read current guest state and active configuration immediately before execution. 
 <pdm> --output-format json pve lxc snapshot rollback <remote> <vmid> <snapname> --node <node> [--start <boolean>]
 ```
 
-Rollback is destructive. For rollback, abrupt stop, or another action that can materially strand a workload, identify the native recovery path before execution.
+Rollback is destructive. Verify the target snapshot and current guest identity before executing it. Do not add unrelated preconditions that the owning environment has not established.
 
 ## Migration
 
-Same-remote migration uses a target node. Live 1.1.6 help incorrectly labels `<target>` as a remote ID even though the command is a same-cluster node migration.
+Same-remote migration uses a target node:
 
 ```sh
 # QEMU, same remote
@@ -175,7 +205,7 @@ Same-remote migration uses a target node. Live 1.1.6 help incorrectly labels `<t
   [--timeout <seconds>] [--map-storage FROM:TO,...] [--bwlimit <KiB/s>]
 ```
 
-Cross-remote migration requires explicit bridge and storage mappings. Begin qualification with a stopped disposable guest, an unused target VMID, and `--delete false`.
+Cross-remote migration requires explicit bridge and storage mappings:
 
 ```sh
 # QEMU, cross remote
@@ -194,30 +224,38 @@ Cross-remote migration requires explicit bridge and storage mappings. Begin qual
   [--delete <boolean>] [--bwlimit <KiB/s>]
 ```
 
-Do not use insecure migration merely for convenience. Capture storage, network, source, target, and deletion semantics before submission.
+Capture source, target, storage, network, and deletion semantics before submission. Use the operation requested by the task; do not automatically turn a migration into a broader topology-hardening exercise.
 
 ## Task completion
 
-PDM client 1.1.6 automatically waited for the live-tested snapshot create and delete operations. Despite `--output-format json`, it emitted a wrapped UPID followed by a non-JSON terminal `TaskStatus`. Require `status: Stopped` and `exitstatus: Some("OK")`, then verify resource state.
+A mutation may return synchronously or through a UPID/task. An accepted request is not evidence of completion.
 
-When only a UPID is returned, use the complete remote-prefixed identifier such as `pve:<remote>!UPID:...`; passing only the inner `UPID:...` produced `bad remote id in remote upid` in 1.1.6.
+A live-qualified 1.1.6 client automatically waited for snapshot create/delete and emitted a wrapped UPID followed by a non-JSON terminal `TaskStatus` even when JSON output was requested. Preserve the original output when evidence matters.
+
+When a UPID is returned, use the complete remote-prefixed identifier if required by the installed client:
 
 ```sh
 <pdm> --output-format json pve task status <remote> '<pve:remote!UPID:...>'
 <pdm> --output-format json pbs task status <remote> '<pbs:remote!UPID:...>'
 ```
 
-Poll at a bounded interval while `status` is `running`. Success requires `status=stopped` and `exitstatus=OK`; missing or non-`OK` exit status is unsuccessful or indeterminate. A timeout, transport loss, malformed response, or missing task is an unknown outcome. Re-query the same task and current resource state before considering a retry. The 1.1.6 CLI exposes task status but not the PDM task-log endpoint.
+Poll at a bounded interval while the task is running. Success requires terminal stopped state plus an OK exit status when the API provides those fields. A timeout, transport loss, missing task, or malformed response is an unknown outcome: re-read the same task and resource state before considering a retry.
+
+After success, verify the intended resource state. Do not infer completion from the request being accepted.
 
 ## Failure routing
 
-| Evidence | Boundary | Next action |
+| Evidence | Meaning | Next action |
 |---|---|---|
-| Binary absent or incompatible major version | Operator host | Correct the official client installation; do not modify PDM |
-| TLS pin mismatch or login certificate failure | Trust boundary | Stop and independently verify the presented certificate |
-| Authentication rejected | PDM identity | Repair the environment-selected credential |
-| Inspection succeeds but mutation is unauthorized | PDM or backing-remote ACL | Correct the declared executor role; do not redefine the task as read-only |
-| Ordinary command is unauthorized after a password option | Client session | Run explicit `login` with the same persistent XDG cache |
-| PDM endpoint unreachable | PDM or management network | Use documented native PVE/PBS access only when the task requires break-glass work |
-| PDM reachable but one remote is unavailable | Remote authority | Diagnose that remote through its native path |
-| Task stops with non-`OK` exit status | Target operation | Preserve the wrapped UPID and error evidence; do not report completion |
+| Client missing/incompatible | Operator-runner problem | Correct the client environment; do not modify PDM/PVE merely to satisfy the tool |
+| TLS mismatch | Trust/identity problem | Stop and independently verify the certificate |
+| PDM authentication rejected | PDM identity problem | Repair the selected identity/credential |
+| Reads work but mutation is unauthorized | ACL/remote credential problem | Correct the authorized execution identity; do not silently downgrade the task |
+| Command/subcommand absent in current PDM help/docs | **PDM capability gap** | Route that operation to documented native PVE/PBS if the task requires it |
+| PDM endpoint unreachable | **PDM unavailable** | Use native PVE/PBS for operations that can proceed; diagnose/restore PDM separately |
+| PDM reachable but one remote unavailable | **Remote-specific failure** | Diagnose that remote natively; PDM itself may be healthy |
+| PDM operation returns remote error | Target operation failure | Preserve task/error evidence; use native diagnosis if it adds needed detail |
+| Task stops non-OK | Target operation failed | Report failure; inspect task/resource state before retrying |
+| Task outcome unknown after transport loss | Indeterminate | Re-query task and resource state; do not blindly resubmit |
+
+The important boundary is **why** the surface changes. PDM-first centralization and native drill-down are complementary, not competing doctrines.

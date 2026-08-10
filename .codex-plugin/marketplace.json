@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Marketplace for consumer-scoped frozen-skills packages and experimental skill-injector. Each consumer installs only its own manifest-listed active skills; _incubator content is not installed.",
-    "version": "2.6.0",
+    "version": "2.7.0",
     "repository": "https://github.com/Coldaine/frozenSkillz",
     "license": "MIT"
   },
@@ -15,14 +15,14 @@
       "name": "frozen-skills",
       "source": "./plugins/frozen-skills",
       "description": "Installs reviewed Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
-      "version": "2.6.0",
+      "version": "2.7.0",
       "category": "reference"
     },
     {
       "name": "codex-thread-organizer",
       "source": "./plugins/codex-thread-organizer",
       "description": "Codex-only task-history organization with body-derived titles, cross-task completion review, and periodic maintenance workflows.",
-      "version": "2.6.0",
+      "version": "2.7.0",
       "category": "productivity"
     },
     {

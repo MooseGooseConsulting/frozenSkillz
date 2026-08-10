@@ -10,6 +10,7 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 
 | Skill | Status | Next action |
 |---|---|---|
+| `agent-github-identity` | active | None — mechanism proved end-to-end 2026-08-10 through two agent products (bot-attributed commit, pull request, and issue comment each verified via the API). Carries mechanism only; agent roster, App IDs, and helper paths stay in the consuming environment's operational repository. Per-product wiring documents only the two surfaces actually verified and gives a procedure for the rest rather than guessing config keys. |
 | `delegation-contract` | active | None — adapted doctrine validated for contract compliance and single-writer coordination; outcome-quality evidence remains intentionally limited to the recorded n=1 eval. |
 | `doppler` | active | Verify content is still current (owner 2026-07-31); otherwise reference standard. |
 | `external-skill-intake` | active | None. |

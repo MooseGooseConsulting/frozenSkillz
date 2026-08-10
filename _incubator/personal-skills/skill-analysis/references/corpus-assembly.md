@@ -162,7 +162,8 @@ For dozens or hundreds of candidates:
 
 - batch queue administration, not human reasoning;
 - keep one-trajectory isolation for each case reader;
-- use multiple independent readers only for throughput;
+- keep one primary reader for routine cases; use an independent second reader only for a
+  consequential proposed skill change, substantial ambiguity, or a key counterexample;
 - checkpoint completed memos and coverage after each batch;
 - let a separate agent synthesize the assembled memos;
 - resynthesize after material gap filling; and

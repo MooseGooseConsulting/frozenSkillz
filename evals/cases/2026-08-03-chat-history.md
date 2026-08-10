@@ -9,6 +9,10 @@ Method: `docs/workflows/skill-evaluation.md`. Scenarios were derived from real h
 not committed). Six authentic invocation patterns were found; the two below were selected because
 both have verified ground truth from the original episodes.
 
+Scope: this case is the controlled-replay half of the evaluation. It does not, by itself, establish
+activation precision, missed opportunities, real-world outcome rate, or owner acceptance. Those
+come from the full-history census and stratified transcript review required by the workflow.
+
 ## Scenario A — provenance reconstruction
 
 - Verbatim trigger (source session `codex:019f1bbb-a218-7030-81ad-8486fbe74dc2`, 2026-07-01):
@@ -77,3 +81,14 @@ Scored per trial; **at least 3 trials per scenario** per scoring event
   offered FTS-only (no semantic/hybrid); KCap is MCP-only and the worker had no MCP tools, so the
   skill's preferred KCap-first route was not exercised; localization still produced a strong
   candidate population on degraded indexes.
+
+## Required comparison conditions
+
+Run each scenario at least three times under each available condition:
+
+1. current `chat-history` skill;
+2. prior skill version, if its exact text/runtime can be reconstructed; and
+3. no-skill baseline using the same tools and model.
+
+If a condition cannot be reproduced, mark it unavailable rather than silently treating the current
+skill as its own control.

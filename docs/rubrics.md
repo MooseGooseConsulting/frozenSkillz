@@ -24,6 +24,14 @@ Corollaries we hold:
   session" for files the session itself created.)
 - **Grade the outcome, not the transcript.** The agent claiming success is not evidence; the final
   state checked against ground truth is.
+- **Owner silence is unknown, not acceptance.** Explicit corrections and explicit acceptance are
+  strong labels. A conversation ending without either is `no verdict`, even when the agent claimed
+  completion.
+- **Separate trigger quality from instruction quality.** A useful skill that fires on the wrong
+  tasks needs a narrower trigger; a correctly triggered skill that adds no useful behavior needs a
+  body revision or removal. One combined grade hides the repair.
+- **Historical correlation is not causal evidence.** Pair the full-history field review with
+  controlled current/prior/no-skill replay before claiming the skill caused the outcome.
 - **Multiple trials, always.** Agents are non-deterministic. At least 3 trials per scenario per
   scoring event, recorded individually. A single passing run is an anecdote, not a measurement.
 - **Don't grade against one imagined path.** A deviation that solves the task better is a finding

@@ -124,6 +124,15 @@ Scouts:
 
 ## Fleet effectiveness review
 
+**Process status (2026-08-10): exploratory, not a proven recurring evaluator.** The July work ran
+a full-corpus activation census, corrected Codex's hidden `SKILL.md` read channel, and manually
+regraded selected transcripts. The behavior-first reviewer was calibrated through evolving v1-v3
+prompts, but the final v4 wording did not receive its own calibration run. The Letta schedule was
+registered but never demonstrated a production nightly batch before it was decommissioned on
+2026-08-03. Consequently, the results below are useful historical findings—not a fleet-wide
+appropriate-use rate, a causal effectiveness estimate, or evidence that monitoring is currently
+running. The replacement method is `docs/workflows/skill-evaluation.md`.
+
 How grading works: a skill's grade comes from subagents reading transcripts around recent
 fires — (1) did the guidance visibly shape the agent's actions, (2) was the owner's next
 message acceptance or a correction, and (3) did the session end with an owner-visible

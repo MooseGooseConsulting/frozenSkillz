@@ -15,7 +15,7 @@ Keep the entrypoint thin; load only the reference needed for the current stage.
 
 ## Core Flow
 
-1. Resolve the current skill version and repository surfaces.
+1. Resolve the recoverable activation-time skill identity and the current repository surfaces.
 2. Build a complete candidate manifest before interpreting individual chats.
 3. Declare the bounded analysis corpus and its coverage.
 4. Send one trajectory at a time to a case reader; require one case memo per selected trajectory.

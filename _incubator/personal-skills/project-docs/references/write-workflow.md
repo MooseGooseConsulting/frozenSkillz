@@ -1,6 +1,13 @@
 # Writing a New Authority Doc
 
-Generation workflow for a primary document that does not yet exist. Applies to NORTH_STAR.md, architecture.md, and AGENTS.md. Doc-specific guides own section definitions.
+Generation workflow for a primary document that does not yet exist. Before choosing a template,
+inventory the repository and owner's declared authority documents, paths, responsibilities, and
+order. If a declared stack exists, author, review, migrate, or reconcile within that stack; an
+explicitly declared nonstandard authority document is in scope. Do not make ordinary documentation
+authoritative merely because it is markdown or adjacent to an authority doc.
+
+`NORTH_STAR.md` → `architecture.md` → `AGENTS.md` is the default primary stack only when no
+declared stack exists. The default's doc-specific guides own section definitions.
 
 For current-work homes (Issues / `docs/plans/`), see `current-work-and-lifecycle.md` — those are not authority primaries.
 
@@ -12,7 +19,7 @@ Two on-ramps: interview (greenfield) vs review + reconcile (docs already in moti
 
 Do not open a template. Ask open-ended questions.
 
-| Doc | Questions |
+| Default doc when no declared stack exists | Questions |
 |---|---|
 | NORTH_STAR.md | "What is this thing?" / "Why are you building it?" / "What will people assume this is that it isn't?" / "Where is this going?" / "Hard tradeoffs so far?" |
 | architecture.md | "What technical approach and why?" / "What is Current vs Planned vs still open?" / "Major components?" / "Choices that would invalidate the project if reversed?" |
@@ -28,7 +35,7 @@ Exit when you can describe the doc without them correcting you.
 
 ## Step 2: Draft from the Owner's Words
 
-| Doc | Minimum viable |
+| Default doc when no declared stack exists | Minimum viable |
 |---|---|
 | NORTH_STAR.md | Opener + Goals + at least one Anti-Goal |
 | architecture.md | Architecture Thesis + Status Legend + System Shape table |
@@ -78,12 +85,15 @@ last_confirmed: [today]
 ---
 ```
 
-| Doc | Path |
+| Default doc when no declared stack exists | Path |
 |---|---|
 | NORTH_STAR.md | `docs/NORTH_STAR.md` or root `NORTH_STAR.md` |
 | architecture.md | `docs/architecture.md` or root `architecture.md` |
 | AGENTS.md | Root `AGENTS.md` (always) |
 | CLAUDE.md | Root stub: one-line pointer to AGENTS |
+
+When a declared stack exists, its declared paths and roles control; do not create or rename the
+default files merely to conform to this table.
 
 Do not create PROGRESS.md.
 
@@ -93,10 +103,11 @@ Do not create PROGRESS.md.
 
 ## Revising an Existing Doc
 
-1. Run `review-checklist.md`.
-2. Fix only what needs changing.
-3. Update `last_confirmed` if used.
-4. Run `authority-flow.md`.
-5. For finished temporary docs: promote then delete (`current-work-and-lifecycle.md`).
+1. Inventory the declared authority stack and the requested document's role.
+2. Run `review-checklist.md`.
+3. Fix only what needs changing.
+4. Update `last_confirmed` if used.
+5. Run `authority-flow.md`.
+6. For finished temporary docs: promote then delete (`current-work-and-lifecycle.md`).
 
 </revision>

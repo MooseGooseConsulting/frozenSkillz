@@ -23,6 +23,10 @@
       "should_trigger": true
     },
     {
+      "query": "Review and reconcile docs/product-contract.md, which this repository explicitly declares as an authority document, against the owner's updated decisions",
+      "should_trigger": true
+    },
+    {
       "query": "Look through our whole conversation and tell me which Proxmox configuration changes remain unfinished",
       "should_trigger": false
     },
@@ -32,6 +36,10 @@
     },
     {
       "query": "Update README.md with installation instructions",
+      "should_trigger": false
+    },
+    {
+      "query": "Update docs/getting-started.md with installation instructions; it is ordinary documentation, not a declared authority document",
       "should_trigger": false
     },
     {

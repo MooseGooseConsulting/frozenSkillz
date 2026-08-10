@@ -3,8 +3,9 @@ name: project-docs
 description: >
   Create, review, or repair project authority docs only when explicitly asked to
   author, rewrite, critique, migrate, reconcile, or audit NORTH_STAR.md,
-  architecture.md, AGENTS.md, CLAUDE.md routing, or legacy PROGRESS.md. Do not
-  use for ordinary repo work, README edits, status checks, or incidental doc mentions.
+  architecture.md, AGENTS.md, CLAUDE.md routing, legacy PROGRESS.md, or another
+  explicitly declared authority document. Do not use for ordinary repo work,
+  README edits, status checks, or incidental doc mentions.
 ---
 
 # Project Docs Authoring
@@ -13,7 +14,10 @@ description: >
 
 Use this skill only when the requested deliverable is an authority-document draft,
 edit, review/critique, migration, reconciliation, or documentation-authority audit.
-An explicit request to use `project-docs` also qualifies.
+The authority document may be a nonstandard file only when the repository or owner
+explicitly declares it as part of the authority stack. A nonstandard filename or a
+nearby documentation change alone does not qualify. An explicit request to use
+`project-docs` also qualifies.
 
 Do not load it for general repository review, conversation completeness checks,
 implementation work, operational configuration, a README-only change, or merely
@@ -21,18 +25,24 @@ because the repository contains AGENTS.md or other documentation. If documentati
 changes are incidental to another task, follow the owning task or skill.
 
 <context>
-Authority hierarchy (no status diary in the ladder):
+Default authority hierarchy when the repository has no declared stack (no status diary in the
+ladder):
 
 NORTH_STAR (intent) → architecture (technical strategy and shape) →
 AGENTS (thin router). Current work lives in GitHub Issues and/or
 `docs/plans/`. Finished work is promoted into living homes, then the
 temporary file is deleted. Git / tags / PRs are the archive.
 
+When the repository or owner declares a different authority stack, inventory and
+follow that stack instead. A declared nonstandard authority document can be the
+requested authoring, review/critique, migration, reconciliation, or audit
+deliverable; ordinary documentation remains outside this skill.
+
 AGENTS.md is a pure router, not a container. It states authority order,
 routes each task category to the doc that owns it, lists real commands,
-and stops. Project identity lives in NORTH_STAR; do not restate it in
-AGENTS. CLAUDE.md is a one-line pointer to AGENTS.md — no second doctrine
-file.
+and stops. Project identity lives in the declared intent document (default:
+NORTH_STAR); do not restate it in AGENTS. CLAUDE.md is a one-line pointer to
+AGENTS.md — no second doctrine file.
 
 Authority flows one direction. When a downstream doc disagrees with an
 upstream doc, the downstream doc is wrong until the owner revises upstream
@@ -76,7 +86,7 @@ Infrastructure / GitOps parallel set: `examples/infra/`.
 
 <scope>
 
-Primary documents:
+Default authority documents when no stack is declared:
 - `NORTH_STAR.md` — intent, goals, anti-goals, pillars
 - `architecture.md` — technical strategy, system shape, invariants
 - `AGENTS.md` — agent entrypoint and operating contract (router only)
@@ -132,9 +142,10 @@ correction is evidence about the request; it is not acceptance of the repair.
 
 <minimum_viable_stack>
 
-Do not create every primary document merely to satisfy the pattern.
+Do not create every default primary document merely to satisfy the pattern. Use this
+default only when the repository has no declared authority stack.
 
-- `AGENTS.md` is always recommended.
+- `AGENTS.md` is recommended for a repository that has no declared stack.
 - `NORTH_STAR.md` when intent is non-obvious or drift-prone.
 - `architecture.md` when technical shape is complex enough to go stale.
 - Current work: Issues and/or `docs/plans/` — not a fourth primary doc.

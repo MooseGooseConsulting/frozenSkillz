@@ -1,4 +1,4 @@
 interface:
   display_name: "Doppler"
-  short_description: "Safely manage secrets and Doppler injection"
-  default_prompt: "Use $doppler when directly handling secrets, credential configuration, or Doppler injection."
+  short_description: "Manage secrets with the Doppler CLI when the current task requires a credential action"
+  default_prompt: "Use $doppler when the current task requires retrieving, injecting, setting, rotating, verifying, or names-only-checking a credential with the Doppler CLI. Do not use it merely because secrets appear in context or a trusted opaque client has an authentication failure."

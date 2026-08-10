@@ -1,18 +1,26 @@
 ---
 name: doppler
 description: >-
-  Use before directly reading, writing, configuring, rotating, or troubleshooting
-  secrets, tokens, API keys, .env files, CI credentials, or Doppler injection. Do
-  not use merely because a trusted tool or launcher authenticates opaquely.
+  Manage secrets with the Doppler CLI: doppler run injection, names-only
+  diagnostics, set/upload secrets, service tokens for CI, and no-print hygiene.
+  Use when the current task requires retrieving, injecting, setting, rotating,
+  verifying, or names-only-checking a credential with the Doppler CLI, whether
+  the user asked for that or the task itself led there. Do not load merely
+  because .env, tokens, API keys, credentials, or "secrets" appear in your own
+  planning context or in files you are reading — config-file reads, Kubernetes
+  Secret reads, and database connection strings are not Doppler work unless
+  the task is to manage that credential in Doppler; do not load for
+  speculative "secrets hygiene" passes; do not preload because a later step
+  might need a credential. A trusted opaque launcher or client that merely
+  authenticates internally does not qualify, including an authentication failure,
+  unless diagnosis reaches the credential source, secret configuration, or injection.
 ---
 
 # Doppler
 
-## Trigger Boundary
+**Before using this skill:** confirm a Doppler credential action (retrieve, inject, set, rotate, verify, or names-only check) is part of the task you are working on right now. If not, do not proceed.
 
-Load this skill before directly handling secret material or its storage and injection path: API keys, tokens, passwords, private keys, `.env` files, service tokens, OAuth credentials, webhook secrets, cloud credentials, signed URLs, cookies, auth headers, or environment variables that may carry credentials.
-
-Do not load it merely because another trusted command, wrapper, or service authenticates internally. Running an environment-owned PDM launcher, `gh`, `kubectl`, or another already-configured client is ordinary use, including when that client reports an authentication failure. Load Doppler only if diagnosis actually reaches into credential material, secret configuration, or injection. Keep the owning operational skill in control of the workflow.
+An environment-owned PDM launcher, `gh`, `kubectl`, or another trusted client that authenticates opaquely is ordinary use—even when it reports an authentication failure. Load Doppler only when diagnosing or changing its credential source, secret configuration, or injection path; keep the owning operational skill in control.
 
 If unsure whether a value is a secret, treat it as a secret. Keep secret values out of chat, logs, diffs, committed files, and durable docs.
 

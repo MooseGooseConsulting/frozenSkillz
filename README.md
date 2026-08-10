@@ -23,8 +23,8 @@ Do not run fleet activation/effectiveness analysis from this repository. The
 owns read-only AgentsView extraction, candidate manifests, declared analysis corpora,
 one-trajectory case memos, cross-case lessons, and analysis tooling.
 
-`frozenSkillz` owns the other side of the boundary: skill text and versions, trigger corpora,
-controlled cases, regression status, packaging, and lifecycle state. The live personal
+`frozenSkillz` owns the other side of the boundary: skill text and versions, trigger examples,
+packaging, and lifecycle state. The live personal
 `skill-analysis` skill routes between the two; its reviewed gated mirror is
 `_incubator/personal-skills/skill-analysis/`.
 

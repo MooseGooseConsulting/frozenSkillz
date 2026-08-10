@@ -42,7 +42,7 @@
     },
     {
       "query": "Run current versus prior versus no-skill trials for chat-history using real prompts",
-      "should_trigger": true
+      "should_trigger": false
     },
     {
       "query": "Assemble case memos for every project-docs activation and have a separate agent synthesize the corpus",

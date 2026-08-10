@@ -1,6 +1,6 @@
 # Plan: Build the `skill-analysis` Skill
 
-Status: construction complete; first `project-docs` pilot executed.
+Status: construction complete; historical `project-docs` and PDM boundary study executed.
 
 ## Up Front
 
@@ -102,7 +102,7 @@ outputs without becoming mandatory templates.
 6. Align `agents/openai.yaml` and trigger cases with the product contract.
 7. Validate the live personal skill.
 8. Mirror the complete live tree into the incubator path and verify exact equality.
-9. Run the `project-docs` pilot in `agent-control-plane` using one case reader per trajectory and a
+9. Run the historical study in `agent-control-plane` using one case reader per trajectory and a
    separate corpus reader.
 10. Revise the skill from the pilot's observed problems before considering promotion.
 
@@ -112,11 +112,13 @@ identified details that must be explicit before the real pilot: subject-specific
 inventory, multi-deployment sessions, declared indexed scope, adjacent-case matching, and targeted
 double reading. Those refinements belong in `references/corpus-assembly.md`, not `SKILL.md`.
 
-The first real pilot then completed a 291-session candidate census, declared a 13-case corpus,
-produced one independent memo per bounded trajectory, and used a separate corpus reader for
-synthesis. It exposed two additional method needs now captured in the references: preserve the
-activation-time skill identity rather than substituting today's file, and record evidence source,
-bounded-window outcome state, interacting instructions, and retrieval limitations consistently.
+The first historical study then completed a 545-episode `project-docs` census across 291 sessions,
+declared a 24-case corpus, and read every one of 18 PDM-centered episodes. Each available selected
+episode produced one bounded memo; one project-docs source was unrecoverable and remains an explicit
+gap. A separate corpus reader received only the memos and coverage summary. The study reinforced
+two method needs now captured in the references: preserve activation-time skill identity rather
+than substituting today's file, and record evidence source, bounded-window outcome state,
+interacting instructions, and retrieval limitations consistently.
 
 ## Why This Prompt
 
@@ -153,5 +155,5 @@ question. The corpus reader, not the case reader, performs cross-case comparison
 - Do not describe a selected corpus as the complete population.
 - Do not promote the skill from structural validation alone.
 - Complete this construction phase when the thin router, references, examples, metadata, and trigger
-  cases validate and the live/incubator trees match. The real `project-docs` pilot is the next
-  phase, not evidence that construction was unnecessary.
+  cases validate and the live/incubator trees match. Later studies should use later ordinary
+  deployments; they do not require synthetic replay or a generic grading platform.

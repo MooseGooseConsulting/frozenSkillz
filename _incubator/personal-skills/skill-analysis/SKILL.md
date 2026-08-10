@@ -22,7 +22,8 @@ Keep the entrypoint thin; load only the reference needed for the current stage.
 5. Send the assembled memos—not the raw chats—to a separate corpus reader.
 6. Fill material gaps through additional one-case reads, then synthesize lessons and possible skill
    improvements.
-7. Use controlled comparison only when the question is causal.
+7. Return only the smallest findings-supported wording, example, or handoff changes to the skill
+   repository; later ordinary deployments supply the next evidence.
 
 ## Reference Router
 

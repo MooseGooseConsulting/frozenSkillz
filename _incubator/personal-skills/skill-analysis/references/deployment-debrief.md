@@ -119,12 +119,6 @@ from contaminating extraction.
 
 The later corpus agent performs comparison using completed memos. It does not redo raw extraction.
 
-## Adaptation for forward tests
-
-When reviewing a fresh agent run, the same debrief questions apply, but the packet may also include
-a deterministic final-state check. Do not tell the performing agent the expected diagnosis or
-desired skill change. The case reader remains separate from the task-performing agent when possible.
-
 ## Rejected prompt shapes
 
 Do not default to:

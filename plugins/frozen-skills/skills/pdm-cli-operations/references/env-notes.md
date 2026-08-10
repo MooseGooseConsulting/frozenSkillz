@@ -11,9 +11,9 @@ Load this file **only** when binding `pdm-cli-operations` to a specific operator
 | Direct PDM adapter | Env-owned workstation/agent wrapper | Use its documented read/mutation surface and independently pinned TLS; it need not invoke the official CLI |
 | Launcher executable name | Env-owned wrapper on a Linux runner | Set `PDM_CLI_REMOTE_PROGRAM` explicitly only when this route is selected |
 | Windows → Linux hop | Operator SSH config + `PDM_CLI_SSH_TARGET` | Optional legacy/CLI bridge only; do not add it when a documented direct adapter exists |
-| Skill files on disk | Sync destination, marketplace plugin path, or repo checkout | Invoke `scripts/pdm.ps1` relative to that skill root |
+| Optional Windows CLI bridge files | Sync destination, marketplace plugin path, or repo checkout | Invoke `scripts/pdm.ps1` relative to that skill root only when the official-client bridge route is selected |
 
-## Example shape (replace with the environment's real names)
+## Official-client bridge shape (replace with the environment's real names)
 
 ```powershell
 $env:PDM_CLI_SSH_TARGET = 'operator@pdm-client-runner'

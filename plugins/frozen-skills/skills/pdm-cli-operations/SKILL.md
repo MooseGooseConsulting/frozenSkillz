@@ -77,8 +77,8 @@ Native drill-down should be boring and explicit. It is a supported layer boundar
 
 | User wants to… | Do |
 |---|---|
-| List remotes / prove PDM auth | `<pdm> --output-format json remote list` |
-| Inventory fleet resources | `<pdm> --output-format json resources`, then narrow by remote/node |
+| List remotes / prove PDM auth | Official client launcher: `<pdm> --output-format json remote list`; constrained direct adapter: its documented named read |
+| Inventory fleet resources | Official client launcher: `<pdm> --output-format json resources`; constrained direct adapter: its documented inventory operation |
 | Inspect a guest | PDM list/config with remote + node + VMID; use active state where required |
 | Start/stop/shutdown/snapshot/migrate through PDM | pre-state → one action → terminal task/result → post-state |
 | Follow a PDM task | use the remote-prefixed UPID and PDM task status |
@@ -86,7 +86,9 @@ Native drill-down should be boring and explicit. It is a supported layer boundar
 | Diagnose a remote that PDM says is unavailable | inspect that remote natively; keep PDM failure and remote failure distinct |
 | Recover when PDM is down | use native PVE/PBS; repair PDM separately rather than blocking unrelated fleet recovery |
 
-`<pdm>` means the environment-owned PDM entrypoint or the raw official client plus its connection options.
+`<pdm>` means an official-client-compatible launcher or the raw official client
+plus its connection options. It does **not** mean a constrained direct adapter:
+use that adapter's documented named operations instead of inventing CLI syntax.
 
 ## References
 

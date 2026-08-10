@@ -33,16 +33,20 @@ dpkg-query -W -f='${Package} ${Version}\n' proxmox-datacenter-manager-client
 
 Install it only on a compatible Debian amd64 operator host from an official Proxmox PDM repository selected by the owning environment. Do not silently enable a test repository. Install the client package, not a PDM server, when all that is needed is the process interface.
 
-Proxmox does not publish a native Windows build. On Windows, use an environment-owned Linux runner or the bundled bridge if the environment has qualified one. Do not create WSL or a container solely to satisfy this skill unless the operator explicitly chooses that architecture.
+Proxmox does not publish a native Windows build. If the environment selected the official client route on Windows, use an environment-owned Linux runner or the bundled bridge if it has qualified one. A documented pinned direct adapter is an independent supported Windows route; do not detour through Linux/SSH. Do not create WSL or a container solely to satisfy this skill unless the operator explicitly chooses that architecture.
 
 ## Environment launcher
 
 Prefer an environment-owned PDM entrypoint when the owning repository provides one. Keep concrete adapter, launcher, and SSH-runner names in [env-notes.md](env-notes.md); they are not part of the portable skill contract.
 
+For an official-client-compatible launcher:
+
 ```sh
 <launcher> --output-format json remote list
 <launcher> --output-format json resources
 ```
+
+For a constrained direct adapter, invoke its documented named operations; it is not required to implement the official CLI's arguments or command grammar.
 
 A good official-client launcher should:
 

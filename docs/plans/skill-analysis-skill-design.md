@@ -112,7 +112,7 @@ identified details that must be explicit before the real pilot: subject-specific
 inventory, multi-deployment sessions, declared indexed scope, adjacent-case matching, and targeted
 double reading. Those refinements belong in `references/corpus-assembly.md`, not `SKILL.md`.
 
-The first real pilot then completed a 288-session candidate census, declared a 13-case corpus,
+The first real pilot then completed a 289-session candidate census, declared a 13-case corpus,
 produced one independent memo per bounded trajectory, and used a separate corpus reader for
 synthesis. It exposed two additional method needs now captured in the references: preserve the
 activation-time skill identity rather than substituting today's file, and record evidence source,

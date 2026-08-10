@@ -43,7 +43,8 @@ an evaluator has ground truth, or build recurring automation.
 
 ## Completed Pilot
 
-- Candidate population: 288 sessions, 287 with an observed activation signal, across six indexed
+- Candidate population: 289 sessions, 287 with an observed activation signal and 2 explicit
+  no-load requests, across six indexed
   harnesses from 2026-02-28 through 2026-08-10.
 - Declared corpus: 10 activation cases plus 3 adjacent no-load cases, selected purposively for
   authority work, operational work, README/docs work, and owner corrections.

@@ -1,0 +1,79 @@
+# chat-history skill stress test — evals/cases/2026-08-03-chat-history.md
+# Trials run in temp dirs outside the repo; raw trajectories are not committed.
+description: chat-history skill stress test (evals/cases/2026-08-03-chat-history.md)
+
+prompts:
+  - "{{question}}"
+
+providers:
+  - id: openai:codex-sdk
+    label: codex
+    config:
+      working_dir: C:/Users/pmacl/AppData/Local/Temp/chat-history-eval-2026-08-03/trials/codex
+      skip_git_repo_check: true
+      approval_policy: never
+      enable_streaming: true
+  - id: anthropic:claude-agent-sdk
+    label: claude-code
+    config:
+      working_dir: C:/Users/pmacl/AppData/Local/Temp/chat-history-eval-2026-08-03/trials/claude
+
+# Judge rides the same ChatGPT-subscription Codex login (no API keys anywhere).
+defaultTest:
+  options:
+    provider:
+      id: openai:codex-sdk
+
+tests:
+  - description: "Scenario A — Scope Atlas provenance reconstruction"
+    vars:
+      question: >-
+        Can you help me track down which of my products or projects eventually started out as
+        something called Scope Atlas or something like that? I don't remember what it ended up
+        transforming into. You can search pieces MCP as well.
+    assert:
+      - type: skill-used
+        value: chat-history
+        metric: skill-fired
+      - type: contains
+        value: Semantic-Planner
+        metric: G1-names-ground-truth
+      - type: llm-rubric
+        metric: G1-ground-truth
+        value: |
+          Ground truth: "Scope Atlas" became the Semantic Context Planner (repository
+          Coldaine/Semantic-Planner). The answer must reach that conclusion. It must NOT conclude
+          that Scope Atlas became state-cartographer, Plan Graph Scheduler, or GitAtlas — those
+          are different projects (naming them as ruled-out candidates is correct behavior).
+      - type: llm-rubric
+        metric: G2-provenance
+        value: |
+          The final answer names the specific past session(s) or conversation(s) its claims came
+          from (session IDs or equivalent locators). An answer that asserts a conclusion without
+          naming any source session fails.
+
+  - description: "Scenario B — lost-context directed retrieval"
+    vars:
+      question: >-
+        You have no memory of creating these files: graphiti_f4, INGESTION_GOVERNANCE,
+        INGESTION_RATIONALE. You have no idea why they're named what they are. Dispatch a
+        subagent to take a look and find if you can this conversation in the previous Claude Code
+        history. Figure out what the hell was going on. Do not use llm-archiver — it is not a
+        reliable source; read the Claude Code conversations from the JSONL itself.
+    assert:
+      - type: skill-used
+        value: chat-history
+        metric: skill-fired
+      - type: llm-rubric
+        metric: G1-ground-truth
+        value: |
+          Ground truth: the files graphiti_f4, INGESTION_GOVERNANCE, and INGESTION_RATIONALE were
+          created in Claude Code session 98e65f4c-c84d-4629-94ac-e1808aa97d68
+          (LocalLargeLanguageModels, 2026-06-02 to 2026-06-08). The answer must identify that
+          session as the origin of the files. Concluding they came from some other or unknown
+          session fails.
+      - type: llm-rubric
+        metric: G2-provenance
+        value: |
+          The final answer names the specific session file(s) or ID(s) it read as evidence.
+          Assertions without named source sessions fail.

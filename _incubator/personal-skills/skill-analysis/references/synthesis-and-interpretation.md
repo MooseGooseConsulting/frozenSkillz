@@ -32,9 +32,12 @@ Explain:
 5. Missing guidance, trigger ambiguity, examples, or skill-to-skill handoffs that recur.
 6. What the owner explicitly accepted or corrected, without treating silence as a verdict.
 7. Which findings are direct observations, cross-case interpretations, or unresolved hypotheses.
-8. The smallest skill improvements supported by the corpus.
-9. What should not be changed yet.
-10. Which additional bounded cases would most reduce consequential uncertainty.
+8. The activation-time skill version or unknown identity supporting each theme, and whether it is
+   the same as, superseded by, or not comparable to the current skill.
+9. The smallest skill improvements supported by the corpus, scoped to those activation-time
+   versions.
+10. What should not be changed yet.
+11. Which additional bounded cases would most reduce consequential uncertainty.
 
 Use descriptive counts only when you state the reviewed denominator and selection method. Do not
 produce a composite score or force a single keep/narrow/broaden verdict. Preserve minority patterns
@@ -54,11 +57,16 @@ A theme should state:
 
 - the observed or interpreted pattern;
 - supporting case identifiers;
+- each supporting case's activation-time skill identity, or `unknown`;
 - counterexamples;
 - affected skill surface;
 - confidence and uncertainty;
 - the smallest plausible change; and
 - a discriminating next case or comparison.
+
+Do not collapse evidence from distinct historical versions into one statement about the current
+skill. A theme can describe a superseded version as historical context, but it must name that scope.
+Treat an unknown identity as unknown rather than assuming it matches the current file.
 
 Useful repair surfaces include:
 
@@ -103,12 +111,16 @@ Propose a change only when the case corpus explains:
 - what recurrent or important problem exists;
 - where in the skill the repair belongs;
 - which cases demonstrate it;
+- which activation-time version(s) those cases exposed and their relationship to the proposed
+  current surface;
 - what counterexamples constrain the repair; and
 - how a real regression or later deployment would test it.
 
 A single explicit owner correction may justify a narrow repair. A broad rewrite needs varied
 supporting cases. When evidence conflicts, the correct output can be a better question and a targeted
-next corpus rather than a change.
+next corpus rather than a change. Historical failure in a superseded version is not, by itself, a
+current-skill defect; either tie the change to identical current guidance or describe it as a
+separate current inspection or future observation.
 
 ## Final product
 

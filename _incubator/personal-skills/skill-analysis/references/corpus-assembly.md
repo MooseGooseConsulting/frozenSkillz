@@ -47,8 +47,10 @@ The manifest carries administrative provenance, not evaluative conclusions:
 - detected activation channel and relevant turn neighborhood: named invocation, full or partial
   read, assistant announcement, references loaded, and the first behavior plausibly using guidance
   when each is recoverable;
-- activation-time skill bytes or content hash, repository commit/package version, and path, or
-  `unknown`—never substitute the current file identity for a historical load;
+- activation-time subject-skill identity: full text or bytes when recoverable, content hash,
+  repository commit/package version, and path; for a partial read or injection, the exact exposed
+  excerpt and its byte/range locator; or `unknown` when the exposed material cannot be recovered.
+  Never substitute the current file or an unexposed full copy for historical guidance;
 - likely task-use, editing/inspection, meta-evaluation, or unresolved context;
 - candidate source or search neighborhood;
 - continuation or parent/child pointers;
@@ -108,7 +110,14 @@ key counterexample. Do not double-read an arbitrary quota merely to calculate ag
 
 Include only:
 
-- the exact skill version when recoverable;
+- the activation-time subject-skill material actually exposed to the agent: the full text when a
+  full load is recoverable, or the exact excerpt plus byte/range locator for a partial activation.
+  If that material cannot be recovered, label it `unknown`; do not give the reader a current or
+  full skill copy as a stand-in;
+- relevant co-active guidance that could plausibly explain the same behavior: the other skill,
+  repository instruction, or explicit owner direction's identity and timing, plus the relevant
+  text or a stable excerpt locator. State `unknown` or `not recovered` rather than supplying
+  unrelated instructions or guessing their content;
 - the user request;
 - the skill activation neighborhood;
 - actions and tool results relevant to the skill;

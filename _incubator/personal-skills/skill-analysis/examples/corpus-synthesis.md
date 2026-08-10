@@ -8,6 +8,12 @@ State the complete candidate count, the individually extracted corpus, exclusion
 coverage, skill versions, and blind spots. Make clear whether every deployment or only a selected
 corpus was reviewed.
 
+## Activation-time version scope
+
+For every theme and recommendation, name the activation-time skill version(s) represented by its
+supporting cases and whether each is identical to, superseded by, or not comparable to the current
+skill. Do not present a historical version's failure as a current-skill defect without that bridge.
+
 ## What agents understood
 
 Summarize how case readers explained the skill's purpose. Preserve meaningful disagreement rather
@@ -44,8 +50,9 @@ bounded case would discriminate between explanations.
 
 ## Improvement hypotheses
 
-For each proposal, identify the affected skill surface, supporting cases, constraining
-counterexamples, smallest change, and later observation or regression that would test it.
+For each proposal, identify the affected skill surface, supporting cases and their activation-time
+versions, constraining counterexamples, smallest change, and later observation or regression that
+would test it.
 
 ## What not to change yet
 

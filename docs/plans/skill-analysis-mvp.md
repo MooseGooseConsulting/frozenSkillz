@@ -54,6 +54,28 @@ grade. It does not claim causal improvement.
   injection work, not a routine prerequisite to fleet operations; preserve native PVE/PBS for
   named gaps or recovery.
 
-The detailed, non-transcript findings and reproducible census are committed in
-`agent-control-plane`. This document is the frozenSkillz-side plan and boundary, not a second
-corpus database.
+## Immutable 2026-08 study record
+
+The totals and findings above refer to the committed `agent-control-plane` study record at
+[`30b1d12d19d4ba208de1a9d453e594ece5e7509a`](https://github.com/MooseGooseConsulting/agent-control-plane/tree/30b1d12d19d4ba208de1a9d453e594ece5e7509a),
+not to a mutable local database or later regeneration. Its exact committed artifacts are:
+
+- `projects/project-docs-skill-analysis-account-2026-08.md`,
+  `projects/project-docs-skill-analysis-learnings.md`, and
+  `projects/project-docs-skill-analysis-meta.md` for the compact study account, findings, and
+  method metadata;
+- `projects/project-docs-skill-analysis-manifest.csv`,
+  `projects/project-docs-skill-analysis-coverage.json`,
+  `projects/project-docs-skill-analysis-corpus.csv`,
+  `projects/project-docs-skill-analysis-corpus-coverage.json`, and
+  `projects/project-docs-skill-analysis-review-status.json` for the project-docs census and
+  declared-corpus accounting; and
+- `projects/pdm-cli-operations-skill-analysis-account-2026-08.md`,
+  `projects/pdm-cli-operations-skill-analysis-manifest.csv`,
+  `projects/pdm-cli-operations-skill-analysis-coverage.json`,
+  `projects/pdm-cli-operations-skill-analysis-corpus.csv`,
+  `projects/pdm-cli-operations-skill-analysis-corpus-coverage.json`, and
+  `projects/pdm-cli-operations-skill-analysis-review-status.json` for the PDM-centered study.
+
+Raw transcripts and temporary case memos deliberately remain outside git. This document is the
+frozenSkillz-side plan and boundary, not a second corpus database.

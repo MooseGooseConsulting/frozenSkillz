@@ -37,8 +37,9 @@ Keep the entrypoint thin; load only the reference needed for the current stage.
 | See the intended shape of a corpus synthesis | `examples/corpus-synthesis.md` |
 
 Load `chat-history` only for bounded conversation retrieval. Keep AgentsView as the transcript
-source; analysis tooling and derived corpus results belong in `agent-control-plane`. Skill text,
-cases, and lifecycle state belong in `frozenSkillz`.
+source; analysis tooling, deployment case memos, and derived corpus results belong in
+`agent-control-plane`. `frozenSkillz` owns skill text, trigger and evaluation examples, and
+package lifecycle or distribution state—not historical trajectory case memos.
 
 ## Non-Negotiable Boundaries
 

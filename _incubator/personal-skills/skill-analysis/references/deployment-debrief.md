@@ -1,10 +1,10 @@
-# Deployment Debrief Prompt and Rationale
+# Historical-Episode Debrief Prompt and Rationale
 
 ## Design goal
 
-The case reader should reason about one real deployment without being forced into a binary trigger
-judgment or a fixed score. The prompt must still produce enough provenance and clarity for a later
-agent to synthesize many case memos.
+The case reader should reason about one real episode—an observed deployment or an explicit
+no-load/near-miss—without being forced into a binary trigger judgment or a fixed score. The prompt
+must still produce enough provenance and clarity for a later agent to synthesize many case memos.
 
 It therefore separates:
 
@@ -19,25 +19,34 @@ It therefore separates:
 
 The questions are invitations to investigate. They are not boxes that must each contain a value.
 
-## Prompt for one historical deployment
+## Prompt for one historical episode
 
 ```text
-You are reviewing one deployment of an agent skill.
+You are reviewing one historical episode associated with an agent skill. The subject skill may have
+activated, partially activated, or remained absent in an explicit no-load/near-miss case.
 
 Inputs:
-- the exact skill text or recoverable version;
+- the activation-time subject-skill material actually exposed to the agent, or `unknown`;
 - one user request;
 - the bounded trajectory relevant to the skill;
+- relevant co-active instruction identity, excerpts, and timing, or `unknown`;
 - stable source identifiers.
 
-First, explain in your own words what this skill is trying to help an agent accomplish. If the
-purpose is unclear or internally conflicting, say so.
+First, explain in your own words what the recoverable skill guidance was trying to help an agent
+accomplish. If no subject-skill text was exposed or recovered, say what cannot be assessed rather
+than treating the current skill as historical evidence. If the recoverable purpose is unclear or
+internally conflicting, say so.
 
-Then explain this deployment as a coherent case:
+Then explain this episode as a coherent case:
 
-- Where did the skill enter the work, and did it arrive when it could still inform the task?
-- What did the agent do that appears connected to identifiable skill guidance?
-- Did the skill appear to help, hurt, add no visible value, or remain impossible to assess? Why?
+- Did the skill activate? If so, where did it enter the work and did it arrive when it could still
+  inform the task? If not, describe the no-load or near-miss evidence without treating absence as
+  a defect by itself.
+- What did the agent do that appears connected to identifiable subject guidance, or to co-active
+  guidance that may instead explain the behavior?
+- Where the subject skill activated, did it appear to help, hurt, add no visible value, or remain
+  impossible to assess? In a no-load case, say whether there is any bounded observation to make
+  without inventing a counterfactual.
 - Did it add useful structure, confusion, context load, scope expansion, ceremony, or an unrelated
   handoff?
 - What guidance was missing?
@@ -56,9 +65,10 @@ Use clear evidence labels where they help: `Observed`, `Assistant claim`, `User-
 the labels. State whether the bounded window reaches implementation, validation, commit/push, and
 an owner reply, and note other active instructions or skills that may explain the same behavior.
 
-Write one compact case memo. Include the session and turn-window identifiers, user goal, deployment
-point, observed actions/result/owner response, your open-ended analysis, competing interpretations,
-unknowns, and useful follow-up pointers.
+Write one compact case memo. Include the session and turn-window identifiers, user goal,
+activation/no-load evidence, exposed subject guidance or its unknown state, relevant co-active
+instructions, observed actions/result/owner response, your open-ended analysis, competing
+interpretations, unknowns, and useful follow-up pointers.
 
 Do not compare this case with other deployments. Do not assign a global skill verdict. Do not infer
 acceptance from silence or causation from temporal sequence.
@@ -73,11 +83,12 @@ reviewer from silently substituting its own preferred purpose.
 This is not a quiz with one exact answer. Divergent reasonable restatements are evidence that the
 skill may communicate its purpose inconsistently.
 
-## Why deployment is reconstructed before judging value
+## Why activation or absence is reconstructed before judging value
 
 A skill loaded after the relevant decision cannot have informed that decision. A skill may also be
-loaded for inspection, editing, or a transitive handoff rather than task use. Locating when and how
-it entered prevents a read event from being treated as impact.
+loaded for inspection, editing, or a transitive handoff rather than task use. Conversely, a matched
+no-load episode may be informative but does not prove that the skill should have activated. Locating
+the activation evidence or absence prevents a read event—or its lack—from being treated as impact.
 
 ## Why help and harm remain open-ended
 

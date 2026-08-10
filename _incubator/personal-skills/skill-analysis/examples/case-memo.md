@@ -7,13 +7,21 @@ This example demonstrates source traceability plus open-ended reasoning. It is n
 - Session: `example-session-17`
 - Relevant window: user request through the next substantive owner response
 - Harness/date: example only
-- Skill identity: recoverable hash recorded by the run
+- Activation evidence: full skill read before authority inspection; recoverable hash recorded by
+  the run
+- Exposed subject guidance: full read is recoverable; partial reads would instead cite only their
+  exact excerpt and byte/range locator, or `unknown`
+- Relevant co-active guidance: repository instructions and their timing were checked; any material
+  excerpt that shaped the same action is included in the source packet
 - User goal: update one repository README with a deployment note
 
-## Deployment
+## Activation evidence
 
-The skill loaded before the agent inspected the repository's documentation. Its authority-document
-guidance was available before the agent proposed changing adjacent files.
+The skill loaded before the agent inspected the repository's documentation. Its exposed
+authority-document guidance was available before the agent proposed changing adjacent files.
+
+For a no-load case, this section would instead identify the bounded evidence that the skill did not
+load and would not claim that it should have done so.
 
 ## Observed trajectory
 
@@ -41,7 +49,8 @@ README.
 ## Competing interpretation and unknowns
 
 The agent might have made the same scope expansion without the skill. The exact historical skill
-version and other active repository instructions must be checked before attributing the behavior.
+version, exposed text, and relevant active repository instructions must be checked before
+attributing the behavior.
 
 A useful next case would be another README-only request where the skill loaded but the agent kept the
 scope bounded, or a comparable request where the skill did not load.

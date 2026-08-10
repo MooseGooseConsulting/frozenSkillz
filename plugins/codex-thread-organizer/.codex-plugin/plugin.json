@@ -1,6 +1,6 @@
 {
   "name": "codex-thread-organizer",
-  "version": "2.6.1",
+  "version": "2.7.0",
   "description": "Organize Codex task history with body-derived titles, cross-task completion review, and periodic maintenance workflows.",
   "author": {
     "name": "Coldaine",

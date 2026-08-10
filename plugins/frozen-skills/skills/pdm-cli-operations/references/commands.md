@@ -119,7 +119,9 @@ A successful read does not prove mutation authority. An authorization failure du
 
 ## Capability check and surface routing
 
-PDM is the default surface, but it is intentionally high-level. Before assuming PDM can or cannot do something:
+PDM is the default surface, but it is intentionally high-level. **For an
+official-client-compatible launcher only**, inspect current help before assuming
+PDM can or cannot do something:
 
 ```sh
 <pdm> help --verbose
@@ -130,6 +132,12 @@ PDM is the default surface, but it is intentionally high-level. Before assuming 
 ```
 
 Use current official command syntax when the installed help is ambiguous.
+
+For a constrained direct adapter, use its documented operation list as the
+capability boundary. Do not send it `help --verbose` or any other official CLI
+syntax that the owning environment has not declared it to support. If the
+adapter does not expose the requested PDM operation, route through that
+environment's documented PDM/native boundary rather than guessing an endpoint.
 
 Choose the surface this way:
 
@@ -147,7 +155,10 @@ This reference intentionally does not teach every native PVE/PBS command. Once r
 
 ## Discovery and evidence
 
-`<pdm>` means the environment launcher or the raw client plus its global connection options.
+The following commands are **official-client-compatible launcher only**.
+`<pdm>` means that launcher or the raw client plus its global connection
+options; it is not a placeholder for a constrained direct adapter. For such an
+adapter, use its documented named discovery operations instead.
 
 ```sh
 <pdm> --output-format json remote list

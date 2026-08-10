@@ -40,6 +40,11 @@ on purpose.
 
 This skill drafts, reviews, reconciles, and migrates. It does not block
 PRs, run CI, or assign Guardian severities.
+
+Owner statements establish intent and requirements. Tests, measurements, and
+live probes establish technical or runtime evidence. Migration provenance is
+not automatically durable product intent, and a plan is not implementation.
+Do not blur these categories merely to fit a preferred document shape.
 </context>
 
 <task_router>
@@ -98,7 +103,23 @@ README when the user explicitly includes it in the requested documentation scope
 The skill does NOT create or rewrite docs unless the user asks. Neighboring
 docs are never silently rewritten as a side effect of working on one doc.
 
+Derive topology from the repository's declared authority and the owner's
+explicit decisions before applying these defaults. Do not create a competing
+router or reinterpret an existing file's purpose without authorization.
+
 </scope>
+
+<smallest_change>
+
+Make the smallest authority change that satisfies the requested deliverable,
+reconcile only directly affected downstream text, and stop.
+
+Do not infer directory renames, new schemas, auditors, CI gates, lifecycle
+systems, enforcement tooling, or PR decomposition. If the request reveals one
+of those as a separate need, name it as unresolved; do not build it unless the
+user explicitly asks.
+
+</smallest_change>
 
 <minimum_viable_stack>
 

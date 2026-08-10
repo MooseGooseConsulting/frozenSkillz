@@ -15,6 +15,10 @@
       "should_trigger": true
     },
     {
+      "query": "Write my settled product goal into NORTH_STAR.md and reconcile only the directly conflicting router text",
+      "should_trigger": true
+    },
+    {
       "query": "Look through our whole conversation and tell me which Proxmox configuration changes remain unfinished",
       "should_trigger": false
     },
@@ -24,6 +28,14 @@
     },
     {
       "query": "Update README.md with installation instructions",
+      "should_trigger": false
+    },
+    {
+      "query": "Map which Teleport credentials authorize each live operation and record the conclusions when you are done",
+      "should_trigger": false
+    },
+    {
+      "query": "Fix the sync bug, add regression tests, and update its operational README to match",
       "should_trigger": false
     },
     {

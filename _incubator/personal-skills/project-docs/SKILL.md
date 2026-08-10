@@ -107,6 +107,11 @@ Derive topology from the repository's declared authority and the owner's
 explicit decisions before applying these defaults. Do not create a competing
 router or reinterpret an existing file's purpose without authorization.
 
+Before proposing a topology change, identify the existing authority owner and
+ask only about an ambiguity that the request does not resolve. A request to
+move authority away from one document does not assign a purpose to another
+document by implication.
+
 </scope>
 
 <smallest_change>
@@ -118,6 +123,10 @@ Do not infer directory renames, new schemas, auditors, CI gates, lifecycle
 systems, enforcement tooling, or PR decomposition. If the request reveals one
 of those as a separate need, name it as unresolved; do not build it unless the
 user explicitly asks.
+
+Report a draft or recommendation as proposed. Report an edited worktree,
+commit, pushed branch, open PR, and merged change as distinct states. An owner
+correction is evidence about the request; it is not acceptance of the repair.
 
 </smallest_change>
 

@@ -46,10 +46,12 @@ corpus tooling here. The personal `skill-analysis` skill connects the two reposi
 6. Validate the exact diff and the relevant repository checks. Future ordinary deployments become
    the next evidence set; do not manufacture traffic, force activations, or schedule a monitor.
 
-Use the open deployment-debrief prompt and its rationale from the personal `skill-analysis`
-skill. The prompt asks what the skill was meant to accomplish, what the agent understood, why it
-entered, whether it helped or hurt, what was vague or over-specific, what the owner established,
-and what else might explain the outcome. These are questions for judgment, not mandatory boxes.
+Use the open [deployment-debrief prompt and rationale](../../_incubator/personal-skills/skill-analysis/references/deployment-debrief.md).
+The live personal `skill-analysis` skill is preferred when installed, but the checked-in copy
+keeps this fallback usable. The prompt asks what the skill was meant to accomplish, what the agent
+understood, why it entered, whether it helped or hurt, what was vague or over-specific, what the
+owner established, and what else might explain the outcome. These are questions for judgment, not
+mandatory boxes.
 
 ## Reading results responsibly
 

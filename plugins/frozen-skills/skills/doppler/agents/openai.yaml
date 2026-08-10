@@ -1,4 +1,4 @@
 interface:
   display_name: "Doppler"
-  short_description: "Critical workflow for any secrets, tokens, API keys, and Doppler secret injection"
-  default_prompt: "CRITICAL: Use $doppler before working with secrets, tokens, API keys, .env files, CI credentials, or Doppler secret injection."
+  short_description: "Safely manage secrets and Doppler injection"
+  default_prompt: "Use $doppler when directly handling secrets, credential configuration, or Doppler injection."

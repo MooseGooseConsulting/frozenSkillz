@@ -2,7 +2,7 @@
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "frozen-skills",
   "description": "Installs reviewed delegation-contract, Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
-  "version": "2.6.0",
+  "version": "2.6.1",
   "category": "reference",
   "author": {
     "name": "Coldaine",
@@ -19,7 +19,7 @@
     {
       "name": "doppler",
       "path": "skills/doppler",
-      "description": "Doppler secrets management platform. Use when installing or configuring the Doppler CLI, setting up doppler.yaml, running commands with doppler run, adding CI service tokens, debugging secret injection without exposing values, using fallback files, mounting secrets, or managing dev/staging/production configs."
+      "description": "Use Doppler when directly reading, writing, configuring, rotating, or troubleshooting secrets or injection. Do not trigger merely because a trusted tool or launcher authenticates opaquely."
     },
     {
       "name": "external-skill-intake",

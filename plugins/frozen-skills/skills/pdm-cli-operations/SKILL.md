@@ -16,7 +16,8 @@ The official client currently requires a compatible amd64 Debian environment, ne
 
 ## Operating Contract
 
-- Load the applicable secrets-management skill (for example `$doppler` in a Doppler-backed environment) before handling authentication.
+- Prefer the environment-owned launcher when it obtains credentials opaquely. Invoking that trusted launcher is not itself secret handling and does not require loading a separate secrets-management skill.
+- Load the applicable secrets-management skill only when the task directly reads, writes, configures, rotates, or troubleshoots the credential source or secret injection. Do not load it merely because PDM authentication occurs behind the launcher.
 - Resolve the PDM endpoint, TLS fingerprint, non-secret auth ID, and target names from the environment's canonical operational repository. Never copy that inventory into this skill.
 - Use the identity supplied by the environment. A read-only identity is suitable for inspection or qualification, not for an authorized execution task; do not silently downgrade the requested operation.
 - Verify the client and PDM share the same major version before relying on it. Re-check version-specific quirks after upgrades (see [references/commands.md](references/commands.md)).
@@ -50,7 +51,7 @@ The official client currently requires a compatible amd64 Debian environment, ne
 
 1. Read the owning repository's current access and fleet references.
 2. Confirm the binary exists and record `--version` or package version without changing the host.
-3. Select the environment launcher or build the two-step raw-client login using the endpoint, user ID, TLS pin, persistent XDG state, and a secret-safe password source.
+3. Select the environment launcher. If no trusted launcher exists, build the two-step raw-client login using the endpoint, user ID, TLS pin, persistent XDG state, and a secret-safe password source; load the relevant secrets skill only for that direct credential work.
 4. Prove authentication with `remote list` and JSON output.
 5. Read pre-state and select the exact remote, node, resource ID, and name.
 6. For a mutation, confirm the supplied identity has the necessary authority, execute the exact action once, follow its task to success or failure, and verify post-state.

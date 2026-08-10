@@ -31,6 +31,10 @@
       "should_trigger": true
     },
     {
+      "query": "Use the trusted repo PDM launcher to read VM 260 config; its credentials stay opaque",
+      "should_trigger": true
+    },
+    {
       "query": "SSH to the PVE node and run qm snapshot directly",
       "should_trigger": false
     },

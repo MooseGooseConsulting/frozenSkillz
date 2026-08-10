@@ -1,0 +1,38 @@
+{
+  "skill": "project-docs",
+  "notes": "Trigger only when authority-document work is the requested deliverable, not when docs are incidental or merely present.",
+  "cases": [
+    {
+      "query": "Reconcile NORTH_STAR.md and architecture.md where their ownership boundaries conflict",
+      "should_trigger": true
+    },
+    {
+      "query": "Migrate this repository's instruction hierarchy from CLAUDE.md into a thin AGENTS.md router",
+      "should_trigger": true
+    },
+    {
+      "query": "Audit the project authority stack and identify contradictions among AGENTS, architecture, and NORTH_STAR",
+      "should_trigger": true
+    },
+    {
+      "query": "Look through our whole conversation and tell me which Proxmox configuration changes remain unfinished",
+      "should_trigger": false
+    },
+    {
+      "query": "Change the RAM assigned to the PBS VM; the repository happens to contain AGENTS.md",
+      "should_trigger": false
+    },
+    {
+      "query": "Update README.md with installation instructions",
+      "should_trigger": false
+    },
+    {
+      "query": "Review this pull request that edits code and one documentation sentence",
+      "should_trigger": false
+    },
+    {
+      "query": "What work is still open in this repository?",
+      "should_trigger": false
+    }
+  ]
+}

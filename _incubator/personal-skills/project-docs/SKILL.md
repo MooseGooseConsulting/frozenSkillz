@@ -1,14 +1,24 @@
 ---
 name: project-docs
 description: >
-  Create, review, reconcile, and migrate project authority docs
-  (NORTH_STAR, architecture, AGENTS) plus living overflow. Prefer
-  Issues/docs/plans for current work; promote then delete temporary
-  docs. No PROGRESS.md or docs/history/. Trigger on bootstrap, audit,
-  CLAUDE→AGENTS migration, or authority-stack repair.
+  Create or repair project authority docs only when explicitly asked to author,
+  rewrite, migrate, reconcile, or audit NORTH_STAR.md, architecture.md, AGENTS.md,
+  CLAUDE.md routing, or legacy PROGRESS.md. Do not use for ordinary repo work,
+  README edits, status checks, or incidental doc mentions.
 ---
 
 # Project Docs Authoring
+
+## Trigger Gate
+
+Use this skill only when the requested deliverable is an authority-document draft,
+edit, migration, reconciliation, or documentation-authority audit. An explicit
+request to use `project-docs` also qualifies.
+
+Do not load it for general repository review, conversation completeness checks,
+implementation work, operational configuration, a README-only change, or merely
+because the repository contains AGENTS.md or other documentation. If documentation
+changes are incidental to another task, follow the owning task or skill.
 
 <context>
 Authority hierarchy (no status diary in the ladder):
@@ -80,6 +90,10 @@ Do **not** recommend:
 Documentation lives in the authority docs and living overflow homes.
 Implementation directories hold implementation, not prose — a one-line pointer
 is the only exception.
+
+README.md is outside this authority hierarchy. This skill does not assign README a
+purpose, require it to point to AGENTS.md, or reduce it to a title. Only change a
+README when the user explicitly includes it in the requested documentation scope.
 
 The skill does NOT create or rewrite docs unless the user asks. Neighboring
 docs are never silently rewritten as a side effect of working on one doc.

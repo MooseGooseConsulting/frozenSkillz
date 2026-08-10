@@ -1,13 +1,22 @@
 ---
 name: doppler
-description: "CRITICAL: You must load this skill before working with secrets, tokens, API keys, .env files, CI credentials, or Doppler secret injection."
+description: >-
+  Manage secrets with the Doppler CLI: doppler run injection, names-only
+  diagnostics, set/upload secrets, service tokens for CI, and no-print hygiene.
+  Use when the current task requires retrieving, injecting, setting, rotating,
+  verifying, or names-only-checking a credential with the Doppler CLI, whether
+  the user asked for that or the task itself led there. Do not load merely
+  because .env, tokens, API keys, credentials, or "secrets" appear in your own
+  planning context or in files you are reading — config-file reads, Kubernetes
+  Secret reads, and database connection strings are not Doppler work unless
+  the task is to manage that credential in Doppler; do not load for
+  speculative "secrets hygiene" passes; do not preload because a later step
+  might need a credential.
 ---
 
 # Doppler
 
-## Critical Trigger
-
-You must load this skill before any action involving secrets: API keys, tokens, passwords, private keys, `.env` files, service tokens, OAuth credentials, webhook secrets, cloud credentials, signed URLs, cookies, auth headers, or environment variables that may carry credentials.
+**Before using this skill:** confirm a Doppler credential action (retrieve, inject, set, rotate, verify, or names-only check) is part of the task you are working on right now. If not, do not proceed.
 
 If unsure whether a value is a secret, treat it as a secret. Keep secret values out of chat, logs, diffs, committed files, and durable docs.
 

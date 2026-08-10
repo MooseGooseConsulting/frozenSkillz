@@ -46,7 +46,7 @@ Exit condition:
 
 Do not start later phases merely because extraction code exists.
 
-The 2026-08-10 pilot satisfied this exit condition with a 289-session candidate manifest, 13
+The 2026-08-10 pilot satisfied this exit condition with a 291-session candidate manifest, 13
 independently extracted cases, separate corpus synthesis, explicit coverage limits, and real
 trigger/body regression candidates. Its findings remain observational; no later phase starts
 implicitly.

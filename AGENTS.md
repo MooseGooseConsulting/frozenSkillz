@@ -18,3 +18,13 @@ This file is only an entrypoint. Repository policy and procedures live in the do
 | Recover historical context | Git history, merged pull requests, and closed issues |
 
 When sources disagree, the task-specific source above wins over summaries in `README.md` or client compatibility files. Fix the stale downstream text in the same change.
+
+## Cursor Cloud specific instructions
+
+This repo is Python 3 CLI/validation tooling (skills, plugin manifests, and synchronizers) — there is no server or web UI to run.
+
+- Use `python3`; there is no `python` shim on the VM. `README.md` and CI examples that write `python ...` should be run as `python3 ...`.
+- The only third-party dependency is `PyYAML` (see `requirements-validation.txt`), installed to the user site by the startup update script. Everything else is stdlib.
+- Full validation surface (mirrors `.github/workflows/validate.yml`): `python3 scripts/validate_manifests.py`, `python3 -m unittest discover -s tests -v`, and the whitespace lint `git diff --check HEAD -- . ':(exclude)_incubator/scout/*/source/**'`.
+- The synchronizer is the runnable "app". Exercise it against a throwaway destination outside the repo (the destination must be disjoint from the checkout), e.g. `python3 scripts/sync_frozen_skills.py --consumer codex --apply --destination /tmp/frozen-skills-smoke` then re-run with `--check` to prove convergence. `--check` exits nonzero (1 = drift, 2 = conflict) by design.
+- `sync_frozen.py` defaults its Codex destinations to `~/.codex`; pass `--skills-destination`/`--codex-home` when smoke-testing so you don't touch the real home config.

@@ -44,9 +44,9 @@ The manifest carries administrative provenance, not evaluative conclusions:
 
 - session identifier;
 - harness, project, machine, and date when available;
-- detected activation channel and relevant turn neighborhood: named invocation, full or partial
-  read, assistant announcement, references loaded, and the first behavior plausibly using guidance
-  when each is recoverable;
+- detected activation channel and neutral turn neighborhood: named invocation, full or partial
+  read, assistant announcement, references loaded, and the first post-activation action or turn
+  boundary when each is recoverable;
 - activation-time subject-skill identity: full text or bytes when recoverable, content hash,
   repository commit/package version, and path; for a partial read or injection, the exact exposed
   excerpt and its byte/range locator; or `unknown` when the exposed material cannot be recovered.
@@ -113,7 +113,9 @@ Include only:
 - the activation-time subject-skill material actually exposed to the agent: the full text when a
   full load is recoverable, or the exact excerpt plus byte/range locator for a partial activation.
   If that material cannot be recovered, label it `unknown`; do not give the reader a current or
-  full skill copy as a stand-in;
+  full skill copy as a stand-in. For a no-load episode, record that the agent saw no subject text;
+  when the installed-at-time version is recoverable, include it separately as evaluator-only
+  reference, never as agent exposure;
 - relevant co-active guidance that could plausibly explain the same behavior: the other skill,
   repository instruction, or explicit owner direction's identity and timing, plus the relevant
   text or a stable excerpt locator. State `unknown` or `not recovered` rather than supplying

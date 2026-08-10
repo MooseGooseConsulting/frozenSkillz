@@ -18,7 +18,8 @@ Keep the entrypoint thin; load only the reference needed for the current stage.
 1. Resolve the recoverable activation-time skill identity and the current repository surfaces.
 2. Build a complete candidate manifest before interpreting individual chats.
 3. Declare the bounded analysis corpus and its coverage.
-4. Send one trajectory at a time to a case reader; require one case memo per selected trajectory.
+4. Send one trajectory at a time to a case reader; require one memo per extractable trajectory and
+   explicit accounting for every blocked or excluded row.
 5. Send the assembled memos—not the raw chats—to a separate corpus reader.
 6. Fill material gaps through additional one-case reads, then synthesize lessons and possible skill
    improvements.

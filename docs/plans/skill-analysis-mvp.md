@@ -57,11 +57,13 @@ grade. It does not claim causal improvement.
 ## Immutable 2026-08 study record
 
 The totals and findings above refer to the committed `agent-control-plane` study record at
-[`30b1d12d19d4ba208de1a9d453e594ece5e7509a`](https://github.com/MooseGooseConsulting/agent-control-plane/tree/30b1d12d19d4ba208de1a9d453e594ece5e7509a),
+[`1f03fbc`](https://github.com/MooseGooseConsulting/agent-control-plane/tree/1f03fbc),
 not to a mutable local database or later regeneration. Its exact committed artifacts are:
 
 - `projects/project-docs-skill-analysis-account-2026-08.md`,
   `projects/project-docs-skill-analysis-learnings.md`, and
+  `projects/skill-deployment-2026-08-case-memo-register.md` for the sanitized per-case
+  references;
   `projects/project-docs-skill-analysis-meta.md` for the compact study account, findings, and
   method metadata;
 - `projects/project-docs-skill-analysis-manifest.csv`,
@@ -77,5 +79,6 @@ not to a mutable local database or later regeneration. Its exact committed artif
   `projects/pdm-cli-operations-skill-analysis-corpus-coverage.json`, and
   `projects/pdm-cli-operations-skill-analysis-review-status.json` for the PDM-centered study.
 
-Raw transcripts and temporary case memos deliberately remain outside git. This document is the
-frozenSkillz-side plan and boundary, not a second corpus database.
+Raw transcripts and detailed temporary reader notes deliberately remain outside git. The sanitized
+case-memo register is committed with the study record. This document is the frozenSkillz-side plan
+and boundary, not a second corpus database.

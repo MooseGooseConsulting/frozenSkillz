@@ -4,17 +4,19 @@ description: >-
   Manage secrets with the Doppler CLI: doppler run injection, names-only
   diagnostics, set/upload secrets, service tokens for CI, and no-print hygiene.
   Use when the current task requires retrieving, injecting, setting, rotating,
-  verifying, or names-only-checking a credential, whether the user asked for
-  that or the task itself led there. Do not load merely because .env, tokens,
-  API keys, credentials, or "secrets" appear in your own planning context or in
-  files you are reading; not for config-file reads, Kubernetes Secret reads,
-  database connection strings, or speculative "secrets hygiene" passes; do not
-  preload because a later step might need a credential.
+  verifying, or names-only-checking a credential with the Doppler CLI, whether
+  the user asked for that or the task itself led there. Do not load merely
+  because .env, tokens, API keys, credentials, or "secrets" appear in your own
+  planning context or in files you are reading — config-file reads, Kubernetes
+  Secret reads, and database connection strings are not Doppler work unless
+  the task is to manage that credential in Doppler; do not load for
+  speculative "secrets hygiene" passes; do not preload because a later step
+  might need a credential.
 ---
 
 # Doppler
 
-**Before using this skill:** confirm a credential action (retrieve, inject, set, rotate, verify, or names-only check) is part of the task you are working on right now. If not, do not proceed.
+**Before using this skill:** confirm a Doppler credential action (retrieve, inject, set, rotate, verify, or names-only check) is part of the task you are working on right now. If not, do not proceed.
 
 If unsure whether a value is a secret, treat it as a secret. Keep secret values out of chat, logs, diffs, committed files, and durable docs.
 

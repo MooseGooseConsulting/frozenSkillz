@@ -199,6 +199,7 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
 
     def test_real_distribution_smoke_installs_organizer_only_for_codex(self):
         shared = {
+            "agent-github-identity",
             "delegation-contract",
             "doppler",
             "external-skill-intake",

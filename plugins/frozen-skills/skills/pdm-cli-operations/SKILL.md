@@ -23,8 +23,8 @@ Using native PVE/PBS for a capability gap is not a PDM failure and is not automa
 
 - Load the applicable secrets-management skill before handling authentication.
 - Resolve the PDM endpoint, TLS trust, identity, remotes, nodes, and native access paths from the owning environment. Do not copy environment inventory into this skill.
-- Prefer the environment-owned PDM launcher when one exists; it should still invoke the official `proxmox-datacenter-manager-client` and preserve output and exit status.
-- Verify the installed client/server versions and inspect `help --verbose` before assuming a command exists. PDM is evolving quickly; do not turn an old capability gap into permanent architecture.
+- Prefer the environment-owned PDM entrypoint when one exists. It may invoke the official `proxmox-datacenter-manager-client` **or** a repository-owned, pinned direct PDM API adapter; preserve the documented operation boundary, TLS verification, output, and exit status. Do not insert an SSH/Hermes hop when the environment already supports a direct workstation path.
+- For the official client, verify installed client/server versions and inspect `help --verbose` before assuming a command exists. For a constrained direct adapter, use only its documented operations and route unsupported work through the environment's normal PDM/native boundary. PDM is evolving quickly; do not turn an old capability gap into permanent architecture.
 - **Route by capability, not ideology.** If PDM supports the requested operation, use PDM. If it does not, say so and use the documented native PVE/PBS path if the task still requires the operation.
 - Do not silently pivot because a command failed. First distinguish: wrong syntax/version, auth/trust failure, PDM outage, remote outage, or an operation PDM simply does not expose.
 - Keep resource identity explicit: remote + node + guest kind + VMID + name when applicable. VMID alone is not fleet identity.
@@ -54,7 +54,7 @@ The routing rule is not “never use `qm`, `pvesh`, the PVE API, or PBS-native t
 ## PDM Workflow
 
 1. Read the owning environment’s fleet/access references.
-2. Confirm the PDM client/launcher and current version.
+2. Confirm the environment-owned PDM entrypoint and its supported operations; inspect current client help/version only when the entrypoint is the official client.
 3. Prove PDM connectivity/authentication with a small read such as `remote list`.
 4. Identify the exact remote, node, resource ID, kind, and name.
 5. Confirm the requested operation exists in the installed PDM surface.
@@ -86,7 +86,7 @@ Native drill-down should be boring and explicit. It is a supported layer boundar
 | Diagnose a remote that PDM says is unavailable | inspect that remote natively; keep PDM failure and remote failure distinct |
 | Recover when PDM is down | use native PVE/PBS; repair PDM separately rather than blocking unrelated fleet recovery |
 
-`<pdm>` means the environment launcher or the raw official client plus its connection options.
+`<pdm>` means the environment-owned PDM entrypoint or the raw official client plus its connection options.
 
 ## References
 

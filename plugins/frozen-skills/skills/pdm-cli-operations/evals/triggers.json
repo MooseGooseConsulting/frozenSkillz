@@ -35,6 +35,10 @@
       "should_trigger": true
     },
     {
+      "query": "This Windows homelab has fixed just pdm-* reads through a pinned direct HTTPS adapter. Use that path without sending the request through Hermes or SSH.",
+      "should_trigger": true
+    },
+    {
       "query": "Explain what qm status 101 prints when I am already logged into a PVE node",
       "should_trigger": false
     },

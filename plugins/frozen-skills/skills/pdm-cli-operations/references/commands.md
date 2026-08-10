@@ -37,14 +37,14 @@ Proxmox does not publish a native Windows build. On Windows, use an environment-
 
 ## Environment launcher
 
-Prefer an environment-owned launcher when the owning repository provides one. Keep concrete launcher names and SSH runner hosts in [env-notes.md](env-notes.md); they are not part of the portable skill contract.
+Prefer an environment-owned PDM entrypoint when the owning repository provides one. Keep concrete adapter, launcher, and SSH-runner names in [env-notes.md](env-notes.md); they are not part of the portable skill contract.
 
 ```sh
 <launcher> --output-format json remote list
 <launcher> --output-format json resources
 ```
 
-A good launcher should:
+A good official-client launcher should:
 
 - retrieve the environment-selected identity without printing its credential;
 - retain the official client's ticket cache separately from unrelated identities;
@@ -52,7 +52,12 @@ A good launcher should:
 - invoke `proxmox-datacenter-manager-client` for the requested PDM command; and
 - preserve stdout, stderr, and exit status.
 
-It must not impose an invented read-only policy on an identity whose owning environment authorizes mutation.
+An environment-owned direct PDM API adapter is also valid when it pins TLS,
+contains only reviewed operations, protects credentials, and reports its
+supported boundary clearly. Use it directly on Windows or an agent when the
+repository declares it; do not force a Linux/SSH bridge merely to reach the
+official CLI. Neither entrypoint may impose an invented read-only policy on an
+identity whose owning environment authorizes mutation.
 
 ### Optional Windows SSH bridge
 

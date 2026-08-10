@@ -124,8 +124,11 @@ project. It still needs its regression case and a later post-change field check.
 
 ## Case Memos and Optional Structured Fields
 
-The primary counting unit is one **session x skill**, not raw reads. Page-by-page reads and repeated
-loads in one session count once, with repetition recorded separately as a possible thrash signal.
+The primary counting unit is one **skill deployment episode**, not a raw read or an entire session.
+Page-by-page reads and repeated loads inside one episode count once, with repetition recorded as a
+possible thrash signal. A detector may first emit a conservative session x skill inventory; split
+clear re-entry for a new request or task segment into separate deployment episodes before using it
+as a case or inference denominator, and record uncertain splits.
 
 Deployment learning uses the open-ended one-case prompt in
 `_incubator/personal-skills/skill-analysis/references/deployment-debrief.md`; it does not require the
@@ -244,7 +247,7 @@ on them.
 A controlled lifecycle evaluation is complete only when it states:
 
 - corpus coverage and blind spots;
-- activation detector and session x skill denominator;
+- activation detector, initial session x skill inventory, and deployment-episode denominator;
 - opportunity denominator, including sampled no-fire cases;
 - task-use versus meta-use counts;
 - labeled transcript sample with explicit `n` per stratum;

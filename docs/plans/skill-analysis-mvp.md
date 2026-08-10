@@ -94,7 +94,8 @@ Those are possible later capabilities. Requiring all of them before answering wh
 - Activation detection for the channels already demonstrated in AgentsView:
   - named skill/tool events; and
   - normalized installed-`SKILL.md` reads for Codex.
-- Deduplication to one session x skill activation.
+- Initial deduplication to a session x skill inventory, then split clear re-entry into separate
+  deployment episodes before case-level interpretation.
 - Separation of task use from skill editing, inspection, and meta-evaluation.
 - A complete candidate manifest followed by a declared analysis corpus. Review all task-use
   deployments when tractable; otherwise select a varied corpus across harness, time, request shape,
@@ -150,8 +151,9 @@ Output: a short run header with subject identity and corpus coverage.
 - Mark editing/inspection/meta sessions separately from task use.
 - Reconcile counts against known July results where the corpus overlaps.
 
-Output: a complete candidate manifest with one row per deduplicated session x skill deployment,
-plus the reproducible query/tool. The manifest is an inventory and navigation surface, not a set of
+Output: a complete candidate manifest with one row per detected session x skill inventory item,
+plus an explicit deployment-episode split where a long session contains distinct task uses, and the
+reproducible query/tool. The manifest is an inventory and navigation surface, not a set of
 conclusions.
 
 ### 3. Produce a comparison sample

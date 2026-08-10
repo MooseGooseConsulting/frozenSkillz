@@ -1,11 +1,10 @@
 {
   "name": "harness",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Explicit controlled replay harness for the chat-history skill",
   "scripts": {
     "test": "promptfoo validate config -c promptfooconfig.yaml",
-    "eval": "promptfoo eval -c promptfooconfig.yaml"
+    "controlled-eval": "node scripts/run-controlled-eval.cjs"
   },
   "keywords": [],
   "author": "",

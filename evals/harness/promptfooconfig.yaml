@@ -8,8 +8,8 @@ prompts:
 
 # The two workspaces must contain the same corpus fixture and differ only in whether
 # `.agents/skills/chat-history/` is present. Both are disposable directories outside this repo.
-# CODEX_HOME must contain the login needed for the deliberate run but no personal skills, so the
-# baseline cannot silently load one from a user's normal Codex home.
+# The isolated home contains no personal skills. CODEX_HOME holds the exact
+# `chat_history_researcher` profile for both conditions, so the skill text is the only difference.
 providers:
   - id: openai:codex-sdk
     label: current-skill
@@ -21,6 +21,8 @@ providers:
       enable_streaming: true
       cli_env:
         CODEX_HOME: "{{ env.CHAT_HISTORY_EVAL_CODEX_HOME }}"
+        HOME: "{{ env.CHAT_HISTORY_EVAL_HOME }}"
+        USERPROFILE: "{{ env.CHAT_HISTORY_EVAL_HOME }}"
   - id: openai:codex-sdk
     label: no-skill-baseline
     config:
@@ -31,6 +33,8 @@ providers:
       enable_streaming: true
       cli_env:
         CODEX_HOME: "{{ env.CHAT_HISTORY_EVAL_CODEX_HOME }}"
+        HOME: "{{ env.CHAT_HISTORY_EVAL_HOME }}"
+        USERPROFILE: "{{ env.CHAT_HISTORY_EVAL_HOME }}"
 
 tests:
   - description: "Scenario A — Scope Atlas provenance reconstruction (current skill)"
@@ -88,8 +92,21 @@ tests:
       - type: skill-used
         value: chat-history
         metric: skill-fired
-      - type: contains
-        value: 98e65f4c-c84d-4629-94ac-e1808aa97d68
+      - type: javascript
+        value: |
+          const session = '98e65f4c-c84d-4629-94ac-e1808aa97d68';
+          const escaped = session.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const result = new RegExp(
+            `(?:created|originated|came from).{0,120}${escaped}|${escaped}.{0,120}(?:created|originated|origin|source)`,
+            'is',
+          ).test(output);
+          return {
+            pass: result,
+            score: result ? 1 : 0,
+            reason: result
+              ? 'Connects the known session to the files\' origin.'
+              : 'Does not connect the known session to the files\' origin.',
+          };
         metric: G1-names-ground-truth
       - type: contains
         value: 98e65f4c-c84d-4629-94ac-e1808aa97d68
@@ -110,8 +127,21 @@ tests:
       - type: not-skill-used
         value: chat-history
         metric: skill-not-fired
-      - type: contains
-        value: 98e65f4c-c84d-4629-94ac-e1808aa97d68
+      - type: javascript
+        value: |
+          const session = '98e65f4c-c84d-4629-94ac-e1808aa97d68';
+          const escaped = session.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+          const result = new RegExp(
+            `(?:created|originated|came from).{0,120}${escaped}|${escaped}.{0,120}(?:created|originated|origin|source)`,
+            'is',
+          ).test(output);
+          return {
+            pass: result,
+            score: result ? 1 : 0,
+            reason: result
+              ? 'Connects the known session to the files\' origin.'
+              : 'Does not connect the known session to the files\' origin.',
+          };
         metric: G1-names-ground-truth
       - type: contains
         value: 98e65f4c-c84d-4629-94ac-e1808aa97d68

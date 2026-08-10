@@ -15,7 +15,7 @@ Authority order: NORTH_STAR > architecture.md > AGENTS.md. Downstream never over
 - Pick up active work, blockers → GitHub Issues and/or docs/plans/
 - Run a long procedure (bootstrap, disaster recovery) → docs/workflows/
 - Look up completed work → git log / tags / closed PRs (not docs/history/)
-- Draft, migrate, reconcile, or audit authority documentation → invoke the project-docs skill
+- Draft, edit, review/critique, migrate, reconcile, or audit authority documentation → invoke the project-docs skill
 - Anything crossing a goal, anti-goal, pillar, or invariant → Stop. Surface the conflict.
 
 ## Commands

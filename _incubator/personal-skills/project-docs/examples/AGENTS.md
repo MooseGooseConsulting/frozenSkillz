@@ -3,7 +3,8 @@
 Read NORTH_STAR.md first. Do not infer intent from code.
 
 Authority on conflict: NORTH_STAR > architecture > AGENTS.
-CLAUDE.md and README hold no authority of their own.
+CLAUDE.md is a compatibility pointer. README has no fixed role in this template;
+define any README authority explicitly for the repository that owns it.
 
 Route by task:
 - Intent, scope, boundaries      → NORTH_STAR.md

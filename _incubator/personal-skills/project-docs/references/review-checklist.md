@@ -2,6 +2,11 @@
 
 Router for critiquing an existing authority document. Per-doc guides own detailed checks; this file routes and adds the cross-doc pass.
 
+Before selecting a default guide, inventory the repository's declared authority
+owners in its root router, documentation index, and owner instructions. If it
+declares a nonstandard stack, review its declared roles and routes through
+`authority-flow.md`; an absent default file is not a structural or drift gap.
+
 <by_document>
 
 | Doc to review | Guide |
@@ -43,9 +48,15 @@ Router for critiquing an existing authority document. Per-doc guides own detaile
 
 After a single-doc review, run `authority-flow.md`.
 
-Authority order: NORTH_STAR → architecture → AGENTS.
+First inventory declared authority owners and routes. When the repository
+declares a stack, check that stack's upstream/downstream relationships and
+routers; do not impose the default order or replacement files.
 
-Quick pairs: architecture vs NORTH_STAR · plans/Issues vs architecture · plans/Issues vs NORTH_STAR · AGENTS vs everything · CLAUDE vs AGENTS.
+Only when no declared stack supplies those roles, use the default order:
+NORTH_STAR → architecture → AGENTS.
+
+Default quick pairs: architecture vs NORTH_STAR · plans/Issues vs architecture
+· plans/Issues vs NORTH_STAR · AGENTS vs everything · CLAUDE vs AGENTS.
 
 </cross_doc>
 
@@ -53,6 +64,11 @@ Quick pairs: architecture vs NORTH_STAR · plans/Issues vs architecture · plans
 
 ```text
 ## [Doc Name] Review
+
+### Authority inventory
+- declaration source: [path or owner instruction]
+- selected topology: [declared stack or default]
+- owners and routes: [compact inventory]
 
 ### Structural findings
 - [finding] — citing [section]; suggested fix: [edit]

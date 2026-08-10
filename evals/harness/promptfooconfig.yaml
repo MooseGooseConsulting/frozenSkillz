@@ -9,14 +9,14 @@ providers:
   - id: openai:codex-sdk
     label: codex
     config:
-      working_dir: C:/Users/pmacl/AppData/Local/Temp/chat-history-eval-2026-08-03/trials/codex
+      working_dir: "{{ env.CHAT_HISTORY_EVAL_ROOT }}/trials/codex"
       skip_git_repo_check: true
       approval_policy: never
       enable_streaming: true
   - id: anthropic:claude-agent-sdk
     label: claude-code
     config:
-      working_dir: C:/Users/pmacl/AppData/Local/Temp/chat-history-eval-2026-08-03/trials/claude
+      working_dir: "{{ env.CHAT_HISTORY_EVAL_ROOT }}/trials/claude"
 
 # Judge rides the same ChatGPT-subscription Codex login (no API keys anywhere).
 defaultTest:

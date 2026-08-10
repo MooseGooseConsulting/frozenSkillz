@@ -51,6 +51,11 @@ Separate directly observed events from your interpretation. Identify unknowns an
 competing explanation where a plausible alternative exists. Say what additional example or source
 would most improve the conclusion.
 
+Use clear evidence labels where they help: `Observed`, `Assistant claim`, `User-reported history`,
+`Owner response`, `Interpretation`, and `Unknown`. Do not create empty sections merely to satisfy
+the labels. State whether the bounded window reaches implementation, validation, commit/push, and
+an owner reply, and note other active instructions or skills that may explain the same behavior.
+
 Write one compact case memo. Include the session and turn-window identifiers, user goal, deployment
 point, observed actions/result/owner response, your open-ended analysis, competing interpretations,
 unknowns, and useful follow-up pointers.

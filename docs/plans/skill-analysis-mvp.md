@@ -1,6 +1,6 @@
 # Plan: Skill Analysis MVP — `project-docs` Deployment Learning Pilot
 
-Status: proposed; not started.
+Status: completed pilot; observational findings published in `agent-control-plane`.
 
 ## Up Front
 
@@ -40,6 +40,25 @@ Use `skill-analysis` to answer one practical set of questions:
 
 This MVP is a learning exercise about one skill in real use. It does not grade every skill, pretend
 an evaluator has ground truth, or build recurring automation.
+
+## Completed Pilot
+
+- Candidate population: 288 sessions, 287 with an observed activation signal, across six indexed
+  harnesses from 2026-02-28 through 2026-08-10.
+- Declared corpus: 10 activation cases plus 3 adjacent no-load cases, selected purposively for
+  authority work, operational work, README/docs work, and owner corrections.
+- Extraction: one bounded trajectory per case reader; 13 case memos completed before synthesis.
+- Synthesis: a separate corpus reader received the memos and coverage notes, not raw transcripts.
+- Gap fill: not required for the observational conclusions; matched comparisons remain necessary
+  before causal claims.
+- Supported repair: preserve the narrow deliverable-based trigger and add a smallest-change stop
+  rule, repository-derived topology, claim-category boundaries, and explicit handoff limits.
+- Process repair: retain activation-time skill identity, evidence-source labels, bounded-window
+  outcome state, interaction context, and a read-only retrieval fallback.
+
+The pilot found recurring failure shapes, not population rates. It does not prove that
+`project-docs` caused the observed help or harm, and it does not establish that the current
+trigger-gated version has solved the historical cases.
 
 ## Why the Earlier Scope Was Too Large
 

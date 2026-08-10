@@ -10,6 +10,10 @@ too large for one agent to read carefully. Build the corpus in two levels:
 
 Never call the analysis corpus complete unless it actually contains every in-scope candidate.
 
+Do not turn transcript discovery into an infrastructure repair project. If semantic search is
+unavailable, startup synchronization is incomplete, or a configured store has an incompatible
+schema, record the limitation and continue with the best bounded read-only indexed fallback.
+
 ## Pipeline
 
 ```text
@@ -40,11 +44,16 @@ The manifest carries administrative provenance, not evaluative conclusions:
 
 - session identifier;
 - harness, project, machine, and date when available;
-- detected activation channel and relevant turn neighborhood;
-- recoverable skill path/version/hash or `unknown`;
+- detected activation channel and relevant turn neighborhood: named invocation, full or partial
+  read, assistant announcement, references loaded, and the first behavior plausibly using guidance
+  when each is recoverable;
+- activation-time skill bytes or content hash, repository commit/package version, and path, or
+  `unknown`—never substitute the current file identity for a historical load;
 - likely task-use, editing/inspection, meta-evaluation, or unresolved context;
 - candidate source or search neighborhood;
 - continuation or parent/child pointers;
+- other active skills, repository instructions, or explicit owner language plausibly shaping the
+  same behavior;
 - extraction state; and
 - exclusion or blocking reason when applicable.
 
@@ -106,6 +115,10 @@ Include only:
 - the owner-visible result;
 - the next substantive owner response; and
 - stable source identifiers.
+
+Also record where the bounded window ends: before or after implementation, validation,
+commit/push, and owner reply. Include one continuation pointer when a consequential conclusion
+depends on material outside the window.
 
 Do not provide the leading theory, expected label, other case memos, or desired skill change. If the
 trajectory is too large, localize the relevant turn window first rather than asking the reader to

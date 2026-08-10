@@ -31,7 +31,7 @@ Extend the narrow `project-docs` deployment-learning MVP only after it produces 
 lessons.
 This document prevents later ideas from leaking back into the MVP.
 
-## Phase 1 — Complete the Deployment-Learning MVP
+## Phase 1 — Complete the Deployment-Learning MVP (complete)
 
 Source: `docs/plans/skill-analysis-mvp.md`.
 
@@ -45,6 +45,11 @@ Exit condition:
   evidence.
 
 Do not start later phases merely because extraction code exists.
+
+The 2026-08-10 pilot satisfied this exit condition with a 288-session candidate manifest, 13
+independently extracted cases, separate corpus synthesis, explicit coverage limits, and real
+trigger/body regression candidates. Its findings remain observational; no later phase starts
+implicitly.
 
 ## Phase 2 — Analyze One Skill Dependency
 

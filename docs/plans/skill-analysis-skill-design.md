@@ -1,6 +1,6 @@
 # Plan: Build the `skill-analysis` Skill
 
-Status: implementation in progress; pilot not yet run.
+Status: construction complete; first `project-docs` pilot executed.
 
 ## Up Front
 
@@ -111,6 +111,12 @@ purpose, corpus, debrief, synthesis, and example resources for a large-corpus re
 identified details that must be explicit before the real pilot: subject-specific activation-channel
 inventory, multi-deployment sessions, declared indexed scope, adjacent-case matching, and targeted
 double reading. Those refinements belong in `references/corpus-assembly.md`, not `SKILL.md`.
+
+The first real pilot then completed a 288-session candidate census, declared a 13-case corpus,
+produced one independent memo per bounded trajectory, and used a separate corpus reader for
+synthesis. It exposed two additional method needs now captured in the references: preserve the
+activation-time skill identity rather than substituting today's file, and record evidence source,
+bounded-window outcome state, interacting instructions, and retrieval limitations consistently.
 
 ## Why This Prompt
 

@@ -2,6 +2,26 @@
 
 Status: deferred roadmap. No phase begins until its entry condition is satisfied.
 
+## Up Front
+
+- **What:** Extend the proven MVP to one additional skill problem at a time.
+- **Why:** Existing skills need evidence-backed trigger, instruction, and dependency fixes—not a
+  speculative all-skill scoring platform.
+- **How:** Admit each new capability only after the prior phase produces a useful decision.
+- **Result:** A repeatable loop that finds one defect, makes the smallest skill change, adds a
+  regression, and verifies the change in later real use.
+
+## How We Will Improve Existing Skills
+
+1. Find a real repeated failure: overtrigger, missed trigger, ignored guidance, or unnecessary
+   secondary-skill handoff.
+2. Classify the repair surface: trigger description, skill body, dependency rule, or no skill defect.
+3. Change only that surface in `frozenSkillz`.
+4. Add the real prompt and expected behavior to the affected skill's regression cases.
+5. Run the case before and after the change when controlled comparison is warranted.
+6. Review the next real opportunities; keep the change only when field behavior improves without a
+   new regression.
+
 ## Purpose
 
 Extend the narrow `project-docs` trigger MVP only after it produces a trustworthy, useful verdict.

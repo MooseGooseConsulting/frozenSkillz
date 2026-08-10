@@ -2,6 +2,26 @@
 
 Status: proposed; not started.
 
+## Up Front
+
+- **What:** Determine whether `project-docs` fires for the right requests and stays quiet for the
+  wrong ones.
+- **Why:** Unnecessary loads add context and can take over ordinary README, documentation, status,
+  or operational work.
+- **How:** Compare real fired sessions with similar no-fire requests, label the trigger decision and
+  observed use, then make one trigger verdict.
+- **Result:** Keep, narrow, or broaden the trigger—with real failure prompts added as regressions.
+
+## How This Improves the Existing Skill
+
+- False positive → narrow the description and add the real prompt as a negative trigger case.
+- False negative → broaden the description and add the real prompt as a positive trigger case.
+- Correct activation but ignored guidance → revise the skill body, not the trigger.
+- Correct and useful activation → preserve the behavior as a regression.
+- Ambiguous or weak evidence → make no skill change and report what evidence is missing.
+- After a change → rerun the regression and inspect the next real `project-docs` opportunities
+  before claiming improvement.
+
 ## Goal
 
 Prove that `skill-analysis` can answer one useful question:

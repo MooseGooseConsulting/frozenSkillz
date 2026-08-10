@@ -16,6 +16,18 @@ This repository is not a dumping ground for local client caches, raw external re
 
 Historical reference/workflow skills remain gated in `_incubator/` until they pass the quality bar in `docs/skill-review/tracker.md`.
 
+## Skill Analysis Ownership
+
+Do not run fleet activation/effectiveness analysis from this repository. The
+[`agent-control-plane`](https://github.com/MooseGooseConsulting/agent-control-plane) repository
+owns read-only AgentsView extraction, candidate manifests, declared analysis corpora,
+one-trajectory case memos, cross-case lessons, and analysis tooling.
+
+`frozenSkillz` owns the other side of the boundary: skill text and versions, trigger corpora,
+controlled cases, regression status, packaging, and lifecycle state. The live personal
+`skill-analysis` skill routes between the two; its reviewed gated mirror is
+`_incubator/personal-skills/skill-analysis/`.
+
 ## Synchronize a Computer
 
 Clone or update this repository on each computer, then run the cross-platform synchronizer:

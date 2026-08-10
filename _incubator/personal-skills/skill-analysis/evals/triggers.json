@@ -1,0 +1,70 @@
+{
+  "skill": "skill-analysis",
+  "notes": "Trigger for assembling and interpreting real skill deployments, including purpose comprehension, apparent help or harm, missing or unclear guidance, owner corrections, and improvement hypotheses. Do not trigger for ordinary skill authoring or domain operation.",
+  "train": [
+    {
+      "query": "Use AgentsView to tell me whether project-docs fires too often and whether it actually helps",
+      "should_trigger": true
+    },
+    {
+      "query": "Compare Doppler skill loads against real secret-handling opportunities and find false positives",
+      "should_trigger": true
+    },
+    {
+      "query": "Which skills are loaded and then ignored, and what did the owner say afterward?",
+      "should_trigger": true
+    },
+    {
+      "query": "Design a full-history process for deciding whether a skill should be kept, narrowed, rewritten, or disabled",
+      "should_trigger": true
+    },
+    {
+      "query": "Go through each deployment one at a time, then tell me whether agents understood this skill and what was vague or too rigid",
+      "should_trigger": true
+    },
+    {
+      "query": "Create a new PDF editing skill",
+      "should_trigger": false
+    },
+    {
+      "query": "Use the PDM skill to inspect VM 260",
+      "should_trigger": false
+    },
+    {
+      "query": "Review this TypeScript function for bugs",
+      "should_trigger": false
+    }
+  ],
+  "validation": [
+    {
+      "query": "Did the context7 skill trigger on the right sessions, call its MCP, and improve the final answer?",
+      "should_trigger": true
+    },
+    {
+      "query": "Run current versus prior versus no-skill trials for chat-history using real prompts",
+      "should_trigger": true
+    },
+    {
+      "query": "Assemble case memos for every project-docs activation and have a separate agent synthesize the corpus",
+      "should_trigger": true
+    },
+    {
+      "query": "Rewrite the description of my existing deployment skill",
+      "should_trigger": false
+    },
+    {
+      "query": "Rotate the CI token in Doppler",
+      "should_trigger": false
+    }
+  ],
+  "held_out": [
+    {
+      "query": "Audit skill activation precision and missed triggers across every indexed harness",
+      "should_trigger": true
+    },
+    {
+      "query": "Install a skill from a GitHub repository",
+      "should_trigger": false
+    }
+  ]
+}

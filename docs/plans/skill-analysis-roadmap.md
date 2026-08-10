@@ -4,37 +4,42 @@ Status: deferred roadmap. No phase begins until its entry condition is satisfied
 
 ## Up Front
 
-- **What:** Extend the proven MVP to one additional skill problem at a time.
+- **What:** Extend the proven deployment-debrief method to one additional skill question at a time.
 - **Why:** Existing skills need evidence-backed trigger, instruction, and dependency fixes—not a
   speculative all-skill scoring platform.
-- **How:** Admit each new capability only after the prior phase produces a useful decision.
-- **Result:** A repeatable loop that finds one defect, makes the smallest skill change, adds a
-  regression, and verifies the change in later real use.
+- **How:** Admit each new capability only after the prior phase produces useful lessons grounded in
+  real deployments.
+- **Result:** A repeatable loop that understands how a skill is used, forms improvement hypotheses,
+  makes the smallest supported change, and learns from later real use.
 
 ## How We Will Improve Existing Skills
 
-1. Find a real repeated failure: overtrigger, missed trigger, ignored guidance, or unnecessary
-   secondary-skill handoff.
-2. Classify the repair surface: trigger description, skill body, dependency rule, or no skill defect.
-3. Change only that surface in `frozenSkillz`.
-4. Add the real prompt and expected behavior to the affected skill's regression cases.
-5. Run the case before and after the change when controlled comparison is warranted.
-6. Review the next real opportunities; keep the change only when field behavior improves without a
+1. Ask whether agents understood the skill, where it entered the work, what it appeared to change,
+   whether it helped or hurt, and what was missing, vague, or overspecific.
+2. Compare examples, counterexamples, owner corrections, and unresolved interpretations.
+3. Identify the repair surface: trigger description, skill body, example, dependency rule, or no
+   demonstrated skill defect.
+4. Change only that surface in `frozenSkillz`.
+5. Add the real prompt and expected behavior to the affected skill's regression cases.
+6. Run the case before and after the change when controlled comparison is warranted.
+7. Review the next real deployments; keep the change only when field behavior improves without a
    new regression.
 
 ## Purpose
 
-Extend the narrow `project-docs` trigger MVP only after it produces a trustworthy, useful verdict.
+Extend the narrow `project-docs` deployment-learning MVP only after it produces trustworthy, useful
+lessons.
 This document prevents later ideas from leaking back into the MVP.
 
-## Phase 1 — Complete the Trigger MVP
+## Phase 1 — Complete the Deployment-Learning MVP
 
 Source: `docs/plans/skill-analysis-mvp.md`.
 
 Exit condition:
 
-- a reviewable `project-docs` trigger verdict exists;
-- activation and opportunity denominators are explicit;
+- reviewable `project-docs` deployment debriefs and cross-case lessons exist;
+- activation and comparison-sample construction are explicit;
+- important interpretations cite their trajectory evidence;
 - detector limitations are understood; and
 - at least one real failure can become a regression case, or the result honestly says insufficient
   evidence.
@@ -52,7 +57,7 @@ Scope:
 - inspect only PDM-related sessions where both skills loaded, plus matched PDM sessions without a
   Doppler load;
 - distinguish direct credential/injection work from ordinary opaque-launcher use;
-- label justified handoff / unnecessary handoff / ambiguous; and
+- explain when the handoff appears useful, unnecessary, or unclear and why; and
 - propose only dependency and trigger changes.
 
 Still deferred:
@@ -78,8 +83,8 @@ Method:
 - compare current skill, proposed/prior skill, and no-skill conditions only when reproducible;
 - run three isolated trials per condition;
 - hold model, harness, tools, budget, and starting state constant;
-- grade trigger choice, independent task outcome, added cost, and high-severity harm; and
-- calibrate model grading against a human-reviewed subset.
+- compare trigger choice, independent task outcome, added cost, and high-severity harm; and
+- challenge evaluator interpretations against a human-reviewed subset.
 
 Do not build a generic replay platform first. Implement only what the selected case requires.
 
@@ -91,7 +96,7 @@ Exit condition:
 
 Candidate set:
 
-- `project-docs`: overtriggering;
+- `project-docs`: misunderstood purpose, intrusive deployment, or unclear guidance;
 - PDM → Doppler: unnecessary dependency chaining; and
 - `context7-mcp`: load without material tool use.
 
@@ -99,9 +104,9 @@ Only now generalize shared concepts:
 
 - activation-channel normalization;
 - task-use versus meta-use classification;
-- opportunity sampling;
-- compact label schema; and
-- trigger/body/lifecycle verdict format.
+- comparison sampling;
+- compact deployment-debrief format; and
+- trigger/body/example/handoff improvement-hypothesis format.
 
 Exit condition:
 
@@ -116,9 +121,9 @@ Entry condition:
 
 Compare pre-change and post-change cohorts for:
 
-- false positives;
-- missed triggers;
-- load-without-use;
+- intrusive or irrelevant deployments;
+- plausible missed opportunities;
+- loads with no observable effect;
 - unnecessary secondary skill loads; and
 - explicit owner corrections.
 
@@ -134,7 +139,7 @@ Exit condition:
 Entry conditions:
 
 - at least two manual analysis cycles were completed successfully;
-- extraction and labels remained stable across them; and
+- extraction and the deployment-debrief method remained usable across them; and
 - a human actually used the resulting review queue.
 
 Allowed automation:

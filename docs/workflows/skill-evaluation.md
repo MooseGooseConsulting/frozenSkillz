@@ -1,4 +1,4 @@
-# Skill Evaluation (Stress-Testing Existing Skills)
+# Skill Evaluation and Deployment Learning
 
 How to evaluate a skill this repository already owns (frozen, personal, or incubator). For
 evaluating *external* candidates before intake, use
@@ -30,6 +30,22 @@ Practitioner rules that apply directly:
   regression suite** and must keep passing on every future edit to that skill. Eval cases in
   `evals/cases/` are therefore permanent assets, not one-time scratch.
 
+## Choose the Depth That Matches the Question
+
+Two related activities live here:
+
+1. **Deployment learning** asks whether agents understood a skill, where it entered work, how it
+   appeared to help or hurt, and what was missing, vague, overspecific, or intrusive. Use the
+   personal `skill-analysis` skill. Build a candidate manifest, extract one trajectory per case
+   reader, and give a separate corpus reader the completed memos. The output is lessons and
+   improvement hypotheses, not mandatory labels or a lifecycle verdict.
+2. **Controlled lifecycle evaluation** tests a consequential trigger, behavior, promotion, or
+   removal decision. Use comparable trials, deterministic outcome checks where possible, and the
+   optional structured fields later in this document.
+
+Do not escalate deployment learning into controlled evaluation merely to make the result look more
+rigorous. Use replay or scoring only when the decision actually needs them.
+
 ## What This Process Must Distinguish
 
 An activation count is inventory, not effectiveness. A `SKILL.md` read can mean the skill was
@@ -37,7 +53,7 @@ invoked, inspected while editing it, loaded because another skill required it, o
 ignored. Likewise, a quiet next user message is not acceptance, and a green self-written test is
 not an owner-visible outcome.
 
-Evaluate the complete funnel instead:
+When a lifecycle claim depends on the complete funnel, distinguish:
 
 ```text
 eligible opportunity
@@ -47,8 +63,9 @@ eligible opportunity
   -> owner accepted, corrected, or gave no verdict
 ```
 
-Every evaluation must report each stage separately. Never substitute a later stage for an earlier
-one or infer acceptance from silence.
+Never substitute a later stage for an earlier one or infer acceptance from silence. During
+deployment learning, explore these as questions in the case debrief rather than forcing every
+trajectory into one value at every stage.
 
 ## Two Complementary Evidence Tracks
 
@@ -86,6 +103,9 @@ signal. A keep/remove or trigger-change verdict should normally use both.
 - **Cases and lifecycle decisions belong here.** `frozenSkillz` owns skill versions, controlled
   cases, regression status, and the tracker verdict.
 
+Invoke the personal `skill-analysis` skill for this cross-repository workflow. Do not recreate its
+AgentsView extraction or aggregate-analysis lane under `frozenSkillz`.
+
 Keep raw or sensitive trajectories outside git. Commit reproducible queries, compact labels,
 aggregate results, and the decision—not transcript dumps.
 
@@ -102,12 +122,15 @@ Do not run the full process on every skill every month:
 A narrow trigger wording fix backed by clear owner correction may not need a fleet-wide research
 project. It still needs its regression case and a later post-change field check.
 
-## Units and Labels
+## Case Memos and Optional Structured Fields
 
 The primary counting unit is one **session x skill**, not raw reads. Page-by-page reads and repeated
 loads in one session count once, with repetition recorded separately as a possible thrash signal.
 
-Record these fields for every reviewed episode:
+Deployment learning uses the open-ended one-case prompt in
+`_incubator/personal-skills/skill-analysis/references/deployment-debrief.md`; it does not require the
+table below. When a controlled evaluation needs comparable fields, use only the fields that serve
+the actual decision:
 
 | Field | Allowed values |
 |---|---|
@@ -144,7 +167,11 @@ Do not judge an old session against today's skill text unless the historical ver
 The rolling recent window is a drift detector, not the evaluation population. Monthly or
 August-only counts may identify what to inspect, but never support an effectiveness verdict alone.
 
-## End-to-End Method
+## Controlled Evaluation Method
+
+Use this full method for a controlled lifecycle question. For observational deployment learning,
+follow the manifest → one-case memo → separate corpus-reader workflow in `skill-analysis` and stop
+when it produces useful lessons or bounded improvement hypotheses.
 
 1. **Fingerprint the evaluated skill.** Record its source path and exact commit, package version,
    or content hash. Record the trigger text separately from the procedural body so the two can
@@ -209,7 +236,12 @@ versioned changes still require the paired evidence and an owner-visible decisio
 
 ## Minimum Effective Output
 
-An evaluation is complete only when it states:
+Deployment learning is complete when it records corpus coverage, individually extracted case memos,
+cross-case patterns and counterexamples, owner corrections, improvement hypotheses, and important
+unknowns. It does not need paired replay or lifecycle verdicts unless the requested decision depends
+on them.
+
+A controlled lifecycle evaluation is complete only when it states:
 
 - corpus coverage and blind spots;
 - activation detector and session x skill denominator;
@@ -221,4 +253,5 @@ An evaluation is complete only when it states:
 - separate trigger, behavior, and lifecycle verdicts;
 - exact skill version evaluated and the next recheck condition.
 
-Anything less is exploratory analysis and must be labeled as such.
+Anything less than the controlled list remains deployment learning or exploratory analysis; that is
+not a defect when it answers the question actually asked.

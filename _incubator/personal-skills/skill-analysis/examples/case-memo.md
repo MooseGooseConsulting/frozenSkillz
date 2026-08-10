@@ -1,0 +1,54 @@
+# Example Case Memo
+
+This example demonstrates source traceability plus open-ended reasoning. It is not a mandatory form.
+
+## Source
+
+- Session: `example-session-17`
+- Relevant window: user request through the next substantive owner response
+- Harness/date: example only
+- Skill identity: recoverable hash recorded by the run
+- User goal: update one repository README with a deployment note
+
+## Deployment
+
+The skill loaded before the agent inspected the repository's documentation. Its authority-document
+guidance was available before the agent proposed changing adjacent files.
+
+## Observed trajectory
+
+The agent opened the README, AGENTS.md, and architecture document. It then proposed a new README
+policy and changed AGENTS.md even though the user had requested only a README update. The owner
+rejected the invented policy and the expansion into AGENTS.md.
+
+## Debrief
+
+The skill appears intended to help agents author and reconcile authority-bearing documentation.
+That purpose is understandable, but this request concerned a bounded explanatory README edit.
+
+The skill may have encouraged the agent to inspect authority relationships, which could have been a
+useful precaution. In this trajectory, however, the agent converted that context into an invented
+policy and expanded the requested scope. The problem may be the trigger, the procedural body, the
+agent's independent overreach, or a combination.
+
+The directly observed harm is the unnecessary adjacent edit and explicit owner correction. It is
+not possible to establish from this trajectory alone whether the skill caused the overreach.
+
+Potential learning: retain permission to inspect relevant authority when needed, but make clearer
+that inspection does not authorize rewriting neighboring documents or assigning a purpose to a
+README.
+
+## Competing interpretation and unknowns
+
+The agent might have made the same scope expansion without the skill. The exact historical skill
+version and other active repository instructions must be checked before attributing the behavior.
+
+A useful next case would be another README-only request where the skill loaded but the agent kept the
+scope bounded, or a comparable request where the skill did not load.
+
+## Follow-up pointers
+
+- inspect the exact skill version;
+- find adjacent README-only deployments;
+- include the owner's correction in the corpus synthesis; and
+- do not convert this one case into a global trigger verdict.

@@ -1,0 +1,147 @@
+# Corpus Assembly
+
+## Why corpus assembly is a separate stage
+
+A deployment analysis fails before interpretation if the corpus is incomplete, silently biased, or
+too large for one agent to read carefully. Build the corpus in two levels:
+
+- the **candidate manifest** inventories everything detectable in scope;
+- the **analysis corpus** is the explicitly selected set that receives individual case extraction.
+
+Never call the analysis corpus complete unless it actually contains every in-scope candidate.
+
+## Pipeline
+
+```text
+AgentsView detection
+  -> deduplicated candidate manifest
+  -> declared analysis corpus
+  -> one trajectory per case reader
+  -> one case memo per selected trajectory
+  -> corpus completeness check
+  -> separate corpus synthesis
+  -> targeted gap fill, if needed
+```
+
+## 1. Build the candidate manifest
+
+Declare the source scope first: coverage dates, indexed harnesses, machines, providers, projects,
+and known blind spots. Inventory the subject skill's detectable activation channels before running
+the census, including canonical and distributed paths, named invocation events, injected skill text,
+and harness-specific load records when available.
+
+Use read-only AgentsView extraction. Normalize path variants and deduplicate repeated reads within
+one deployment episode while retaining repetition as a possible signal. A deployment episode is one
+substantive use of the skill for one request or task segment. Split two uses inside the same session
+when a new user request, continuation boundary, or clear re-entry creates a separate task context;
+record unresolved splits rather than hiding them inside a session-level count.
+
+The manifest carries administrative provenance, not evaluative conclusions:
+
+- session identifier;
+- harness, project, machine, and date when available;
+- detected activation channel and relevant turn neighborhood;
+- recoverable skill path/version/hash or `unknown`;
+- likely task-use, editing/inspection, meta-evaluation, or unresolved context;
+- candidate source or search neighborhood;
+- continuation or parent/child pointers;
+- extraction state; and
+- exclusion or blocking reason when applicable.
+
+Record coverage dates, indexed harnesses, missing providers, and detector limitations alongside the
+manifest.
+
+## 2. Declare the analysis corpus
+
+When the candidate set is tractable, extract every task-use deployment plus relevant adjacent
+no-deployment cases. When it is not tractable, declare a bounded corpus and explain how it was
+selected.
+
+Useful neighborhoods include:
+
+- explicit owner corrections;
+- direct skill invocation;
+- common activation request shapes;
+- unusual or high-cost deployments;
+- multiple harnesses and time periods;
+- requests before and after a skill version change;
+- adjacent tasks where the skill did not appear;
+- requests that challenge the current theory; and
+- a small random slice to expose blind spots.
+
+Select neighborhoods before deciding whether individual cases were good or bad. Do not search only
+for examples that support an overtriggering, usefulness, or failure theory.
+
+For adjacent no-deployment cases, declare the matching rule before interpretation. Useful matching
+dimensions include harness, time period, project, request shape, task stakes, and named document or
+tool. The rule may vary by neighborhood, but it must be visible enough to expose cherry-picking.
+
+## 3. Maintain a case queue
+
+Every selected manifest row must end in one administrative state:
+
+- `pending`;
+- `extracted`;
+- `excluded`, with reason; or
+- `blocked`, with the missing surface.
+
+These states prove corpus accounting only. They do not grade the skill.
+
+Process the queue in independent bounded assignments. Parallel execution is allowed for throughput,
+but each case reader receives one trajectory and produces one memo without seeing other cases or the
+emerging corpus conclusion.
+
+Independently double-read a case when its interpretation would drive a consequential skill change,
+when the first reader reports substantial ambiguity, or when the corpus reader identifies it as a
+key counterexample. Do not double-read an arbitrary quota merely to calculate agreement.
+
+## 4. Give each case reader a bounded source packet
+
+Include only:
+
+- the exact skill version when recoverable;
+- the user request;
+- the skill activation neighborhood;
+- actions and tool results relevant to the skill;
+- the owner-visible result;
+- the next substantive owner response; and
+- stable source identifiers.
+
+Do not provide the leading theory, expected label, other case memos, or desired skill change. If the
+trajectory is too large, localize the relevant turn window first rather than asking the reader to
+skim the whole session.
+
+Use the prompt and rationale in [deployment-debrief.md](deployment-debrief.md).
+
+## 5. Assemble before synthesis
+
+Do not synthesize while selected cases remain silently unread. Before corpus review:
+
+- reconcile the analysis-corpus list against the case-memo set;
+- account for every exclusion and block;
+- confirm no case memo accidentally covers multiple deployments;
+- preserve source pointers for later challenge;
+- keep raw or sensitive transcript material outside git; and
+- publish only compact derived material appropriate for the repository.
+
+## 6. Let synthesis request gap filling
+
+The corpus reader may identify a missing harness, request shape, counterexample, version, or owner
+response. Convert that request into new manifest rows or select existing ones, then send each through
+the same one-case extraction path. Do not let the corpus reader improvise a case interpretation from
+manifest metadata alone.
+
+## Scaling guidance
+
+For dozens or hundreds of candidates:
+
+- batch queue administration, not human reasoning;
+- keep one-trajectory isolation for each case reader;
+- use multiple independent readers only for throughput;
+- checkpoint completed memos and coverage after each batch;
+- let a separate agent synthesize the assembled memos;
+- resynthesize after material gap filling; and
+- distinguish population counts from findings in the reviewed corpus.
+
+The purpose of the structure is not ceremony. It prevents context overload, uneven skimming, theory
+leakage, and the loss of individual deployments inside an aggregate narrative.

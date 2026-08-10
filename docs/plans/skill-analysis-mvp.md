@@ -1,36 +1,45 @@
-# Plan: Skill Analysis MVP — `project-docs` Trigger Precision
+# Plan: Skill Analysis MVP — `project-docs` Deployment Learning Pilot
 
 Status: proposed; not started.
 
 ## Up Front
 
-- **What:** Determine whether `project-docs` fires for the right requests and stays quiet for the
-  wrong ones.
-- **Why:** Unnecessary loads add context and can take over ordinary README, documentation, status,
-  or operational work.
-- **How:** Compare real fired sessions with similar no-fire requests, label the trigger decision and
-  observed use, then make one trigger verdict.
-- **Result:** Keep, narrow, or broaden the trigger—with real failure prompts added as regressions.
+- **What:** Learn whether agents understand what `project-docs` is for, where it enters real work,
+  what it changes, when it helps or hurts, and what its instructions are missing.
+- **Why:** Activation counts cannot tell us whether the skill was understood, useful, intrusive,
+  vague, overspecific, or irrelevant to the task.
+- **How:** Give an evaluator the skill, the user request, and a bounded work trajectory. Ask an
+  open-ended deployment debrief, then compare examples, counterexamples, and recurring themes.
+- **Result:** A short set of evidence-backed lessons and improvement hypotheses for the trigger,
+  body, examples, or handoffs—not a compliance score.
 
 ## How This Improves the Existing Skill
 
-- False positive → narrow the description and add the real prompt as a negative trigger case.
-- False negative → broaden the description and add the real prompt as a positive trigger case.
-- Correct activation but ignored guidance → revise the skill body, not the trigger.
-- Correct and useful activation → preserve the behavior as a regression.
-- Ambiguous or weak evidence → make no skill change and report what evidence is missing.
+- Agents misunderstand the purpose → rewrite the purpose, trigger description, or examples.
+- The skill repeatedly enters work where it distracts or takes over → narrow or clarify its
+  trigger and add those real requests as regressions.
+- The skill is absent from work where its guidance would plausibly help → investigate whether the
+  trigger is too narrow; do not assume a missed activation from topic similarity alone.
+- Guidance helps agents make better choices → preserve the useful clause and the example that
+  demonstrates it.
+- Guidance is loaded but unused, harmful, too vague, or too specific → revise the body at the
+  point of failure rather than treating every problem as a trigger defect.
+- The skill creates an unnecessary handoff to another skill → repair that boundary directly.
+- Evidence supports competing interpretations → keep both interpretations visible and identify
+  what another example or controlled comparison would teach us.
 - After a change → rerun the regression and inspect the next real `project-docs` opportunities
   before claiming improvement.
 
 ## Goal
 
-Prove that `skill-analysis` can answer one useful question:
+Use `skill-analysis` to answer one practical set of questions:
 
-> Does `project-docs` activate for the right requests, especially authority-document work, while
-> staying quiet for README edits, ordinary documentation, status checks, and operational tasks?
+> Do agents understand what `project-docs` is supposed to accomplish? Where has it been deployed?
+> What did it appear to change? Did it help, hurt, or do nothing observable? What is missing, too
+> vague, or too specific?
 
-This MVP evaluates trigger appropriateness. It does not attempt to prove the causal value of the
-whole skill, grade every skill, or build recurring automation.
+This MVP is a learning exercise about one skill in real use. It does not grade every skill, pretend
+an evaluator has ground truth, or build recurring automation.
 
 ## Why the Earlier Scope Was Too Large
 
@@ -67,17 +76,28 @@ Those are possible later capabilities. Requiring all of them before answering wh
   - normalized installed-`SKILL.md` reads for Codex.
 - Deduplication to one session x skill activation.
 - Separation of task use from skill editing, inspection, and meta-evaluation.
-- A bounded transcript sample:
-  - every explicit owner correction found for `project-docs`;
-  - up to 25 fired sessions, stratified across harness and time; and
-  - up to 25 comparable no-fire documentation requests.
-- Five labels per reviewed session:
-  - should `project-docs` have activated? yes / no / ambiguous;
-  - did it activate? yes / no / uncertain;
-  - did its guidance materially affect behavior? yes / no / indeterminate;
-  - owner response: accepted / corrected / no verdict; and
-  - failure class: false positive / false negative / ignored load / useful / unrelated.
-- A trigger verdict: keep / narrow / broaden / insufficient evidence.
+- A complete candidate manifest followed by a declared analysis corpus. Review all task-use
+  deployments when tractable; otherwise select a varied corpus across harness, time, request shape,
+  owner corrections, adjacent no-deployment work, and theory-challenging examples.
+- One independently extracted case memo for every selected trajectory before corpus synthesis.
+- An open-ended deployment debrief for each reviewed trajectory.
+- A cross-case synthesis of recurring strengths, failure shapes, counterexamples, improvement
+  hypotheses, supporting evidence, and unresolved questions.
+- Descriptive counts only when they illuminate the observed corpus. No score or mandatory verdict
+  is required.
+
+## Method Source
+
+Do not duplicate the analysis manual in this plan. The pilot uses the progressively disclosed
+`skill-analysis` resources:
+
+- `references/purpose-and-outcomes.md` for the learning contract;
+- `references/corpus-assembly.md` for manifest, corpus, case-reader, and gap-fill mechanics;
+- `references/deployment-debrief.md` for the one-trajectory prompt and its rationale; and
+- `references/synthesis-and-interpretation.md` for the separate corpus-reader pass.
+
+The plan defines this pilot's scope and stop conditions. The skill references define the reusable
+method.
 
 ## Explicitly Out of Scope
 
@@ -110,47 +130,74 @@ Output: a short run header with subject identity and corpus coverage.
 - Mark editing/inspection/meta sessions separately from task use.
 - Reconcile counts against known July results where the corpus overlaps.
 
-Output: a compact machine-readable activation table in `agent-control-plane` or a temporary run
-directory, plus the reproducible query/tool.
+Output: a complete candidate manifest with one row per deduplicated session x skill deployment,
+plus the reproducible query/tool. The manifest is an inventory and navigation surface, not a set of
+conclusions.
 
-### 3. Produce the opportunity sample
+### 3. Produce a comparison sample
 
-- Search real user requests for authority-document work and nearby negative cases.
-- Match no-fire requests by harness and approximate time when possible.
+- Retrieve request neighborhoods before interpretation:
+  1. explicit authority-document terminology;
+  2. README/docs edits;
+  3. status or information requests;
+  4. operational tasks involving docs incidentally;
+  5. requests near known owner corrections; and
+  6. a small random documentation-oriented sample.
+- Match no-fire requests by harness and approximate time when possible, but do not construct the
+  sample from requests the evaluator already assumes represent a failure.
 - Do not classify every historical documentation request.
-- Preserve `ambiguous` rather than forcing a yes/no label.
+- Keep requests whose relevance is unclear; boundary uncertainty is itself useful evidence.
 
-Output: at most 50 sampled session identifiers plus all discovered explicit corrections.
+Output: the declared analysis-corpus identifiers, selection rationale, and all discovered explicit
+corrections relevant to the pilot.
 
-### 4. Label bounded trajectories
+Every selected row is tracked as `pending`, `extracted`, `excluded` with a reason, or `blocked`.
+The sample is the declared analysis corpus; reports must distinguish it from the complete candidate
+manifest.
 
-- Read only the request, activation window, materially relevant actions, observable result, and
-  next substantive owner response.
-- Use a second independent reviewer for at least ten mixed cases.
-- Compare reviewer labels; route consequential disagreements to the owner instead of averaging.
-- Treat owner silence as `no verdict`.
+### 4. Extract and debrief one trajectory at a time
 
-Output: compact labels and a disagreement list in `agent-control-plane`.
+- Give each case reader exactly one selected session and its bounded request-to-response window.
+- Include the recoverable skill version, but no other case memos or cross-case theory.
+- Ask the deployment-debrief questions as a coherent review, not a form to complete mechanically.
+- Require one compact memo containing source identifiers, user goal, deployment point, directly
+  observed actions/result/owner response, the open-ended debrief, competing interpretations,
+  unknowns, and follow-up pointers.
+- Complete or explicitly exclude every selected row before synthesis. Do not ask one agent to read
+  or remember the whole raw corpus.
+- Treat owner silence as unknown, not acceptance.
 
-### 5. Decide only the trigger question
+Output: one case memo per selected trajectory in a temporary run directory; only compact,
+non-sensitive derived memos are candidates for `agent-control-plane`.
 
-- Report counts and explicit sample sizes for true positives, true negatives, false positives,
-  false negatives, ambiguous cases, and meta-use exclusions.
-- Do not publish a percentage without its numerator, denominator, and sampling method.
-- State whether the evidence supports keeping, narrowing, or broadening the trigger.
-- Convert confirmed false positives and false negatives into candidate trigger cases.
+### 5. Give the assembled corpus to a separate synthesis agent
+
+- Give the synthesis agent the candidate-manifest summary, completed case memos, and coverage notes;
+  do not give it hundreds of raw transcripts.
+- Group recurring themes without erasing counterexamples.
+- Explain what agents understood about the skill, where it was deployed, how it appeared to affect
+  the work, and what seems missing, vague, overspecific, helpful, or harmful.
+- Use counts only as descriptions of the reviewed sample and always state how the sample was built.
+- Propose the smallest trigger, body, example, or handoff changes supported by the trajectories.
+- Convert strong real examples into candidate regressions, including examples that should continue
+  to work and examples that expose a problem.
+- State what remains unknown and what next observation would be most informative.
+- If a coverage gap matters, send the requested session back through the one-trajectory case-reader
+  step and then resynthesize.
+- Give a second reviewer only the memos and source windows behind consequential proposed changes.
+  Treat disagreement as another interpretation to investigate rather than a grading error.
 
 Output in `agent-control-plane`:
 
 - reproducible extraction logic;
-- compact labels and coverage limitations; and
-- the analysis conclusion.
+- compact deployment debriefs and coverage limitations; and
+- the cross-case lessons and improvement hypotheses.
 
 Conditional output in `frozenSkillz` only if evidence supports a change:
 
 - `project-docs` trigger wording;
 - positive and negative trigger cases;
-- tracker verdict; and
+- tracker learning/status update; and
 - one regression case tied to the real failure.
 
 ## Verification
@@ -158,18 +205,20 @@ Conditional output in `frozenSkillz` only if evidence supports a change:
 - The extractor opens AgentsView read-only and performs no sync, import, recall, or prune action.
 - Session x skill counts do not inflate repeated reads.
 - Meta/evaluation sessions are excluded from task-use rates.
-- At least ten mixed cases receive independent labels.
-- Every reported rate includes its denominator and sampling stratum.
-- Any skill change is traceable to confirmed cases, not aggregate health or sentiment proxies.
+- A second reviewer challenges the examples most likely to drive a change, when such examples exist.
+- Every important finding is traceable to reviewed trajectories rather than aggregate health or
+  sentiment proxies.
+- The synthesis preserves counterexamples, unknowns, and reviewer disagreement.
+- Any reported rate includes its denominator and sampling stratum.
 - Repository validation passes after any frozenSkillz change.
 
 ## Stop Conditions
 
-- Stop with `insufficient evidence` if fewer than ten task-use fires or ten usable no-fire
-  opportunities can be recovered.
+- Do not force a skill change when the trajectories support competing explanations or too little
+  variation. Report what was learned and what remains unresolved.
 - Stop and fix the detector if overlapping July counts cannot be reconciled within explained corpus
   or normalization differences.
 - Do not assign a historical version when only the current text is known.
 - Do not proceed into causal-effectiveness claims or other skills during this plan.
-- Complete the MVP when the `project-docs` trigger verdict and its limitations are reviewable;
-  automation is not part of completion.
+- Complete the MVP when the deployment debriefs and cross-case lessons answer the core questions
+  and any proposed skill change is grounded in real examples; automation is not part of completion.

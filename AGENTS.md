@@ -12,6 +12,7 @@ This file is only an entrypoint. Repository policy and procedures live in the do
 | Change machine-global Codex prompts or custom agents | `docs/workflows/codex-global-config.md`, then `config/codex/global/` |
 | Evaluate or import an external skill, plugin, agent, or repository | `plugins/frozen-skills/skills/external-skill-intake/SKILL.md`, then `docs/workflows/external-skill-intake.md` |
 | Stress-test or evaluate an existing repo-owned skill | `docs/rubrics.md` (philosophy), then `docs/workflows/skill-evaluation.md` and `evals/cases/` |
+| Learn how skills are understood and deployed in real work | Invoke `skill-analysis`; build manifests, one-trajectory case memos, and corpus lessons in `agent-control-plane`, then return only supported skill/case/tracker changes here |
 | Work on a specific active skill | Its `SKILL.md` under `plugins/` and any references it routes to |
 | Update marketplace or plugin metadata | The affected root marketplace catalog and package-native manifest under `plugins/` |
 | Run repository validation | `README.md` → **Validation** |

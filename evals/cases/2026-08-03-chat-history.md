@@ -60,7 +60,7 @@ Scored per trial; **at least 3 trials per scenario** per scoring event
 | 4 | Localization artifact contains a complete candidate map (source/session id, project+date, relevance rationale, regions, size, continuations, coverage gaps) |
 | 5 | Routing followed the decision tree (indexed search first; no raw-transcript grepping as first move; provider matched to clue type) |
 | 6 | Coverage gaps and uncertainty recorded honestly (unavailable providers named, not silently skipped) |
-| 7 | ANALYZE re-dispatched to the same worker, which retained localization context |
+| 7 | ANALYZE resumed the localization worker when available; otherwise a replacement received the saved localization artifact and exact bounded source pointers |
 | 8 | Semantic false positives were caught and excluded |
 
 ### Layer 2 — qualitative review (per scenario)

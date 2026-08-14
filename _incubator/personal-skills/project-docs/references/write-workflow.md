@@ -90,7 +90,7 @@ last_confirmed: [today]
 | NORTH_STAR.md | `docs/NORTH_STAR.md` or root `NORTH_STAR.md` |
 | architecture.md | `docs/architecture.md` or root `architecture.md` |
 | AGENTS.md | Root `AGENTS.md` (always) |
-| CLAUDE.md | Root stub: one-line pointer to AGENTS |
+| CLAUDE.md | Root stub: one-line pointer to AGENTS (skip if declared an authority doc) |
 
 When a declared stack exists, its declared paths and roles control; do not create or rename the
 default files merely to conform to this table.

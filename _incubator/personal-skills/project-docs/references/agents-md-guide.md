@@ -27,7 +27,7 @@ declared stack with this default during a migration.
 
 - Bare paths (`See architecture.md`) are instructions; the agent Reads them only when needed.
 - Do not put `@` references inside AGENTS.md to architecture, plans, decisions, or components — that defeats the router by eager-loading everything.
-- `CLAUDE.md` is a one-line pointer to AGENTS only (see Compatibility). The declared intent document (default: NORTH_STAR) is reached because AGENTS’s first line routes to it.
+- `CLAUDE.md` is a one-line pointer to AGENTS only (see Compatibility), unless the repository's declared stack gives it an authority role — then preserve that role. The declared intent document (default: NORTH_STAR) is reached because AGENTS’s first line routes to it.
 
 ## The 60-Line Cap
 
@@ -165,7 +165,8 @@ Bad: “Be thoughtful.”
 
 ## Compatibility
 
-CLAUDE.md must be a one-line pointer to AGENTS. Examples of valid stubs:
+CLAUDE.md must be a one-line pointer to AGENTS **unless the repository explicitly declares it an
+authority document**, in which case leave it as declared. Examples of valid stubs:
 
 ```
 @AGENTS.md

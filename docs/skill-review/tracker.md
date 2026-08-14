@@ -26,6 +26,7 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `stacked-pr-workflow` | gated | Run the 7 PowerShell helpers or cut it. |
 | `skill-manager` | gated | Verify `skills.sh` registry assumptions or cut it. |
 | `session-skill-inferencer` | gated | Produced junk auto-skills in May; fix generation quality or cut. |
+| `unifi-udm-access` | gated | New 2026-08-13. Surface routing verified live against UniFi Network 10.6.94 / UniFi OS 5.1.27; `scripts/udmssh.py` run end-to-end (reads succeed, exit codes propagate). Before promotion: re-verify the endpoint inventory on a second console and a different Network version, since the Legacy API carries no version contract; confirm the write guidance (`rest/*` PUT replaces the whole object) against an actual round-trip rather than inference. |
 | `icepanel-api` | gated | Closest to ready: live-validate diagram push, diff hand-transcribed schemas against live OpenAPI, trim description to ~300 chars, rebalance content per owner (less phase-gate execution, more creativity). |
 
 ## Personal lane

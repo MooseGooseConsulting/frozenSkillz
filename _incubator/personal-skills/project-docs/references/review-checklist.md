@@ -14,7 +14,7 @@ declares a nonstandard stack, review its declared roles and routes through
 | NORTH_STAR.md | `north-star-guide.md` |
 | architecture.md | `architecture-md-guide.md` |
 | AGENTS.md | `agents-md-guide.md` — pure router, 60-line cap, bare paths, no PROGRESS/history routes |
-| CLAUDE.md | One-line pointer to AGENTS only |
+| CLAUDE.md | One-line pointer to AGENTS only, unless declared an authority document |
 | Legacy PROGRESS.md | `progress-md-guide.md` — migrate away; do not refresh as living handoff |
 | Plans / Issues usage | `current-work-and-lifecycle.md` |
 
@@ -27,7 +27,7 @@ declares a nonstandard stack, review its declared roles and routes through
 **Structural** — wrong agent behavior:
 - Fabricated constraints
 - AGENTS inlining doctrine / over 60 lines / `@` inside AGENTS
-- CLAUDE.md with prose or multi-file doctrine
+- CLAUDE.md with prose or multi-file doctrine (not a defect when the repository declares CLAUDE.md an authority document)
 - New PROGRESS.md or recommended `docs/history/` roll-off
 - Unlabeled aspiration in architecture.md
 

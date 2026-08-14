@@ -44,6 +44,12 @@ and stops. Project identity lives in the declared intent document (default:
 NORTH_STAR); do not restate it in AGENTS. CLAUDE.md is a one-line pointer to
 AGENTS.md — no second doctrine file.
 
+That last rule is the default, not an override of the owner. If the repository
+explicitly assigns CLAUDE.md an authority role in its declared stack, preserve
+that role and route to it; do not rewrite a declared authority document down to
+a stub. Reconciling or auditing such a repository means reporting against the
+stack it declares, not the default one.
+
 Authority flows one direction. When a downstream doc disagrees with an
 upstream doc, the downstream doc is wrong until the owner revises upstream
 on purpose.

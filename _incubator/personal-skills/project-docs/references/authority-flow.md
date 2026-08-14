@@ -55,7 +55,7 @@ inventory. The default pairs below apply only when the default topology does.
 | Issues/plans vs architecture.md | Does active work match Current/Planned labels? | Plan builds something architecture marks Deferred; or treats Planned as Current. |
 | Issues/plans vs NORTH_STAR.md | Is the project drifting from goals / anti-goals / pillars? | Active work pursues a banned intent. |
 | AGENTS.md vs everything | Does the router route correctly without absorbing doctrine? | Inlined content; missing routes; routes to PROGRESS or `docs/history/`. |
-| CLAUDE.md vs AGENTS.md | Is CLAUDE.md a one-line pointer to AGENTS? | Prose, headers, duplicated doctrine, or extra `@` targets. |
+| CLAUDE.md vs AGENTS.md | Is CLAUDE.md a one-line pointer to AGENTS, or declared an authority doc? | Prose, headers, duplicated doctrine, or extra `@` targets. |
 
 ---
 

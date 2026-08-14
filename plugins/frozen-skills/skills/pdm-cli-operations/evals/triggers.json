@@ -35,7 +35,15 @@
       "should_trigger": true
     },
     {
+      "query": "This Windows homelab has fixed just pdm-* reads through a pinned direct HTTPS adapter. Use that path without sending the request through Hermes or SSH.",
+      "should_trigger": true
+    },
+    {
       "query": "Use the trusted repo PDM launcher to read VM 260 config; its credentials stay opaque",
+      "should_trigger": true
+    },
+    {
+      "query": "Use the raw PDM 1.1.6 client with an independently verified cache pin and fingerprint on every command",
       "should_trigger": true
     },
     {
@@ -77,6 +85,10 @@
       "should_trigger": true
     },
     {
+      "query": "The installed PDM client major version differs from the server; stop before a capability probe and route the incompatibility",
+      "should_trigger": true
+    },
+    {
       "query": "What is the pvesh endpoint for listing local ZFS pools on this node?",
       "should_trigger": false
     },
@@ -96,6 +108,10 @@
     },
     {
       "query": "PDM can see the guest but has no command for the granular change I need; verify the capability boundary and hand off to native Proxmox",
+      "should_trigger": true
+    },
+    {
+      "query": "A PDM task reports stopped but has no exitstatus. Treat its outcome as indeterminate before considering another mutation",
       "should_trigger": true
     },
     {

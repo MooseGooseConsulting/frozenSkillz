@@ -1,28 +1,54 @@
 ---
 name: project-docs
 description: >
-  Create, review, reconcile, and migrate project authority docs
-  (NORTH_STAR, architecture, AGENTS) plus living overflow. Prefer
-  Issues/docs/plans for current work; promote then delete temporary
-  docs. No PROGRESS.md or docs/history/. Trigger on bootstrap, audit,
-  CLAUDE→AGENTS migration, or authority-stack repair.
+  Create, review, or repair project authority docs only when explicitly asked to
+  author, rewrite, critique, migrate, reconcile, or audit NORTH_STAR.md,
+  architecture.md, AGENTS.md, CLAUDE.md routing, legacy PROGRESS.md, or another
+  explicitly declared authority document. Do not use for ordinary repo work,
+  README edits, status checks, or incidental doc mentions.
 ---
 
 # Project Docs Authoring
 
+## Trigger Gate
+
+Use this skill only when the requested deliverable is an authority-document draft,
+edit, review/critique, migration, reconciliation, or documentation-authority audit.
+The authority document may be a nonstandard file only when the repository or owner
+explicitly declares it as part of the authority stack. A nonstandard filename or a
+nearby documentation change alone does not qualify. An explicit request to use
+`project-docs` also qualifies.
+
+Do not load it for general repository review, conversation completeness checks,
+implementation work, operational configuration, a README-only change, or merely
+because the repository contains AGENTS.md or other documentation. If documentation
+changes are incidental to another task, follow the owning task or skill.
+
 <context>
-Authority hierarchy (no status diary in the ladder):
+Default authority hierarchy when the repository has no declared stack (no status diary in the
+ladder):
 
 NORTH_STAR (intent) → architecture (technical strategy and shape) →
 AGENTS (thin router). Current work lives in GitHub Issues and/or
 `docs/plans/`. Finished work is promoted into living homes, then the
 temporary file is deleted. Git / tags / PRs are the archive.
 
+When the repository or owner declares a different authority stack, inventory and
+follow that stack instead. A declared nonstandard authority document can be the
+requested authoring, review/critique, migration, reconciliation, or audit
+deliverable; ordinary documentation remains outside this skill.
+
 AGENTS.md is a pure router, not a container. It states authority order,
 routes each task category to the doc that owns it, lists real commands,
-and stops. Project identity lives in NORTH_STAR; do not restate it in
-AGENTS. CLAUDE.md is a one-line pointer to AGENTS.md — no second doctrine
-file.
+and stops. Project identity lives in the declared intent document (default:
+NORTH_STAR); do not restate it in AGENTS. CLAUDE.md is a one-line pointer to
+AGENTS.md — no second doctrine file.
+
+That last rule is the default, not an override of the owner. If the repository
+explicitly assigns CLAUDE.md an authority role in its declared stack, preserve
+that role and route to it; do not rewrite a declared authority document down to
+a stub. Reconciling or auditing such a repository means reporting against the
+stack it declares, not the default one.
 
 Authority flows one direction. When a downstream doc disagrees with an
 upstream doc, the downstream doc is wrong until the owner revises upstream
@@ -30,6 +56,11 @@ on purpose.
 
 This skill drafts, reviews, reconciles, and migrates. It does not block
 PRs, run CI, or assign Guardian severities.
+
+Owner statements establish intent and requirements. Tests, measurements, and
+live probes establish technical or runtime evidence. Migration provenance is
+not automatically durable product intent, and a plan is not implementation.
+Do not blur these categories merely to fit a preferred document shape.
 </context>
 
 <task_router>
@@ -61,7 +92,7 @@ Infrastructure / GitOps parallel set: `examples/infra/`.
 
 <scope>
 
-Primary documents:
+Default authority documents when no stack is declared:
 - `NORTH_STAR.md` — intent, goals, anti-goals, pillars
 - `architecture.md` — technical strategy, system shape, invariants
 - `AGENTS.md` — agent entrypoint and operating contract (router only)
@@ -81,16 +112,46 @@ Documentation lives in the authority docs and living overflow homes.
 Implementation directories hold implementation, not prose — a one-line pointer
 is the only exception.
 
+README.md is outside this authority hierarchy. This skill does not assign README a
+purpose, require it to point to AGENTS.md, or reduce it to a title. Only change a
+README when the user explicitly includes it in the requested documentation scope.
+
 The skill does NOT create or rewrite docs unless the user asks. Neighboring
 docs are never silently rewritten as a side effect of working on one doc.
 
+Derive topology from the repository's declared authority and the owner's
+explicit decisions before applying these defaults. Do not create a competing
+router or reinterpret an existing file's purpose without authorization.
+
+Before proposing a topology change, identify the existing authority owner and
+ask only about an ambiguity that the request does not resolve. A request to
+move authority away from one document does not assign a purpose to another
+document by implication.
+
 </scope>
+
+<smallest_change>
+
+Make the smallest authority change that satisfies the requested deliverable,
+reconcile only directly affected downstream text, and stop.
+
+Do not infer directory renames, new schemas, auditors, CI gates, lifecycle
+systems, enforcement tooling, or PR decomposition. If the request reveals one
+of those as a separate need, name it as unresolved; do not build it unless the
+user explicitly asks.
+
+Report a draft or recommendation as proposed. Report an edited worktree,
+commit, pushed branch, open PR, and merged change as distinct states. An owner
+correction is evidence about the request; it is not acceptance of the repair.
+
+</smallest_change>
 
 <minimum_viable_stack>
 
-Do not create every primary document merely to satisfy the pattern.
+Do not create every default primary document merely to satisfy the pattern. Use this
+default only when the repository has no declared authority stack.
 
-- `AGENTS.md` is always recommended.
+- `AGENTS.md` is recommended for a repository that has no declared stack.
 - `NORTH_STAR.md` when intent is non-obvious or drift-prone.
 - `architecture.md` when technical shape is complex enough to go stale.
 - Current work: Issues and/or `docs/plans/` — not a fourth primary doc.

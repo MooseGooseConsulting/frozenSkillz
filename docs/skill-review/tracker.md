@@ -12,10 +12,10 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 |---|---|---|
 | `agent-github-identity` | active | None — mechanism proved end-to-end 2026-08-10 through two agent products (bot-attributed commit, pull request, and issue comment each verified via the API). Carries mechanism only; agent roster, App IDs, and helper paths stay in the consuming environment's operational repository. Per-product wiring documents only the two surfaces actually verified and gives a procedure for the rest rather than guessing config keys. |
 | `delegation-contract` | active | None — adapted doctrine validated for contract compliance and single-writer coordination; outcome-quality evidence remains intentionally limited to the recorded n=1 eval. |
-| `doppler` | active | Verify content is still current (owner 2026-07-31); otherwise reference standard. |
+| `doppler` | active | Trigger narrowed 2026-08-10 to direct secret/injection work; opaque authentication through a trusted client or launcher is a non-trigger. |
 | `external-skill-intake` | active | None. |
 | `omc-reference` | active | None. |
-| `pdm-cli-operations` | active | None — live-qualified 2026-07-20. |
+| `pdm-cli-operations` | active | Live-qualified 2026-07-20; 2026-08-10 removed mandatory Doppler handoff for trusted launchers with opaque authentication. |
 | `codex-thread-organizer` | active | Codex-only dedicated package; direct-rename contract (invocation = authorization; proposal gate removed 2026-07-31). Scope is the whole Codex-app sidebar: every conversation kind is inventoried and classified `title-mutable` / `not title-mutable`, and only the mutable ones are renamed. |
 | `skill-injector` | registered, dormant/untested | Qualify end-to-end or de-register; internal rename from skill-classifier unfinished. |
 | `plugin-authoring-guide` | gated | Rework; re-verify against current Claude Code docs. |
@@ -26,6 +26,7 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `stacked-pr-workflow` | gated | Run the 7 PowerShell helpers or cut it. |
 | `skill-manager` | gated | Verify `skills.sh` registry assumptions or cut it. |
 | `session-skill-inferencer` | gated | Produced junk auto-skills in May; fix generation quality or cut. |
+| `unifi-udm-access` | gated | New 2026-08-13. Surface routing verified live against UniFi Network 10.6.94 / UniFi OS 5.1.27; `scripts/udmssh.py` run end-to-end (reads succeed, exit codes propagate). Before promotion: re-verify the endpoint inventory on a second console and a different Network version, since the Legacy API carries no version contract; confirm the write guidance (`rest/*` PUT replaces the whole object) against an actual round-trip rather than inference. |
 | `icepanel-api` | gated | Closest to ready: live-validate diagram push, diff hand-transcribed schemas against live OpenAPI, trim description to ~300 chars, rebalance content per owner (less phase-gate execution, more creativity). |
 
 ## Personal lane
@@ -36,8 +37,8 @@ de-personalized.
 | Skill | Next action |
 |---|---|
 | `chat-history` | Current personal skill; staged semantic-localization router implemented 2026-08-03. One or two `chat_history_researcher` workers localize through KCap, AgentsView, and Pieces, return brief candidate maps, then resume for bounded analysis written to temporary Markdown artifacts. Live copy synchronized; custom-agent profile uses Luna/high/fast and the reviewed global-config lane. Exact named-agent activation, installed-skill loading, and temporary-artifact writing passed on Codex CLI 0.146.0; forward-test a real two-stage retrieval before promotion. |
-| `retrospective` | Revived 2026-07-31 (owner overruled deletion — key skill): timeline script now covers all harnesses via AgentsView `--db` mode; needs trigger decision (see SKILL.md Triggering); then de-personalize. |
-| `project-docs` | Gated pending de-personalization. |
+| `retrospective` | Revived 2026-07-31 (owner overruled deletion — key skill): timeline script now covers all harnesses via AgentsView `--db` mode. Trigger settled 2026-08-03: manual `/retrospective` invocation, since the Letta Session Reviewer that would have fired it was decommissioned; revisit only if an owner-configured Letta replacement is built. Remaining before promotion: de-personalize. |
+| `project-docs` | Gated pending de-personalization; trigger narrowed 2026-08-10 to explicit authority-document deliverables, with README/repo/status/operational negatives. |
 | `skill-analysis` | New live personal skill with an exact incubator mirror. Thin `SKILL.md` routes to purpose, corpus assembly, one-trajectory debrief, synthesis, and examples. Clean-room routing passed, followed by the first historical study: 545 `project-docs` candidate episodes across 291 sessions (543 observed activations plus 2 explicit no-load cases), 24 selected trajectories with one retrieval gap, and all 18 PDM-centered episodes. Separate memo-only synthesis informed narrow wording changes. AgentsView extraction and findings live in `agent-control-plane`; skill text and distribution stay here. |
 | `skill-install` | Verify recipes. |
 | `run-opencode` | Fix driver.mjs header comment re: profile writes. |

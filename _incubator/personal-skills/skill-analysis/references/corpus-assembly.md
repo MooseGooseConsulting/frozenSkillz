@@ -8,7 +8,18 @@ too large for one agent to read carefully. Build the corpus in two levels:
 - the **candidate manifest** inventories everything detectable in scope;
 - the **analysis corpus** is the explicitly selected set that receives individual case extraction.
 
-Never call the analysis corpus complete unless it actually contains every in-scope candidate.
+These carry two different completeness claims, and conflating them is how a bounded study starts
+reading as a census:
+
+- **Corpus accounting** — every trajectory in the declared analysis corpus has a case memo or a
+  recorded block. This is what the corpus completeness check verifies, and a bounded corpus can
+  pass it.
+- **Population coverage** — the analysis corpus contains every in-scope candidate in the manifest.
+  Only claim this when the numbers actually match.
+
+Deliberately bounding the corpus below the candidate population is expected when the population is
+too large to read carefully. State the bound and its selection rule; never report an accounted
+corpus as though it covered the population.
 
 Do not turn transcript discovery into an infrastructure repair project. If semantic search is
 unavailable, startup synchronization is incomplete, or a configured store has an incompatible

@@ -1,4 +1,4 @@
 interface:
   display_name: "Doppler"
   short_description: "Manage secrets with the Doppler CLI when the current task requires a credential action"
-  default_prompt: "Use $doppler when the current task requires retrieving, injecting, setting, rotating, verifying, or names-only-checking a credential with the Doppler CLI, whether the user asked for that or the task itself led there. Do not use it merely because secrets, tokens, API keys, or .env files appear in context."
+  default_prompt: "Use $doppler when the current task requires retrieving, injecting, setting, rotating, verifying, or names-only-checking a credential with the Doppler CLI. Do not use it merely because secrets appear in context or a trusted opaque client has an authentication failure."

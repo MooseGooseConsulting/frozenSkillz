@@ -17,19 +17,9 @@ Run at end of coding sessions to capture learnings before context is lost. Invok
 
 ## Triggering
 
-The known failure mode was forgetting to run this at all. **Settled 2026-07-31 (owner):
-the Letta Session Reviewer runs it** — no human in the trigger loop. The nightly
-pipeline's wake runbook now has a retrospective phase — `tools/session-review/retro-prompt.md`
-on this repo's `review/nightly-grades` branch (the reviewer's dedicated worktree),
-rationale file alongside: on
-calibrated runs the reviewer selects up to 2 of the night's sessions — its own
-`mutation_candidate` flags first — runs this skill on each via
-`session_timeline.py --db`, and escalates repeat observations across runs
-(Hypothesis → Corroborated) using its persistent memory of the project's whole history.
-Append-only skill-Learnings writes are made directly; structural skill changes route to
-the pipeline's `proposals.md` for the owner. This skill remains manually invocable
-(`/retrospective`) for same-session freshness whenever wanted; the Letta agent is
-discovery-wired via the `~/.letta/skills/retrospective` symlink.
+The previous Letta Session Reviewer automation was decommissioned on 2026-08-03. This skill
+is manually invocable (`/retrospective`) until an owner-configured replacement is created in
+Letta. No Letta agent is currently discovery-wired through `~/.letta/skills/retrospective`.
 
 ## Process
 

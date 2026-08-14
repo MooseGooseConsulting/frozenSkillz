@@ -97,7 +97,11 @@ Reader disagreement may mean:
 - one reviewer overreached.
 
 Do not average these into a middle score. Explain the competing readings and, when consequential,
-return to the exact source window or collect a discriminating case.
+commission the recheck rather than performing it: dispatch a case reader against the exact source
+window, or collect a discriminating case. The synthesizer does not open raw transcripts itself —
+its input contract is memos, and one-trajectory extraction stays isolated from the emerging
+corpus-level view precisely so a recheck cannot be steered by it. The reader returns a memo; the
+synthesis updates from that.
 
 ### Distinguish observation from attribution
 
@@ -108,8 +112,14 @@ Examples:
 - **Unknown:** whether the agent would have opened them without the skill.
 - **Owner evidence:** the owner explicitly corrected the README policy that followed.
 
-The synthesis may describe associations. Use causal language only after a credible controlled or
-matched comparison.
+The synthesis may describe associations. Reserve causal language for a credible controlled
+comparison — one where the deployment condition was actually assigned rather than observed.
+
+Matching deployment episodes against no-load episodes drawn from recorded history does not earn it.
+Matching equalizes only the attributes that happen to be recorded; task difficulty, agent, operator
+intent, and whatever drove the skill to load in the first place stay unbalanced, and that last one
+is selection, not noise. Report matched historical comparisons as associations with the matched
+attributes named, and say plainly what remains unmatched.
 
 ## Turning lessons into changes
 

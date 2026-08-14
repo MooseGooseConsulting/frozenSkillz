@@ -4,17 +4,30 @@ AGENTS.md is the file every agent in the repo reads first. It is the universal e
 
 Every line pays a token cost on every session. The discipline is not “what could be useful.” It is “what does the agent need to start correctly, and where does it find everything else.”
 
-A good AGENTS.md: (1) points at NORTH_STAR for identity, (2) routes by task. Anything beyond that is drift.
+A good AGENTS.md points at the repository's declared intent/authority entrypoint and routes by task. Anything beyond that is drift.
+
+---
+
+## Inventory Declared Authority Before Migrating
+
+Before authoring, reviewing, reconciling, or migrating AGENTS.md, inventory the repository and
+owner's declared authority documents, their paths, and their stated order. A nonstandard authority
+document is in scope only when that declaration is explicit; an ordinary markdown file is not made
+authoritative merely because it is present.
+
+If a declared stack exists, preserve and route to it. `NORTH_STAR.md` → `architecture.md` →
+`AGENTS.md` is the default only for a repository with no declared authority stack. Do not replace a
+declared stack with this default during a migration.
 
 ---
 
 ## The Load-Bearing Principle
 
-> Inline nothing. AGENTS.md is a pure router: authority order, task routes, a stop rule, and commands. Identity lives in NORTH_STAR.md. Current work lives in Issues and/or `docs/plans/`. Everything else loads lazily via bare paths.
+> Inline nothing. AGENTS.md is a pure router: authority order, task routes, a stop rule, and commands. Identity lives in the declared intent document (default: NORTH_STAR.md). Current work lives in Issues and/or `docs/plans/`. Everything else loads lazily via bare paths.
 
 - Bare paths (`See architecture.md`) are instructions; the agent Reads them only when needed.
 - Do not put `@` references inside AGENTS.md to architecture, plans, decisions, or components — that defeats the router by eager-loading everything.
-- `CLAUDE.md` is a one-line pointer to AGENTS only (see Compatibility). NORTH_STAR is reached because AGENTS’s first line says to read it.
+- `CLAUDE.md` is a one-line pointer to AGENTS only (see Compatibility), unless the repository's declared stack gives it an authority role — then preserve that role. The declared intent document (default: NORTH_STAR) is reached because AGENTS’s first line routes to it.
 
 ## The 60-Line Cap
 
@@ -25,6 +38,8 @@ A line earns its slot only if it is a route, a command, or a hard rule that is n
 ---
 
 ## Order of Operations
+
+Use the declared authority order when one exists. Otherwise use this default:
 
 1. NORTH_STAR.md (identity, goals, anti-goals, pillars)
 2. architecture.md (technical decisions and shape)
@@ -47,8 +62,8 @@ Owns:
 
 Does not own:
 
-- project purpose → `NORTH_STAR.md`
-- technical strategy → `architecture.md`
+- project purpose → declared intent document (default: `NORTH_STAR.md`)
+- technical strategy → declared technical-shape document (default: `architecture.md`)
 - current task state → Issues and/or `docs/plans/`
 - durable decisions → `docs/decisions/`
 - subsystem depth → `docs/components/` or topic docs
@@ -61,14 +76,14 @@ Does not own:
 
 | Section | When to include |
 |---|---|
-| NORTH_STAR pointer (first line) | Always |
+| Declared intent pointer (first line; default: NORTH_STAR) | Always |
 | Authority order line | Always once multiple authority docs exist |
 | Route by task / find-table | Always once more than one task category |
 | Commands | When agents must run real commands |
 | Working rules | Project-wide enforceable rules only |
 | Compatibility | When CLAUDE.md or similar exists |
 
-**Minimum viable:** NORTH_STAR pointer + route-by-task + authority line + stop rule.
+**Minimum viable:** declared intent pointer + route-by-task + authority line + stop rule.
 
 Skip handoff sections that tell agents to update PROGRESS or roll into `docs/history/`.
 
@@ -76,13 +91,14 @@ Skip handoff sections that tell agents to update PROGRESS or roll into `docs/his
 
 ## No Inline Identity
 
-First line:
+When no declared stack exists, the default first line is:
 
 ```
 Read NORTH_STAR.md first. Do not infer intent from code.
 ```
 
-Do not paraphrase NORTH_STAR. Do not put goals, anti-goals, pillars, or status in the pointer.
+When a declared stack exists, point at its declared intent entrypoint instead. Do not paraphrase
+that document or put goals, anti-goals, pillars, or status in the pointer.
 
 ---
 
@@ -94,16 +110,16 @@ Teaching form (ASCII). Production form under the 60-line cap is a compressed lis
 What are you about to do?
 │
 ├─ Understand intent, scope, boundaries
-│  → NORTH_STAR.md
+│  → declared intent doc (default: NORTH_STAR.md)
 │
 ├─ Make a technical or architectural decision
-│  → NORTH_STAR.md · architecture.md · docs/decisions/
+│  → declared authority docs (default: NORTH_STAR.md · architecture.md) · docs/decisions/
 │
 ├─ Implement, fix, resume active work
 │  → GitHub Issues and/or docs/plans/ (whichever this repo uses)
-│  → architecture.md / topic docs for the subsystem
+│  → declared system docs (default: architecture.md) / topic docs for the subsystem
 │
-├─ Write or review documentation
+├─ Draft, edit, review/critique, migrate, reconcile, or audit declared authority documentation
 │  → Invoke the project-docs skill
 │
 ├─ Run a long procedure
@@ -149,7 +165,8 @@ Bad: “Be thoughtful.”
 
 ## Compatibility
 
-CLAUDE.md must be a one-line pointer to AGENTS. Examples of valid stubs:
+CLAUDE.md must be a one-line pointer to AGENTS **unless the repository explicitly declares it an
+authority document**, in which case leave it as declared. Examples of valid stubs:
 
 ```
 @AGENTS.md
@@ -159,7 +176,7 @@ CLAUDE.md must be a one-line pointer to AGENTS. Examples of valid stubs:
 Read AGENTS.md.
 ```
 
-No header. No prose. No second `@NORTH_STAR.md` in CLAUDE — AGENTS already routes there. Tool-specific files do not hold doctrine.
+No header. No prose. No second `@` authority pointer in CLAUDE — AGENTS already routes there. Tool-specific files do not hold doctrine.
 
 ---
 
@@ -167,7 +184,7 @@ No header. No prose. No second `@NORTH_STAR.md` in CLAUDE — AGENTS already rou
 
 - Enumeration drift (flat list of every doc)
 - `@` inside AGENTS.md
-- Duplicating NORTH_STAR identity
+- Duplicating declared intent-document identity
 - Routing to PROGRESS / `docs/history/`
 - Aspirational commands
 - Vague rules
@@ -177,6 +194,7 @@ No header. No prose. No second `@NORTH_STAR.md` in CLAUDE — AGENTS already rou
 
 ## When AGENTS Disagrees
 
-Authority: NORTH_STAR > architecture > AGENTS.
+Authority follows the declared stack. When none is declared, use the default: NORTH_STAR >
+architecture > AGENTS.
 
 AGENTS never holds authority of its own. If commands disagree with the repo, the code wins and AGENTS updates. If routes point at deleted files, fix the routes.

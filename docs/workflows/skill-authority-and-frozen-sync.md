@@ -89,7 +89,10 @@ Three different things consume material from this repository. Only the first is 
 
 **Runtimes.** A runtime has a filesystem path and nothing else. See [`docs/deployments/hermes.md`](../deployments/hermes.md) for the worked example.
 
-**Services.** `tools/session-review/nightly.ps1` pipes the Prompt section of `reviewer-prompt.md` to `letta -a <agent_id> -p` as a message, versioned by `rubric_version` in `tools/session-review/config.json`. That is repo-managed content deployed to a cloud agent, not a skill distribution. It has no destination, no management record, and no consumer. Do not "fix" it by inventing one.
+**Services.** The former Letta Session Reviewer was decommissioned on 2026-08-03. Its
+historical materials remain under `tools/session-review/`, but no cloud agent or local
+launcher consumes them. If a replacement is created in Letta, it remains outside the skill
+distribution lane unless an explicit deployment contract is added.
 
 ## Deployment Subsets
 

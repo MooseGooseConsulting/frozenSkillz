@@ -11,12 +11,16 @@ description: >-
   Secret reads, and database connection strings are not Doppler work unless
   the task is to manage that credential in Doppler; do not load for
   speculative "secrets hygiene" passes; do not preload because a later step
-  might need a credential.
+  might need a credential. A trusted opaque launcher or client that merely
+  authenticates internally does not qualify, including an authentication failure,
+  unless diagnosis reaches the credential source, secret configuration, or injection.
 ---
 
 # Doppler
 
 **Before using this skill:** confirm a Doppler credential action (retrieve, inject, set, rotate, verify, or names-only check) is part of the task you are working on right now. If not, do not proceed.
+
+An environment-owned PDM launcher, `gh`, `kubectl`, or another trusted client that authenticates opaquely is ordinary use—even when it reports an authentication failure. Load Doppler only when diagnosing or changing its credential source, secret configuration, or injection path; keep the owning operational skill in control.
 
 If unsure whether a value is a secret, treat it as a secret. Keep secret values out of chat, logs, diffs, committed files, and durable docs.
 

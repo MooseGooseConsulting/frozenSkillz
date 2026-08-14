@@ -49,6 +49,10 @@ Native PVE/PBS is appropriate when:
 
 A native handoff should be explicit in the result: name the surface and why it was selected. That is enough. Do not wrap ordinary native drill-down in invented approval ceremony.
 
+## Authentication ownership
+
+An environment-owned launcher that obtains credentials opaquely remains part of the PDM workflow. Its ordinary use does not require a secrets-management handoff. Route to the applicable secrets skill only when the task directly reads, writes, configures, rotates, or troubleshoots the credential source or injection path.
+
 ## Failure modes to avoid
 
 | Failure mode | Better behavior |
@@ -79,6 +83,7 @@ Only the owning environment can establish those constraints. The portable skill 
 ```text
 identify target
   -> choose surface by current capability
+  -> use the trusted environment launcher when credentials remain opaque
   -> read pre-state
   -> execute requested action
   -> follow task if any

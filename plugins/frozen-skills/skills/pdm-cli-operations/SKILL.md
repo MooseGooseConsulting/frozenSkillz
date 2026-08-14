@@ -19,6 +19,22 @@ The hierarchy is simple:
 
 Using native PVE/PBS for a capability gap is not a PDM failure and is not automatically “break-glass.” PDM remains the primary fleet plane even when a specific operation drills down to a remote.
 
+## Access and Secrets Boundary
+
+| Situation | Route |
+|---|---|
+| Environment-owned PDM launcher authenticates internally | Use the launcher directly; do not load a secrets-management skill just because it authenticates opaquely. |
+| Task directly reads, writes, configures, rotates, or troubleshoots secret storage or injection | Load the secrets-management skill matching the environment's own backend before that direct work. Keep values out of arguments, output, and durable files. |
+| PDM command or launcher fails before a request reaches PDM | First distinguish missing client, unselected launcher configuration, workstation identity/SSH failure, TLS/auth failure, and an unverified PDM result. Do not call every failure a credential failure or rotate a secret speculatively. |
+
+Match the skill to the backend the environment actually declares — Doppler where Doppler is the
+source, otherwise the skill covering Vault, SOPS, or whatever it uses. Loading Doppler against a
+non-Doppler backend trips Doppler's own trigger gate, which requires a real Doppler credential
+action and tells the agent to stop otherwise.
+
+The launcher remains the normal PDM route. Loading a secrets-management skill is not a prerequisite
+for an ordinary PDM read, lifecycle action, or launcher failure diagnosis.
+
 ## Operating Contract
 
 - Prefer the environment-owned PDM launcher when it obtains credentials opaquely; using that trusted launcher is ordinary PDM operation, not direct secret handling.

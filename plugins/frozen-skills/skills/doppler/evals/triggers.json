@@ -1,0 +1,32 @@
+{
+  "skill": "doppler",
+  "notes": "Direct secret and injection work triggers. Ordinary use of a trusted authenticated client or opaque launcher does not.",
+  "train": [
+    {
+      "query": "Add DATABASE_URL to the dev Doppler config without printing it",
+      "should_trigger": true
+    },
+    {
+      "query": "Troubleshoot why doppler run is not injecting the API token",
+      "should_trigger": true
+    },
+    {
+      "query": "Rotate the CI service token and update its secret-store wiring",
+      "should_trigger": true
+    },
+    {
+      "query": "Use the repository's trusted PDM launcher to inspect VM 260",
+      "should_trigger": false
+    },
+    {
+      "query": "Run gh pr view with the already authenticated GitHub CLI",
+      "should_trigger": false
+    },
+    {
+      "query": "List Kubernetes pods with the existing kubeconfig",
+      "should_trigger": false
+    }
+  ],
+  "validation": [],
+  "held_out": []
+}

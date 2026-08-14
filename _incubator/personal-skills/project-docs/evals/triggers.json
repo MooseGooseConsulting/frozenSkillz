@@ -1,0 +1,62 @@
+{
+  "skill": "project-docs",
+  "notes": "Trigger only when authority-document work is the requested deliverable, not when docs are incidental or merely present.",
+  "cases": [
+    {
+      "query": "Reconcile NORTH_STAR.md and architecture.md where their ownership boundaries conflict",
+      "should_trigger": true
+    },
+    {
+      "query": "Migrate this repository's instruction hierarchy from CLAUDE.md into a thin AGENTS.md router",
+      "should_trigger": true
+    },
+    {
+      "query": "Audit the project authority stack and identify contradictions among AGENTS, architecture, and NORTH_STAR",
+      "should_trigger": true
+    },
+    {
+      "query": "Review and critique my existing NORTH_STAR.md against the owner's stated goal",
+      "should_trigger": true
+    },
+    {
+      "query": "Write my settled product goal into NORTH_STAR.md and reconcile only the directly conflicting router text",
+      "should_trigger": true
+    },
+    {
+      "query": "Review and reconcile docs/product-contract.md, which this repository explicitly declares as an authority document, against the owner's updated decisions",
+      "should_trigger": true
+    },
+    {
+      "query": "Look through our whole conversation and tell me which Proxmox configuration changes remain unfinished",
+      "should_trigger": false
+    },
+    {
+      "query": "Change the RAM assigned to the PBS VM; the repository happens to contain AGENTS.md",
+      "should_trigger": false
+    },
+    {
+      "query": "Update README.md with installation instructions",
+      "should_trigger": false
+    },
+    {
+      "query": "Update docs/getting-started.md with installation instructions; it is ordinary documentation, not a declared authority document",
+      "should_trigger": false
+    },
+    {
+      "query": "Map which Teleport credentials authorize each live operation and record the conclusions when you are done",
+      "should_trigger": false
+    },
+    {
+      "query": "Fix the sync bug, add regression tests, and update its operational README to match",
+      "should_trigger": false
+    },
+    {
+      "query": "Review this pull request that edits code and one documentation sentence",
+      "should_trigger": false
+    },
+    {
+      "query": "What work is still open in this repository?",
+      "should_trigger": false
+    }
+  ]
+}

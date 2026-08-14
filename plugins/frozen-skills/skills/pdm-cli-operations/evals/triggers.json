@@ -35,6 +35,10 @@
       "should_trigger": true
     },
     {
+      "query": "This Windows homelab has fixed just pdm-* reads through a pinned direct HTTPS adapter. Use that path without sending the request through Hermes or SSH.",
+      "should_trigger": true
+    },
+    {
       "query": "Use the trusted repo PDM launcher to read VM 260 config; its credentials stay opaque",
       "should_trigger": true
     },

@@ -33,18 +33,22 @@ dpkg-query -W -f='${Package} ${Version}\n' proxmox-datacenter-manager-client
 
 Install it only on a compatible Debian amd64 operator host from an official Proxmox PDM repository selected by the owning environment. Do not silently enable a test repository. Install the client package, not a PDM server, when all that is needed is the process interface. Before relying on PDM, record the installed client version and server version from the owning environment's documented PDM surface; their major versions must match. Treat a mismatch as incompatible and correct it before command or capability probes.
 
-Proxmox does not publish a native Windows build. On Windows, use an environment-owned Linux runner or the bundled bridge if the environment has qualified one. Do not create WSL or a container solely to satisfy this skill unless the operator explicitly chooses that architecture.
+Proxmox does not publish a native Windows build. If the environment selected the official client route on Windows, use an environment-owned Linux runner or the bundled bridge if it has qualified one. A documented pinned direct adapter is an independent supported Windows route; do not detour through Linux/SSH. Do not create WSL or a container solely to satisfy this skill unless the operator explicitly chooses that architecture.
 
 ## Environment launcher
 
-Prefer an environment-owned launcher when the owning repository provides one. Keep concrete launcher names and SSH runner hosts in [env-notes.md](env-notes.md); they are not part of the portable skill contract.
+Prefer an environment-owned PDM entrypoint when the owning repository provides one. Keep concrete adapter, launcher, and SSH-runner names in [env-notes.md](env-notes.md); they are not part of the portable skill contract.
+
+For an official-client-compatible launcher:
 
 ```sh
 <launcher> --output-format json remote list
 <launcher> --output-format json resources
 ```
 
-A good launcher should:
+For a constrained direct adapter, invoke its documented named operations; it is not required to implement the official CLI's arguments or command grammar.
+
+A good official-client launcher should:
 
 - retrieve the environment-selected identity without printing its credential;
 - retain the official client's ticket cache separately from unrelated identities;
@@ -52,7 +56,12 @@ A good launcher should:
 - invoke `proxmox-datacenter-manager-client` for the requested PDM command; and
 - preserve stdout, stderr, and exit status.
 
-It must not impose an invented read-only policy on an identity whose owning environment authorizes mutation.
+An environment-owned direct PDM API adapter is also valid when it pins TLS,
+contains only reviewed operations, protects credentials, and reports its
+supported boundary clearly. Use it directly on Windows or an agent when the
+repository declares it; do not force a Linux/SSH bridge merely to reach the
+official CLI. Neither entrypoint may impose an invented read-only policy on an
+identity whose owning environment authorizes mutation.
 
 ### Optional Windows SSH bridge
 
@@ -115,7 +124,9 @@ A successful read does not prove mutation authority. An authorization failure du
 
 ## Capability check and surface routing
 
-PDM is the default surface, but it is intentionally high-level. Before assuming PDM can or cannot do something:
+PDM is the default surface, but it is intentionally high-level. **For an
+official-client-compatible launcher only**, inspect current help before assuming
+PDM can or cannot do something:
 
 ```sh
 <pdm> help --verbose
@@ -126,6 +137,12 @@ PDM is the default surface, but it is intentionally high-level. Before assuming 
 ```
 
 Use current official command syntax when the installed help is ambiguous.
+
+For a constrained direct adapter, use its documented operation list as the
+capability boundary. Do not send it `help --verbose` or any other official CLI
+syntax that the owning environment has not declared it to support. If the
+adapter does not expose the requested PDM operation, route through that
+environment's documented PDM/native boundary rather than guessing an endpoint.
 
 Choose the surface this way:
 
@@ -143,7 +160,10 @@ This reference intentionally does not teach every native PVE/PBS command. Once r
 
 ## Discovery and evidence
 
-`<pdm>` means the environment launcher or the raw client plus its global connection options.
+The following commands are **official-client-compatible launcher only**.
+`<pdm>` means that launcher or the raw client plus its global connection
+options; it is not a placeholder for a constrained direct adapter. For such an
+adapter, use its documented named discovery operations instead.
 
 ```sh
 <pdm> --output-format json remote list

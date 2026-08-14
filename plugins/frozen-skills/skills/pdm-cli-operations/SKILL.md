@@ -24,8 +24,8 @@ Using native PVE/PBS for a capability gap is not a PDM failure and is not automa
 - Prefer the environment-owned PDM launcher when it obtains credentials opaquely; using that trusted launcher is ordinary PDM operation, not direct secret handling.
 - Load the applicable secrets-management skill only when the task directly reads, writes, configures, rotates, or troubleshoots the credential source or injection path. Do not load it merely because PDM authenticates behind the launcher.
 - Resolve the PDM endpoint, TLS trust, identity, remotes, nodes, and native access paths from the owning environment. Do not copy environment inventory into this skill.
-- The environment-owned launcher should still invoke the official `proxmox-datacenter-manager-client` and preserve output and exit status.
-- Verify the installed client and PDM server share the same major version before relying on PDM. Treat a mismatch as client/server incompatibility: correct it before command or capability probes, rather than misclassifying it as an authentication, remote, or capability failure. Inspect `help --verbose` only after the compatible client/server pair is confirmed. PDM is evolving quickly; do not turn an old capability gap into permanent architecture.
+- Prefer the environment-owned PDM entrypoint when one exists. It may invoke the official `proxmox-datacenter-manager-client` **or** a repository-owned, pinned direct PDM API adapter; preserve the documented operation boundary, TLS verification, output, and exit status. Do not insert an SSH/Hermes hop when the environment already supports a direct workstation path.
+- For the official client, verify the installed client and PDM server share the same major version before relying on PDM. Treat a mismatch as client/server incompatibility: correct it before command or capability probes, rather than misclassifying it as an authentication, remote, or capability failure. Inspect `help --verbose` only after the compatible client/server pair is confirmed. For a constrained direct adapter, use only its documented operations and route unsupported work through the environment's normal PDM/native boundary. PDM is evolving quickly; do not turn an old capability gap into permanent architecture.
 - **Route by capability, not ideology.** If PDM supports the requested operation, use PDM. If it does not, say so and use the documented native PVE/PBS path if the task still requires the operation.
 - Do not silently pivot because a command failed. First distinguish: wrong syntax/version, auth/trust failure, PDM outage, remote outage, or an operation PDM simply does not expose.
 - Keep resource identity explicit: remote + node + guest kind + VMID + name when applicable. VMID alone is not fleet identity.
@@ -55,8 +55,8 @@ The routing rule is not “never use `qm`, `pvesh`, the PVE API, or PBS-native t
 ## PDM Workflow
 
 1. Read the owning environment’s fleet/access references.
-2. Confirm the PDM client/launcher and PDM server versions share the same major version.
-3. Use the trusted environment launcher when one exists; otherwise use the documented raw official-client path. If direct credential or injection work is actually required, load the applicable secrets-management skill before proving connectivity with a small read such as `remote list`.
+2. Confirm the environment-owned PDM entrypoint and its supported operations. When the entrypoint is the official client, confirm the client and PDM server share the same major version before any command or capability probe; a constrained direct adapter is bounded by its own documented operations instead.
+3. Prove PDM connectivity/authentication with a small read such as `remote list`. If direct credential or injection work is actually required, load the applicable secrets-management skill first.
 4. Identify the exact remote, node, resource ID, kind, and name.
 5. Confirm the requested operation exists in the installed PDM surface.
 6. Read pre-state, execute the requested action, follow any returned task to terminal success, and read post-state.
@@ -78,8 +78,8 @@ Native drill-down should be boring and explicit. It is a supported layer boundar
 
 | User wants to… | Do |
 |---|---|
-| List remotes / prove PDM auth | `<pdm> --output-format json remote list` |
-| Inventory fleet resources | `<pdm> --output-format json resources`, then narrow by remote/node |
+| List remotes / prove PDM auth | Official client launcher: `<pdm> --output-format json remote list`; constrained direct adapter: its documented named read |
+| Inventory fleet resources | Official client launcher: `<pdm> --output-format json resources`; constrained direct adapter: its documented inventory operation |
 | Inspect a guest | PDM list/config with remote + node + VMID; use active state where required |
 | Start/stop/shutdown/snapshot/migrate through PDM | pre-state → one action → terminal task/result → post-state |
 | Follow a PDM task | use the remote-prefixed UPID and PDM task status |
@@ -87,7 +87,9 @@ Native drill-down should be boring and explicit. It is a supported layer boundar
 | Diagnose a remote that PDM says is unavailable | inspect that remote natively; keep PDM failure and remote failure distinct |
 | Recover when PDM is down | use native PVE/PBS; repair PDM separately rather than blocking unrelated fleet recovery |
 
-`<pdm>` means the environment launcher or the raw official client plus its connection options.
+`<pdm>` means an official-client-compatible launcher or the raw official client
+plus its connection options. It does **not** mean a constrained direct adapter:
+use that adapter's documented named operations instead of inventing CLI syntax.
 
 ## References
 

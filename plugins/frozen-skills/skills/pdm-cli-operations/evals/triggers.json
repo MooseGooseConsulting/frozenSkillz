@@ -1,13 +1,13 @@
 {
   "skill": "pdm-cli-operations",
-  "notes": "Labeled trigger prompts for description routing. Split ~60/40 train/validation. Run each query 3x in a fresh session; pass if trigger rate >= 0.5 when should_trigger, < 0.5 when not. Do not optimize description against validation. Negatives emphasize native break-glass, WSL/MCP shortcuts, skip-evidence, and generic infra.",
+  "notes": "Routing evals for PDM-first fleet management with deliberate native PVE/PBS drill-down. Native Proxmox is not a blanket negative: trigger when the prompt requires choosing or crossing the PDM/native boundary; do not trigger for isolated native-command questions that have no PDM/fleet-routing component.",
   "train": [
     {
       "query": "List Proxmox remotes through PDM and show JSON inventory",
       "should_trigger": true
     },
     {
-      "query": "Create a snapshot on VM 101 via the official PDM client",
+      "query": "Create a snapshot on VM 101 through the central Proxmox Datacenter Manager",
       "should_trigger": true
     },
     {
@@ -15,43 +15,55 @@
       "should_trigger": true
     },
     {
-      "query": "PDM task returned a UPID — confirm it actually finished OK",
+      "query": "PDM returned a UPID for my VM operation; confirm the task really finished and verify the guest state",
       "should_trigger": true
     },
     {
-      "query": "From Windows, call the PDM skill SSH bridge to remote list",
+      "query": "Troubleshoot PDM login, certificate fingerprint, and ticket cache",
       "should_trigger": true
     },
     {
-      "query": "Troubleshoot PDM login TLS fingerprint / ticket cache",
+      "query": "PDM does not expose the host setting I need. Confirm that gap, then use the existing native PVE path instead of refusing the task",
       "should_trigger": true
     },
     {
-      "query": "Shut down a guest through Datacenter Manager, not direct node SSH",
+      "query": "PDM says one remote is unavailable. Use PDM to scope the failure and then diagnose that PVE node natively",
       "should_trigger": true
     },
     {
-      "query": "SSH to the PVE node and run qm snapshot directly",
+      "query": "PDM itself is down but I still need to operate a guest; route me to the documented native PVE recovery path",
+      "should_trigger": true
+    },
+    {
+      "query": "This Windows homelab has fixed just pdm-* reads through a pinned direct HTTPS adapter. Use that path without sending the request through Hermes or SSH.",
+      "should_trigger": true
+    },
+    {
+      "query": "Use the trusted repo PDM launcher to read VM 260 config; its credentials stay opaque",
+      "should_trigger": true
+    },
+    {
+      "query": "Use the raw PDM 1.1.6 client with an independently verified cache pin and fingerprint on every command",
+      "should_trigger": true
+    },
+    {
+      "query": "Explain what qm status 101 prints when I am already logged into a PVE node",
       "should_trigger": false
     },
     {
-      "query": "Install WSL just so we can run the PDM client on this laptop",
+      "query": "Install WSL just so I can have the PDM client on this Windows laptop",
       "should_trigger": false
     },
     {
-      "query": "Use the Proxmox MCP server instead of the PDM client for this fleet change",
+      "query": "Deploy a new Proxmox MCP server because I prefer MCP tools",
       "should_trigger": false
     },
     {
-      "query": "Add a DEBUG=true flag to our Node config",
+      "query": "Add a DEBUG=true flag to our Node app",
       "should_trigger": false
     },
     {
       "query": "Write a Terraform module for an AWS ALB",
-      "should_trigger": false
-    },
-    {
-      "query": "Explain how Kubernetes ConfigMaps differ from Secrets",
       "should_trigger": false
     }
   ],
@@ -61,23 +73,27 @@
       "should_trigger": true
     },
     {
-      "query": "Roll back a QEMU snapshot through the PDM CLI and verify post-state",
+      "query": "Roll back a QEMU snapshot through PDM and verify the final state",
       "should_trigger": true
     },
     {
-      "query": "Wire the Windows pdm.ps1 bridge with PDM_CLI_SSH_TARGET for fleet ops",
+      "query": "I need a Proxmox operation that PDM 1.1 does not implement. Should the agent stop, or use native PVE for that one operation?",
       "should_trigger": true
     },
     {
-      "query": "PDM is down — use native pvesh on the node as break-glass",
+      "query": "PDM is the normal control plane, but I need deep node logs for a failed migration. Route the diagnosis correctly",
+      "should_trigger": true
+    },
+    {
+      "query": "The installed PDM client major version differs from the server; stop before a capability probe and route the incompatibility",
+      "should_trigger": true
+    },
+    {
+      "query": "What is the pvesh endpoint for listing local ZFS pools on this node?",
       "should_trigger": false
     },
     {
       "query": "Spin up a local Docker container solely to hold the PDM client",
-      "should_trigger": false
-    },
-    {
-      "query": "Just submit the PDM mutate and move on when you get a UPID back",
       "should_trigger": false
     },
     {
@@ -87,7 +103,15 @@
   ],
   "held_out": [
     {
-      "query": "Cross-remote migrate a stopped disposable VM through PDM with map-bridge and map-storage",
+      "query": "Cross-remote migrate a stopped disposable VM through PDM with bridge and storage mappings",
+      "should_trigger": true
+    },
+    {
+      "query": "PDM can see the guest but has no command for the granular change I need; verify the capability boundary and hand off to native Proxmox",
+      "should_trigger": true
+    },
+    {
+      "query": "A PDM task reports stopped but has no exitstatus. Treat its outcome as indeterminate before considering another mutation",
       "should_trigger": true
     },
     {

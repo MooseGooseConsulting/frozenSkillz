@@ -1,16 +1,21 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "frozen-skills",
-  "description": "Installs reviewed delegation-contract, Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
-  "version": "2.6.0",
+  "description": "Installs reviewed agent GitHub identity, delegation-contract, Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
+  "version": "2.7.0",
   "category": "reference",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
   },
   "license": "MIT",
-  "tags": ["secrets", "doppler", "intake", "omc", "proxmox", "pdm", "reference"],
+  "tags": ["secrets", "doppler", "intake", "omc", "proxmox", "pdm", "github", "identity", "reference"],
   "skills": [
+    {
+      "name": "agent-github-identity",
+      "path": "skills/agent-github-identity",
+      "description": "Give each AI agent its own GitHub App bot identity so its commits, pull requests, reviews, and comments attribute to that agent, not to a shared account or the operator. Use when wiring an agent's GitHub write path or before any agent GitHub write. Not for human or CI credentials."
+    },
     {
       "name": "delegation-contract",
       "path": "skills/delegation-contract",
@@ -34,7 +39,7 @@
     {
       "name": "pdm-cli-operations",
       "path": "skills/pdm-cli-operations",
-      "description": "Inspect and operate Proxmox VE and PBS fleets through the official PDM client or an environment-owned wrapper. Use for inventory, guest lifecycle, tasks, metrics, snapshots, migration, and PDM troubleshooting; not native PVE/PBS break-glass work."
+      "description": "Operate Proxmox VE and PBS fleets with PDM as the primary centralized control plane. Use for fleet inventory, guest lifecycle, tasks, snapshots, migrations, PDM auth/trust, and deciding when to drill down to native PVE/PBS because PDM lacks the operation or is unavailable."
     }
   ]
 }

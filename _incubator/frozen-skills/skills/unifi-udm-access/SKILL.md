@@ -27,6 +27,17 @@ Route by which surface *owns* the fact, not by which is newest.
 - Load the applicable secrets-management skill before handling authentication. The API key and the
   console SSH password are separate secrets with very different blast radius — the second is root on
   the device carrying all traffic.
+- The `-H "X-API-KEY: $KEY"` form used throughout this skill puts the key in curl's argument vector,
+  where any local process can read it from `ps`. That is acceptable on a single-operator workstation
+  and **not** acceptable on a shared or multi-tenant host. There, keep the header in a private curl
+  config file and pass it by reference instead:
+
+  ```bash
+  KEYCFG=$(mktemp); chmod 600 "$KEYCFG"
+  trap 'rm -f "$KEYCFG"' EXIT
+  printf 'header = "X-API-KEY: %s"\n' "$KEY" > "$KEYCFG"
+  curl -s -K "$KEYCFG" "https://<console>/proxy/network/integration/v1/sites"
+  ```
 - Resolve the console address, site identifier, device inventory, and credential names from the
   owning environment. Do not copy environment inventory into this skill.
 - **Never assume an API key is read-only.** UniFi keys authenticate against write paths by default.
@@ -109,7 +120,11 @@ while :; do
   P=$(curl -s -H "X-API-KEY: $KEY" \
       "https://<console>/proxy/network/integration/v1/sites/<uuid>/clients?offset=$OFF&limit=200")
   echo "$P" | jq -c '.data[]'
-  OFF=$(( OFF + $(echo "$P" | jq '.count') ))
+  N=$(echo "$P" | jq '.count')
+  # A page that returns nothing makes no progress; without this the loop spins
+  # forever on a transient empty page instead of terminating.
+  [ "$N" -gt 0 ] 2>/dev/null || break
+  OFF=$(( OFF + N ))
   [ "$OFF" -ge "$(echo "$P" | jq '.totalCount')" ] && break
 done
 ```

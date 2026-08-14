@@ -8,7 +8,14 @@ Usage:
 The password is read from the UDMPW environment variable so it never appears in
 argv, process listings, or shell history. Commands themselves ARE echoed to
 stdout so multi-command output can be correlated, so do not embed secrets in a
-command either -- pass them through the remote environment instead.
+command.
+
+This helper deliberately provides no channel for passing a secret to the remote
+side: stdin is closed before the command runs, and an `env VAR=...` prefix would
+only move the secret into the console's own process listing. A command that
+needs a credential on the console must read it there -- from the device's
+existing configuration or credential store -- not receive it through this
+script. If that is not possible, the operation does not belong in this helper.
 
 Host keys are verified against the user's known_hosts. To onboard a console for
 the first time, record its key deliberately:
@@ -70,19 +77,27 @@ def _connect(host: str, user: str, password: str) -> paramiko.SSHClient:
 
 def _run(client: paramiko.SSHClient, command: str, timeout: float | None) -> tuple[str, str, int]:
     stdin, stdout, stderr = client.exec_command(command, timeout=timeout)
+    channel = stdout.channel
     # Close stdin so a command that reads it sees EOF instead of blocking.
     stdin.close()
-    stdout.channel.shutdown_write()
+    channel.shutdown_write()
 
     # Drain both streams concurrently. Reading one to completion first can
     # deadlock when the other fills its channel window.
-    with ThreadPoolExecutor(max_workers=2) as pool:
-        out_future = pool.submit(stdout.read)
-        err_future = pool.submit(stderr.read)
-        out = out_future.result().decode(errors="replace").strip()
-        err = err_future.result().decode(errors="replace").strip()
+    try:
+        with ThreadPoolExecutor(max_workers=2) as pool:
+            out_future = pool.submit(stdout.read)
+            err_future = pool.submit(stderr.read)
+            out = out_future.result().decode(errors="replace").strip()
+            err = err_future.result().decode(errors="replace").strip()
+    except (socket.timeout, TimeoutError):
+        # Abandoning a timed-out channel leaves the remote command running and
+        # leaks the channel for the rest of the session. Close it so the remote
+        # side sees EOF and the next command in the batch starts clean.
+        channel.close()
+        raise
 
-    return out, err, stdout.channel.recv_exit_status()
+    return out, err, channel.recv_exit_status()
 
 
 def main() -> int:

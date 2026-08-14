@@ -1,5 +1,10 @@
 # Retrospective phase — process tonight's mutation candidates
 
+> **Retired 2026-08-03. Historical record — do not execute.** The Session Reviewer agent,
+> its cron, and its listener were deleted. This file is preserved as prompt-design
+> material for a future replacement. It is written in the second person because it was a
+> live runbook; nothing addresses a currently running agent.
+
 Runs only on calibrated runs (the `CALIBRATED` file exists). You are still the Session
 Reviewer, in the same worktree, same branch rules as the wake runbook.
 

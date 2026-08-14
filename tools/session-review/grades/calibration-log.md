@@ -1,4 +1,4 @@
-﻿# Calibration log
+# Calibration log
 
 ## 2026-07-31
 - `cursor:e7fd6c6b`: match — `goal_reached: no`.

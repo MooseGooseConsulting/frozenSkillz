@@ -1,5 +1,9 @@
 # Why retro-prompt.md is shaped this way
 
+> **Retired 2026-08-03. Historical design rationale — not current guidance.** The
+> scheduled agent this describes was decommissioned. Keep this for what it argues about
+> prompt design; do not read it as a description of anything running today.
+
 **Provenance.** Owner decision 2026-07-31: "why don't we just have letta agent run it,
 especially because it can reason over the whole history of the project." The
 `retrospective` skill's failure mode was never content — it was that the owner forgets to

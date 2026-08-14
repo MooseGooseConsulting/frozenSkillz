@@ -3,15 +3,24 @@
 > **Status (2026-08-03): decommissioned.** The Letta Cloud agent, its cloud cron, and
 > the HEPHASTUS Startup listener were deleted. This directory is retained only as
 > historical prompt and implementation material; it does not deploy or run a reviewer.
+>
+> **Everything below this line is a historical record of how the system worked, not an
+> active runbook.** Nothing here is scheduled, and no instruction in this directory
+> should be executed expecting a live reviewer. Where the text is written in the present
+> tense it describes the system as it ran until 2026-08-03.
 
-A Letta cloud agent ("Session Reviewer") wakes nightly, reads condensed trajectories of
-skill-firing AI sessions from the AgentsView database, grades each against a versioned
-rubric, and accumulates verdicts and skill-mutation proposals in this repo. It exists
+A Letta cloud agent ("Session Reviewer") woke nightly, read condensed trajectories of
+skill-firing AI sessions from the AgentsView database, graded each against a versioned
+rubric, and accumulated verdicts and skill-mutation proposals in this repo. It existed
 because skill effectiveness was previously judged by vibes and thrash counters — the
 `unity-editor-ops` false-positive (a session graded "earns its keep" because a skill was
 followed verbatim, while the owner's closing message was "I feel like we never really
 made any progress did we?") proved that compliance is not success and that only
-transcript-plus-artifact evidence can tell the difference.
+transcript-plus-artifact evidence can tell the difference. That finding outlived the
+automation and is the reason these artifacts are kept.
+
+The component table below describes files as they functioned while the reviewer ran.
+`wake-prompt.md` and `retro-prompt.md` are retired runbooks; they are not triggerable.
 
 ## Components
 
@@ -38,12 +47,14 @@ transcript-plus-artifact evidence can tell the difference.
   `letta server`. A future Letta-native replacement must define its own environment and
   schedule in Letta rather than relying on this retired launcher.
 - **Workspace:** the dedicated git worktree `D:\_projects\frozenSkillz-review` on branch
-  `review/nightly-grades`. The agent never touches any other checkout or branch.
-- **No API key.** Native scheduled wakes run under the agent's own auth. `LETTA_API_KEY`
-  is only needed for headless `letta -p` CLI calls, which this design does not use.
-- **Manual trigger:** register a short recurring cron (`--every 10m`) with a
-  self-limiting prompt and delete it after the first run. Known Letta gotchas:
-  one-shot `--at ... --once` schedules with `--computer` never fired (0.29.8);
+  `review/nightly-grades`. The agent never touched any other checkout or branch.
+- **No API key.** Native scheduled wakes ran under the agent's own auth. `LETTA_API_KEY`
+  was only needed for headless `letta -p` CLI calls, which this design did not use.
+- **How it was triggered manually** (retained as Letta operating knowledge, not as an
+  instruction to run — the agent and its crons no longer exist): register a short
+  recurring cron (`--every 10m`) with a self-limiting prompt and delete it after the
+  first run. Letta gotchas worth keeping for any replacement: one-shot
+  `--at ... --once` schedules with `--computer` never fired (0.29.8);
   `letta cron delete --all` also deletes the nightly; the Windows CLI often exits 9
   after complete output — trust stdout, not exit codes.
 

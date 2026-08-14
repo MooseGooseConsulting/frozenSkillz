@@ -1,0 +1,4 @@
+interface:
+  display_name: "Skill Analysis"
+  short_description: "Learn from real skill deployments"
+  default_prompt: "Use $skill-analysis to assemble individually reviewed deployments and explain how this skill is understood, where it helps or hurts, and what should improve."

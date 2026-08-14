@@ -39,6 +39,7 @@ de-personalized.
 | `chat-history` | Current personal skill; staged semantic-localization router implemented 2026-08-03. One or two `chat_history_researcher` workers localize through KCap, AgentsView, and Pieces, return brief candidate maps, then resume for bounded analysis written to temporary Markdown artifacts. Live copy synchronized; custom-agent profile uses Luna/high/fast and the reviewed global-config lane. Exact named-agent activation, installed-skill loading, and temporary-artifact writing passed on Codex CLI 0.146.0; forward-test a real two-stage retrieval before promotion. |
 | `retrospective` | Revived 2026-07-31 (owner overruled deletion — key skill): timeline script now covers all harnesses via AgentsView `--db` mode. Trigger settled 2026-08-03: manual `/retrospective` invocation, since the Letta Session Reviewer that would have fired it was decommissioned; revisit only if an owner-configured Letta replacement is built. Remaining before promotion: de-personalize. |
 | `project-docs` | Gated pending de-personalization; trigger narrowed 2026-08-10 to explicit authority-document deliverables, with README/repo/status/operational negatives. |
+| `skill-analysis` | New live personal skill with an exact incubator mirror. Thin `SKILL.md` routes to purpose, corpus assembly, one-trajectory debrief, synthesis, and examples. Clean-room routing passed, followed by the first historical study: 545 `project-docs` candidate episodes across 291 sessions (543 observed activations plus 2 explicit no-load cases), 24 selected trajectories with one retrieval gap, and all 18 PDM-centered episodes. Separate memo-only synthesis informed narrow wording changes. AgentsView extraction and findings live in `agent-control-plane`; skill text and distribution stay here. |
 | `skill-install` | Verify recipes. |
 | `run-opencode` | Fix driver.mjs header comment re: profile writes. |
 | `edit-opencode-config` | Fix canonical-root drift. |
@@ -125,13 +126,23 @@ Scouts:
 
 ## Fleet effectiveness review
 
-How grading works: a skill's grade comes from subagents reading transcripts around recent
-fires — (1) did the guidance visibly shape the agent's actions, (2) was the owner's next
-message acceptance or a correction, and (3) did the session end with an owner-visible
-outcome — the owner's *closing* reaction is the ground truth, and self-written tests
-passing is not an outcome. AgentsView `health_score` is only a thrash detector
-(tool failures / edit churn; 85% of all sessions grade A) — never a success measure. A
-"fire" is usually just a SKILL.md read, so editing or studying a skill counts as usage.
+**Process status (2026-08-10): exploratory, not a proven recurring evaluator.** The July work ran
+a full-corpus activation census, corrected Codex's hidden `SKILL.md` read channel, and manually
+regraded selected transcripts. The behavior-first reviewer was calibrated through evolving v1-v3
+prompts, but the final v4 wording did not receive its own calibration run. The Letta schedule was
+registered but never demonstrated a production nightly batch before it was decommissioned on
+2026-08-03. Consequently, the results below are useful historical findings—not a fleet-wide
+appropriate-use rate, a causal effectiveness estimate, or evidence that monitoring is currently
+running. The replacement method is `docs/workflows/skill-evaluation.md`.
+
+### Retired July grading rule (historical only)
+
+The July work used subagents to read transcripts around recent fires and treated the owner's
+closing reaction as a “ground truth” signal. That grading rule is removed: an explicit owner
+response is useful evidence, while silence is not acceptance, and it does not supply a global
+grade or causal conclusion. AgentsView `health_score` remains only a historical thrash detector
+(tool failures / edit churn; 85% of all sessions grade A), never a success measure. A historical
+“fire” was usually a `SKILL.md` read, so editing or studying a skill could count as usage.
 
 **2026-07-28 corpus analysis** (~7,300 sessions; instrument lives in the local
 `agent-control-plane` learnings repo — `projects/agent-ceremony-*.md`,

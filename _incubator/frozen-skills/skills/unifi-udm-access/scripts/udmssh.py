@@ -33,6 +33,7 @@ timeout in seconds (default 60, 0 disables) -- raise it for long silent
 operations such as a support bundle.
 """
 
+import math
 import os
 import socket
 import sys
@@ -119,10 +120,20 @@ def main() -> int:
     # disabled entirely with UDMSSH_TIMEOUT=0.
     raw_timeout = os.environ.get("UDMSSH_TIMEOUT", "60")
     try:
-        timeout: float | None = float(raw_timeout) or None
+        parsed = float(raw_timeout)
     except ValueError:
         print(f"UDMSSH_TIMEOUT is not a number: {raw_timeout!r}", file=sys.stderr)
         return 2
+    # float() accepts 'nan', 'inf' and negatives, none of which paramiko can use
+    # as a timeout: a negative one times out immediately, nan leaves the timeout
+    # bookkeeping spinning, and inf raises OverflowError deep in the channel read.
+    if not math.isfinite(parsed) or parsed < 0:
+        print(
+            f"UDMSSH_TIMEOUT must be a finite, non-negative number: {raw_timeout!r}",
+            file=sys.stderr,
+        )
+        return 2
+    timeout: float | None = parsed or None
 
     try:
         client = _connect(host, user, password)

@@ -62,7 +62,11 @@ unrecognised host fails with exit 2 and the `ssh-keyscan` line to run.
 Other behaviour worth knowing:
 
 - Commands are echoed to stdout so multi-command output can be correlated. Do not embed secrets in a
-  command — pass them through the remote environment.
+  command. The helper provides no channel for getting one to the remote side either: stdin is closed
+  before the command runs, local variables are not forwarded, and an `env VAR=...` prefix would only
+  move the secret into the console's own process list. A command needing a credential on the console
+  must read it from the device's existing configuration or credential store; if it cannot, that
+  command is not supported through this helper.
 - stdin is closed per command, so a command that reads stdin sees EOF rather than hanging.
 - stdout and stderr are drained concurrently; reading one to completion first can deadlock when the
   other fills its channel window.

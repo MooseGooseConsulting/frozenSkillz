@@ -21,10 +21,11 @@ Using native PVE/PBS for a capability gap is not a PDM failure and is not automa
 
 ## Operating Contract
 
-- Load the applicable secrets-management skill before handling authentication.
+- Prefer the environment-owned PDM launcher when it obtains credentials opaquely; using that trusted launcher is ordinary PDM operation, not direct secret handling.
+- Load the applicable secrets-management skill only when the task directly reads, writes, configures, rotates, or troubleshoots the credential source or injection path. Do not load it merely because PDM authenticates behind the launcher.
 - Resolve the PDM endpoint, TLS trust, identity, remotes, nodes, and native access paths from the owning environment. Do not copy environment inventory into this skill.
-- Prefer the environment-owned PDM launcher when one exists; it should still invoke the official `proxmox-datacenter-manager-client` and preserve output and exit status.
-- Verify the installed client/server versions and inspect `help --verbose` before assuming a command exists. PDM is evolving quickly; do not turn an old capability gap into permanent architecture.
+- The environment-owned launcher should still invoke the official `proxmox-datacenter-manager-client` and preserve output and exit status.
+- Verify the installed client and PDM server share the same major version before relying on PDM. Treat a mismatch as client/server incompatibility: correct it before command or capability probes, rather than misclassifying it as an authentication, remote, or capability failure. Inspect `help --verbose` only after the compatible client/server pair is confirmed. PDM is evolving quickly; do not turn an old capability gap into permanent architecture.
 - **Route by capability, not ideology.** If PDM supports the requested operation, use PDM. If it does not, say so and use the documented native PVE/PBS path if the task still requires the operation.
 - Do not silently pivot because a command failed. First distinguish: wrong syntax/version, auth/trust failure, PDM outage, remote outage, or an operation PDM simply does not expose.
 - Keep resource identity explicit: remote + node + guest kind + VMID + name when applicable. VMID alone is not fleet identity.
@@ -54,8 +55,8 @@ The routing rule is not “never use `qm`, `pvesh`, the PVE API, or PBS-native t
 ## PDM Workflow
 
 1. Read the owning environment’s fleet/access references.
-2. Confirm the PDM client/launcher and current version.
-3. Prove PDM connectivity/authentication with a small read such as `remote list`.
+2. Confirm the PDM client/launcher and PDM server versions share the same major version.
+3. Use the trusted environment launcher when one exists; otherwise use the documented raw official-client path. If direct credential or injection work is actually required, load the applicable secrets-management skill before proving connectivity with a small read such as `remote list`.
 4. Identify the exact remote, node, resource ID, kind, and name.
 5. Confirm the requested operation exists in the installed PDM surface.
 6. Read pre-state, execute the requested action, follow any returned task to terminal success, and read post-state.

@@ -7,7 +7,7 @@ Load this file **only** when binding `pdm-cli-operations` to a specific operator
 | Binding | Where it lives | Skill expectation |
 |---|---|---|
 | PDM endpoint, TLS pin, auth ID, remotes/nodes | Owning ops repository | Read from there; never copy into this skill |
-| Secrets / password command | Secrets-management skill + env vault | Load that skill; no password on Windows bridge argv |
+| Secrets / password command | Secrets-management skill + env vault | Load that skill only for direct credential or injection work; an opaque trusted launcher is ordinary PDM operation. Never place a password on Windows bridge argv. |
 | Launcher executable name | Env-owned wrapper on the Linux runner | Set `PDM_CLI_REMOTE_PROGRAM` explicitly |
 | Windows → Linux hop | Operator SSH config + `PDM_CLI_SSH_TARGET` | Pre-provision `known_hosts` / keys; bridge uses `BatchMode=yes` |
 | Skill files on disk | Sync destination, marketplace plugin path, or repo checkout | Invoke `scripts/pdm.ps1` relative to that skill root |

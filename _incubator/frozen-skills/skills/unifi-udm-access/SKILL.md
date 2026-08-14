@@ -13,9 +13,12 @@ A UniFi console exposes four access surfaces. They are **not** tiers of one API 
 with different base paths, different site identifiers, different response envelopes, and different
 capabilities. Each owns things the others cannot reach at all.
 
-The consequence: **a 404 tells you nothing except that this surface lacks this path.** The same fact
-may be freely readable one surface over. Most time lost on UniFi automation is spent concluding a
-feature doesn't exist after probing exactly one surface.
+The consequence: **a 404 tells you nothing except that this request found no path here.** The same
+fact may be freely readable one surface over. Most time lost on UniFi automation is spent concluding
+a feature doesn't exist after probing exactly one surface.
+
+Before rerouting on a 404, rule out the cheaper explanation: a wrong site identifier or object ID
+produces the same 404 on a path that exists. Confirm the identifier first, then try another surface.
 
 Route by which surface *owns* the fact, not by which is newest.
 
@@ -74,13 +77,20 @@ Status codes carry specific meaning here, and two of them are routinely misread:
 
 | Code | Means | Do |
 |---|---|---|
-| `400` | **Authenticated.** The body was rejected | Your key works. Fix the payload — usually a missing required field from the original object |
-| `401` / `403` | Authentication or scope failure | Now it is the key |
-| `404` | This *surface* lacks this path | Check the other three before concluding the feature is absent |
+| `400` | **Authenticated.** The request reached payload validation and the body was rejected | Fix the payload — usually a field dropped from the original object |
+| `401` / `403` | Authentication or authorization failure | Now it is the key |
+| `404` | This request found no path here | Check the identifiers first, then the other surfaces |
 | `200` with `[]` | Path exists, genuinely empty | Real answer — e.g. `firewall-policies` is empty on a console still using legacy `firewallrule` |
 
-**A `400` from a write endpoint is not a permission error.** It is proof the key authenticated. This
-is the single most useful signal for determining what a key can actually do.
+**A `400` from a write endpoint is not a permission error** — it proves the request authenticated
+and got as far as payload validation, which is the most useful cheap signal available.
+
+It does **not** prove write *authorization*. A scoped key can reach payload validation and still be
+refused once the body is valid, depending on where the console enforces scope. So `400` rules out
+"the key is rejected outright"; it does not establish "this key may write." Confirm that with a real
+reversible change — add and then delete a throwaway local DNS record — not by inference. When in
+doubt, assume the key **can** write: treating a write-capable key as read-only is the more dangerous
+error of the two.
 
 Response envelopes differ per surface, so a client written against one mis-parses another:
 
@@ -90,35 +100,59 @@ Legacy          {"meta":{"rc":"ok"},"data":[…]}
 v2              […]                                                          bare, no envelope
 ```
 
-Integration v1 paginates — check `totalCount` against `count` before treating a page as the set.
+Integration v1 paginates, and a busy site has more clients than one page. Compare `totalCount`
+against `count` before treating a page as the whole set, and walk it with `offset`/`limit`:
+
+```bash
+OFF=0
+while :; do
+  P=$(curl -s -H "X-API-KEY: $KEY" \
+      "https://<console>/proxy/network/integration/v1/sites/<uuid>/clients?offset=$OFF&limit=200")
+  echo "$P" | jq -c '.data[]'
+  OFF=$(( OFF + $(echo "$P" | jq '.count') ))
+  [ "$OFF" -ge "$(echo "$P" | jq '.totalCount')" ] && break
+done
+```
+
+Silently taking the first page is the failure mode here — it returns a plausible, wrong answer
+rather than an error.
 
 ## Changing configuration safely
 
 Legacy `rest/*` is a **replace**, not a merge. Send a partial object and every omitted field is
 cleared. Always round-trip:
 
+**These files hold live secrets.** A `wlanconf` object carries the WLAN passphrase; `radiusprofile`
+carries shared secrets. Work in a private directory and delete it when done — never leave these in a
+repository, a home directory, or anything that gets backed up.
+
 ```bash
 BASE="https://<console>/proxy/network/api/s/<site>"
+WORK=$(mktemp -d); chmod 700 "$WORK"
+trap 'rm -rf "$WORK"' EXIT          # secrets die with the shell
 
 # 1. Read the whole object and keep it — this is also your rollback copy.
-curl -s -H "X-API-KEY: $KEY" "$BASE/rest/wlanconf" | jq '.data[] | select(.name=="<ssid>")' > before.json
+curl -s -H "X-API-KEY: $KEY" "$BASE/rest/wlanconf" \
+  | jq '.data[] | select(.name=="<ssid>")' > "$WORK/before.json"
 
 # 2. Modify only the intended field, preserving everything else.
-jq '.<field> = <value>' before.json > after.json
+jq '.<field> = <value>' "$WORK/before.json" > "$WORK/after.json"
 
 # 3. PUT the complete object back to its own _id.
-ID=$(jq -r '._id' after.json)
+ID=$(jq -r '._id' "$WORK/after.json")
 curl -s -X PUT -H "X-API-KEY: $KEY" -H 'Content-Type: application/json' \
-     --data @after.json "$BASE/rest/wlanconf/$ID"
+     --data @"$WORK/after.json" "$BASE/rest/wlanconf/$ID"
 
 # 4. Verify only the intended field changed.
 curl -s -H "X-API-KEY: $KEY" "$BASE/rest/wlanconf" \
-  | jq '.data[] | select(._id=="'"$ID"'")' > check.json
-diff <(jq -S . before.json) <(jq -S . check.json)
+  | jq '.data[] | select(._id=="'"$ID"'")' > "$WORK/check.json"
+diff <(jq -S . "$WORK/before.json") <(jq -S . "$WORK/check.json")
 ```
 
 Step 4 is the point of the recipe. A diff showing one changed line is proof; a successful `200` is
-not. Keep `before.json` until verified — it is the rollback payload.
+not. Keep `before.json` until verified — it is the rollback payload. If you must keep it past the
+shell's life, move it somewhere already trusted with secrets, and never paste these objects into a
+ticket, a PR, or a chat transcript.
 
 ## Common mistakes
 
@@ -156,7 +190,7 @@ and looks healthy — compare it against the netflow setting, which does carry `
 | Restart a device or cycle PoE | Legacy `cmd/devmgr` |
 | Find out what happened last night | UI or exported syslog — there is no event API |
 | Replace the console certificate | Root SSH, then re-point every pinning consumer |
-| Determine what a key can actually do | Send a deliberately malformed write; `400` means authenticated |
+| Determine what a key can actually do | `400` on a malformed write proves it authenticates; prove write authorization with a reversible change (add then delete a throwaway `static-dns` record) |
 | Reach something no API exposes | Root SSH — the config database holds what the APIs omit |
 
 ## References

@@ -20,10 +20,14 @@ exists for onboarding only; leaving it on defeats host verification and exposes
 a full-root password to anything that can intercept the connection.
 
 Runs every command even if one fails, then exits with the first non-zero status
-(the most diagnostic one). Set UDMUSER to override the default 'root' login.
+(the most diagnostic one); a timed-out command reports 124. Set UDMUSER to
+override the default 'root' login. UDMSSH_TIMEOUT sets the per-command idle
+timeout in seconds (default 60, 0 disables) -- raise it for long silent
+operations such as a support bundle.
 """
 
 import os
+import socket
 import sys
 from concurrent.futures import ThreadPoolExecutor
 
@@ -64,8 +68,8 @@ def _connect(host: str, user: str, password: str) -> paramiko.SSHClient:
     return client
 
 
-def _run(client: paramiko.SSHClient, command: str) -> tuple[str, str, int]:
-    stdin, stdout, stderr = client.exec_command(command, timeout=60)
+def _run(client: paramiko.SSHClient, command: str, timeout: float | None) -> tuple[str, str, int]:
+    stdin, stdout, stderr = client.exec_command(command, timeout=timeout)
     # Close stdin so a command that reads it sees EOF instead of blocking.
     stdin.close()
     stdout.channel.shutdown_write()
@@ -94,6 +98,17 @@ def main() -> int:
     host, commands = sys.argv[1], sys.argv[2:]
     user = os.environ.get("UDMUSER", "root")
 
+    # exec_command's timeout is an idle timeout on the channel, not a wall clock
+    # for the command. A long, silent operation (a support bundle, a large
+    # capture) trips it and aborts the batch, so allow it to be raised or
+    # disabled entirely with UDMSSH_TIMEOUT=0.
+    raw_timeout = os.environ.get("UDMSSH_TIMEOUT", "60")
+    try:
+        timeout: float | None = float(raw_timeout) or None
+    except ValueError:
+        print(f"UDMSSH_TIMEOUT is not a number: {raw_timeout!r}", file=sys.stderr)
+        return 2
+
     try:
         client = _connect(host, user, password)
     except paramiko.SSHException as exc:
@@ -104,11 +119,26 @@ def main() -> int:
                 file=sys.stderr,
             )
         return 2
+    except (OSError, socket.error) as exc:
+        # gaierror / timeout / refused all land here; paramiko does not wrap them.
+        print(f"cannot reach {host}: {exc}", file=sys.stderr)
+        return 2
 
     first_failure = 0
     try:
         for command in commands:
-            out, err, status = _run(client, command)
+            try:
+                out, err, status = _run(client, command, timeout)
+            except (socket.timeout, TimeoutError) as exc:
+                print(f"$ {command}")
+                print(
+                    f"[timeout] no output for {timeout}s: {exc}; "
+                    "raise or disable with UDMSSH_TIMEOUT",
+                    file=sys.stderr,
+                )
+                print("-" * 50)
+                first_failure = first_failure or 124
+                continue
 
             print(f"$ {command}")
             if out:

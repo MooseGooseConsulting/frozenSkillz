@@ -105,7 +105,15 @@ return `401` with it.
 ## Optional read helper
 
 `uvx unifi-cli` provides read commands and a JSON schema dump for agent introspection without
-installing anything. Two caveats before relying on it: it ships its own certificate root store, so
-it cannot validate an internally-issued console certificate and must be run with verification
-disabled; and it echoes credentials passed by environment variable into its `--help` output. It
-covers device, client, network, port, and system reads — not the configuration surfaces above.
+installing anything. It covers device, client, network, port, and system reads — not the
+configuration surfaces above.
+
+Two caveats. It echoes credentials passed by environment variable into its `--help` output. And it
+ships its own certificate root store, so it does not consult the OS trust store and will reject an
+internally-issued console certificate that `curl` on the same host accepts.
+
+**That is a reason to prefer `curl` for such a console, not a reason to disable verification.**
+Turning verification off removes server authentication entirely and exposes the API key to anyone
+who can intercept the connection. Use its trust-a-specific-certificate configuration if it has one;
+otherwise use `curl`, which honours the OS trust store. Reach for a verification-off flag only to
+confirm a diagnosis in the moment, never in a stored procedure or a script.

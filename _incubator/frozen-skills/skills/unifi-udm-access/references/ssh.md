@@ -67,6 +67,11 @@ Other behaviour worth knowing:
 - stdout and stderr are drained concurrently; reading one to completion first can deadlock when the
   other fills its channel window.
 - Every command runs even if an earlier one fails. The exit status is the **first** non-zero one.
+- `UDMSSH_TIMEOUT` is a per-command **idle** timeout in seconds, not a wall clock (default 60, `0`
+  disables). A long silent operation — a support bundle, a large capture — trips the default. A
+  timed-out command reports `124` and the batch continues to the next command.
+- An unreachable host, a name that does not resolve, or a refused connection exits 2 with a one-line
+  reason rather than a traceback.
 - `UDMUSER` overrides the default `root` login.
 
 Use it for reads and deliberate single changes. It is not a configuration management tool — no

@@ -31,7 +31,7 @@ command -v proxmox-datacenter-manager-client
 dpkg-query -W -f='${Package} ${Version}\n' proxmox-datacenter-manager-client
 ```
 
-Install it only on a compatible Debian amd64 operator host from an official Proxmox PDM repository selected by the owning environment. Do not silently enable a test repository. Install the client package, not a PDM server, when all that is needed is the process interface.
+Install it only on a compatible Debian amd64 operator host from an official Proxmox PDM repository selected by the owning environment. Do not silently enable a test repository. Install the client package, not a PDM server, when all that is needed is the process interface. Before relying on PDM, record the installed client version and server version from the owning environment's documented PDM surface; their major versions must match. Treat a mismatch as incompatible and correct it before command or capability probes.
 
 Proxmox does not publish a native Windows build. If the environment selected the official client route on Windows, use an environment-owned Linux runner or the bundled bridge if it has qualified one. A documented pinned direct adapter is an independent supported Windows route; do not detour through Linux/SSH. Do not create WSL or a container solely to satisfy this skill unless the operator explicitly chooses that architecture.
 
@@ -90,6 +90,10 @@ Global connection options precede the subcommand. Ordinary commands use a cached
 export XDG_CONFIG_HOME='<protected-state>/config'
 export XDG_CACHE_HOME='<protected-state>/cache'
 install -d -m 0700 "$XDG_CONFIG_HOME" "$XDG_CACHE_HOME/proxmox-datacenter-client"
+# Use only an independently verified fingerprint. The cache format is:
+# <host> <64 SHA-256 hex characters without colons>
+printf '%s %s\n' '<pdm-host>' '<sha256-hex-without-colons>' \
+  > "$XDG_CACHE_HOME/proxmox-datacenter-client/fingerprints"
 
 proxmox-datacenter-manager-client \
   --host '<pdm-host>' \
@@ -103,11 +107,12 @@ proxmox-datacenter-manager-client \
   --host '<pdm-host>' \
   --port 8443 \
   --user '<user-id>' \
+  --fingerprint '<independently-verified-sha256-fingerprint>' \
   --output-format json \
   remote list
 ```
 
-A live-qualified 1.1.6 environment observed that noninteractive login parsed `--fingerprint` but did not seed the verifier cache. That environment worked around the behavior by writing the independently verified fingerprint to the client's cache before login. Do not generalize that quirk to newer clients; first test the installed version.
+A live-qualified 1.1.6 environment observed that noninteractive login parsed `--fingerprint` but did not seed the verifier cache. For 1.1.6, keep the independently verified cache-pin procedure above and retain `--fingerprint` on every documented raw-client invocation. Do not remove the cache pin after an upgrade unless the installed client proves that noninteractive login seeds and subsequently uses the verifier cache.
 
 Do not put a password directly in argv. Use a protected password command or a short-lived mode-0600 password file created and removed by the owning environment.
 
@@ -259,7 +264,7 @@ When a UPID is returned, use the complete remote-prefixed identifier if required
 <pdm> --output-format json pbs task status <remote> '<pbs:remote!UPID:...>'
 ```
 
-Poll at a bounded interval while the task is running. Success requires terminal stopped state plus an OK exit status when the API provides those fields. A timeout, transport loss, missing task, or malformed response is an unknown outcome: re-read the same task and resource state before considering a retry.
+Poll at a bounded interval while the task is running. Success requires both terminal `status=stopped` and explicit `exitstatus=OK`. A missing, malformed, or non-`OK` `exitstatus` is not success: treat it as failed or indeterminate, preserve the task evidence, and re-read the same task and resource state before considering a retry. A timeout, transport loss, or missing task is likewise an unknown outcome.
 
 After success, verify the intended resource state. Do not infer completion from the request being accepted.
 
@@ -268,6 +273,7 @@ After success, verify the intended resource state. Do not infer completion from 
 | Evidence | Meaning | Next action |
 |---|---|---|
 | Client missing/incompatible | Operator-runner problem | Correct the client environment; do not modify PDM/PVE merely to satisfy the tool |
+| Client/server major versions differ | Protocol compatibility problem | Correct the incompatible client or server before PDM command/capability probes |
 | TLS mismatch | Trust/identity problem | Stop and independently verify the certificate |
 | PDM authentication rejected | PDM identity problem | Repair the selected identity/credential |
 | Reads work but mutation is unauthorized | ACL/remote credential problem | Correct the authorized execution identity; do not silently downgrade the task |
@@ -275,7 +281,7 @@ After success, verify the intended resource state. Do not infer completion from 
 | PDM endpoint unreachable | **PDM unavailable** | Use native PVE/PBS for operations that can proceed; diagnose/restore PDM separately |
 | PDM reachable but one remote unavailable | **Remote-specific failure** | Diagnose that remote natively; PDM itself may be healthy |
 | PDM operation returns remote error | Target operation failure | Preserve task/error evidence; use native diagnosis if it adds needed detail |
-| Task stops non-OK | Target operation failed | Report failure; inspect task/resource state before retrying |
+| Task stops with missing, malformed, or non-OK `exitstatus` | Target outcome failed or indeterminate | Preserve task evidence; inspect task/resource state before retrying |
 | Task outcome unknown after transport loss | Indeterminate | Re-query task and resource state; do not blindly resubmit |
 
 The important boundary is **why** the surface changes. PDM-first centralization and native drill-down are complementary, not competing doctrines.

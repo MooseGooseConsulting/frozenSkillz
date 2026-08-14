@@ -8,6 +8,28 @@
 > active runbook.** Nothing here is scheduled, and no instruction in this directory
 > should be executed expecting a live reviewer. Where the text is written in the present
 > tense it describes the system as it ran until 2026-08-03.
+>
+> **A successor is intended, and it will not have this shape (owner, 2026-08-14).** Read
+> this directory as reference, not as a blueprint to restore. The nightly-cron Letta
+> agent, the wake/retro prompt pair, and the grade-into-a-worktree arrangement are the
+> parts specifically not being carried forward. What is worth keeping is the reasoning:
+> why compliance is not success, why grading needs transcript-plus-artifact evidence, and
+> what the rubric learned across its versions. Design the replacement from that, not from
+> the runbook below.
+
+### Where the rest of the material is
+
+Later development of the retired reviewer was never merged and lives on branches rather
+than here:
+
+| Branch | Contents |
+|---|---|
+| `review/nightly-grades` | Accumulated grading output, calibration logs, mutation proposals, and a "retrospective phase" design that post-dates this directory. |
+| `salvage/skill-tracker-streamline` | Rubric v2 → v4 (pushback field, artifact-grounded grading against real diffs, aftermath-survival check), `record_verdict.py`, and a prompt rationale companion. |
+
+Both are preserved deliberately. The rubric iteration in particular is the most refined
+statement of what the reviewer was trying to measure, and is the natural starting point
+for a differently shaped successor.
 
 A Letta cloud agent ("Session Reviewer") woke nightly, read condensed trajectories of
 skill-firing AI sessions from the AgentsView database, graded each against a versioned

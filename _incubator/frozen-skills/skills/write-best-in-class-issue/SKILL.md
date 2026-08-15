@@ -17,7 +17,8 @@ A best-in-class issue makes a complex, easily-abused piece of work **safe to act
 on later** — by a human *or* an agent. It is not a long issue. It is a structured
 one: outcome-first, evidence-cited, with explicit boundaries and testable
 acceptance. The reference model is the kind of issue that designs a reviewer, a
-capability, or a multi-part build (e.g. coldaine-homelab #29, #81, #115).
+capability, or a multi-part build (for example: a semantic-reviewer design issue,
+a storage-fabric proposal, or a build/CI coordination epic).
 
 ## Step 1 — Pick the mode (do this first)
 
@@ -83,5 +84,5 @@ it to Partial or Minimal rather than padding.
 
 ## Reference and examples
 
-- For the full anatomy with a worked teardown of coldaine-homelab #29, see [reference.md](reference.md).
+- For the full anatomy with a worked teardown of a real best-in-class design issue, see [reference.md](reference.md).
 - For a good condensed issue, an over-ceremonized one, and an appropriately-terse bump, see [examples.md](examples.md).

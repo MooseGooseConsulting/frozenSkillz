@@ -2,13 +2,14 @@
 
 Three examples, one per mode. Each is condensed to show shape, not length.
 
-## Full mode — design issue (condensed from #29's shape)
+## Full mode — design issue (condensed from the reference issue's shape)
 
 ```markdown
 ## Sequencing decision — 2026-07-20
 
-Blocked on the primary Hermes role in #40. Do not implement this reviewer until
-`hermes-ops-01` is fully standing and has passed #40 acceptance.
+Blocked on the primary executor role in [the executor issue]. Do not implement
+this reviewer until the executor runtime is fully standing and has passed
+[the executor issue]'s acceptance.
 
 ## Outcome and status
 
@@ -22,22 +23,23 @@ state so lasting knowledge does not disappear between sessions.
 This issue does not own PR execution. The reviewer may inspect, criticize,
 publish a verdict, block a clean status, or reopen an unsupported closure. It
 must not own the implementation task or run the live change as a hidden side
-effect. Execution is owned by #40.
+effect. Execution is owned by [the executor issue].
 
 ## What the research established
 
 | Component | Shipped capability | Boundary for this issue |
 |---|---|---|
-| AgentsView v0.38.1 | Codex/Hermes capture; SQLite→PG sync; read-only MCP | session evidence corpus, not the active reviewer |
-| Hermes v2026.7.7.2 | HMAC webhooks, cron, zero-token gates | execution substrate; still needs a dedicated profile |
-| GitHub | PR/issue webhooks, commit statuses, reopen API | closing keywords do not prove acceptance; failed webhooks not redelivered |
+| Session-capture tool | agent capture; SQLite→central sync; read-only API | session evidence corpus, not the active reviewer |
+| Agent runtime | HMAC webhooks, cron, zero-token gates | execution substrate; still needs a dedicated profile |
+| Git host | PR/issue webhooks, commit statuses, reopen API | closing keywords do not prove acceptance; failed webhooks not redelivered |
 
 ## Activation gate
 
-A clean/enforcing verdict is forbidden until: the central Session API is
-healthy; backup/restore is exercised; the HEPHASTUS archive is preserved and
-full-pushed; ≥2 Codex producers and 1 Hermes runtime are visible centrally;
-continuous sync/catch-up is proven. Until then, result is `incomplete`, never `clean`.
+A clean/enforcing verdict is forbidden until: the central session API is
+healthy; backup/restore is exercised; the preserved archive is full-pushed
+with fidelity reconciled; ≥2 producer agents and 1 agent runtime are visible
+centrally; continuous sync/catch-up is proven. Until then, result is
+`incomplete`, never `clean`.
 
 ## Contracts
 
@@ -48,8 +50,9 @@ inputs must not create a duplicate comment, issue, or correction agent.
 
 ## Regression and completion evidence
 
-- [ ] Replaying issue #3's premature closure finds its unmet acceptance
-      conditions, reopens it, and wakes correction without human approval.
+- [ ] Replaying [a specific prior issue]'s premature closure finds its unmet
+      acceptance conditions, reopens it, and wakes correction without human
+      approval.
 - [ ] A PR whose author bypasses the PR template still receives a required
       verdict for each head SHA.
 - [ ] Stale producer data, an ID collision, or incompatible schema returns
@@ -57,16 +60,16 @@ inputs must not create a duplicate comment, issue, or correction agent.
 
 ## Cross-repository ownership
 
-- #29: semantic policy, dispatcher, reviewer, homelab profile.
-- #26: central AgentsView/PostgreSQL placement.
-- #40: stateful executor and PR-to-Kanban task path.
-- llm-archiver #118: production read-only provider and derived ledger.
+- [this issue]: semantic policy, dispatcher, reviewer, profile.
+- [the central-plane issue]: central session-store placement.
+- [the executor issue]: stateful executor and PR-to-task path.
+- [the archiver issue]: production read-only provider and derived ledger.
 
 ## Primary source basis
 
-- AgentsView v0.38.1, Session API, Codex/Hermes parsers (linked).
-- Hermes v2026.7.7.2, webhooks, cron, hooks (linked).
-- GitHub webhook events, signature validation, issue reopen API (linked).
+- Session-capture tool pinned release, Session API, parsers (linked).
+- Agent runtime pinned release, webhooks, cron, hooks (linked).
+- Git host webhook events, signature validation, issue reopen API (linked).
 ```
 
 ## Over-ceremonized — what NOT to do (a one-line bump padded to Full)
@@ -96,7 +99,7 @@ operator has confirmed; the moon is in the right phase.
 This is the failure mode: a Minimal-mode task padded with gates that do not
 reduce abuse surface. The correct version is the Minimal example below.
 
-## Minimal mode — a one-line bump done right (condensed from #401)
+## Minimal mode — a one-line bump done right (condensed from a real matrix-pinned OS bump)
 
 ```markdown
 From the 2026-08-10 maintenance-steward review. One patch ahead; built with

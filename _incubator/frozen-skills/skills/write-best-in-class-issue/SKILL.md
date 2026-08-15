@@ -27,12 +27,25 @@ bump is the failure mode this skill exists to prevent.
 
 | Issue type | Mode | Apply |
 |---|---|---|
-| Design / governance / epic / proposal | **Full** | All 8 beats |
-| Bug report (human- or agent-authored) | **Partial** | Title + Gap + Hard constraint + Acceptance |
-| Bump / one-line operational | **Minimal** | Title + Acceptance + Rollback only |
+| Design / governance / epic / proposal | **Full** | All 8 beats, with 2/5/6 conditional (see below) |
+| Bug report (human- or agent-authored) | **Partial** | Beats 1, 3 (as "the gap"), 7; beat 4 is common when live measurements exist |
+| Bump / one-line operational — **no live mutation** | **Minimal** | Title + Acceptance + Rollback only |
+| Bump / operational that **mutates a live running system** (control-plane roll, service restart) | **Partial** | Treat as a bug: beats 1, 3, 7 — the hard constraint is the live-mutation boundary |
+
+The Minimal/Partial line is **"does it mutate a live running system,"** not "is it a bump." A
+pin, digest, or manifest change consumed later is Minimal; a version bump that rolls the live
+control plane is Partial.
 
 If the issue does not design, coordinate, or propose something consequential,
 **stop and use Minimal**. When unsure, ask the operator which mode before drafting.
+
+### Conditional beats in Full mode
+
+Beats 2, 5, and 6 are **conditional**, not universal — verified against real issues:
+
+- **Beat 2 (sequencing)** — include only when the issue is *blocked on* something. A coordination epic that "decides nothing" has no blocker.
+- **Beat 5 (activation gate)** — include only when the issue *deploys or activates*. A pure design/decision issue has no activation.
+- **Beat 6 (structured contracts)** — include only when there are *contracts worth freezing*. A spike proposal, a capability decision, or an issue whose contracts live in another repo correctly omit it.
 
 ## Step 2 — Draft the beats (Full mode)
 
@@ -45,6 +58,7 @@ lane.
 - [ ] 1. Outcome and status up front — what changes, and honestly whether it is
        deployed or design-only.
 - [ ] 2. Sequencing / blocked-on — what must stand first, before any design.
+       (Conditional: only when the issue is blocked on something.)
 - [ ] 3. Hard scope boundary — what this issue does NOT do (e.g. "reviewer, not
        executor"). State the boundary once; point back to it instead of restating.
 - [ ] 4. Evidence-vs-proposal table — for each component, split "shipped
@@ -52,8 +66,12 @@ lane.
        for shipped.
 - [ ] 5. Activation gate — explicit "do not activate until…" conditions. A clean
        verdict is forbidden when evidence is incomplete.
+       (Conditional: only when the issue deploys or activates.)
 - [ ] 6. Structured contracts — the request/result shapes, fingerprints, or
        coverage states the work freezes before implementation.
+       (Conditional: only when there are contracts worth freezing. A spike, a
+       capability decision, or an issue whose contracts live in another repo
+       correctly omits this.)
 - [ ] 7. Testable acceptance / regression evidence — falsifiable scenarios, not
        aspirations. "Replaying X finds Y" beats "X should be handled."
 - [ ] 8. Cited source basis + cross-repo ownership map — pinned versions with deep

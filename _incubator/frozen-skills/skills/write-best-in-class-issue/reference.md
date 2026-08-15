@@ -121,6 +121,26 @@ does not carry that surface. For those, the Partial or Minimal mode is the
 the documented failure mode (the retired `issue-pr-review` skill was disabled
 for exactly this reason).
 
+## Validation against real issues
+
+The router and beat prescriptions were tested against 10 real issues spanning
+all three modes. Findings that changed the skill:
+
+- **Minimal/Partial boundary:** the line is "does it mutate a live running
+  system," not "is it a bump." A control-plane version bump rolls the live
+  cluster → Partial (hard-constraint beat), not Minimal. A pin or digest
+  change consumed later stays Minimal.
+- **Beat 6 (structured contracts) is conditional:** three real Full-mode
+  issues (a spike proposal, a coordination epic, a capability decision whose
+  contracts live in another repo) correctly omit it. Forcing it there is
+  over-prescription.
+- **Beats 2 (sequencing) and 5 (activation gate) are conditional:** a
+  coordination epic that "decides nothing" correctly omits both.
+- **Partial bug reports commonly include beat 4** (live measurement tables)
+  even though it is not required — note it as common, not forbidden.
+- **"State the boundary once"** validated: the reference issue restates its
+  boundary four times, confirming the critique.
+
 ## Peer examples at the same bar
 
 These are described by shape, not by repo/number, so this skill stays

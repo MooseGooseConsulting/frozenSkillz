@@ -76,7 +76,7 @@ Claude Code can instead let its marketplace manage a client-specific plugin copy
 /plugin install frozen-skills@coldaine-skills
 ```
 
-That command auto-discovers the five shared skills in the `frozen-skills` package. It does not install the physically separate `codex-thread-organizer` package, populate a Codex skill root, or install anything from `_incubator/`.
+That command auto-discovers the shared skills in the `frozen-skills` package. It does not install the physically separate `codex-thread-organizer` package, repo-targeted packages such as `pdm-operations`, populate a Codex skill root, or install anything from `_incubator/`.
 
 The Codex marketplace separately exposes the valid `codex-thread-organizer` plugin package. Cursor and Gemini remain separately validated packaging surfaces. Manifest presence alone is not an installer; use `sync_frozen_skills.py --consumer <name>` for a verified local installation unless a specific client provides and documents its own plugin installer.
 
@@ -84,11 +84,15 @@ The Codex marketplace separately exposes the valid `codex-thread-organizer` plug
 
 `frozen-skills` currently registers these shared skills:
 
+- `agent-github-identity`: give each AI agent its own GitHub App bot identity so commits, pull requests, reviews, and comments attribute to that agent rather than a shared account.
 - `delegation-contract`: brief and receive work across agent boundaries with explicit context, authority, output, and single-writer coordination rules.
 - `doppler`: Doppler CLI and secret-injection workflow guidance that avoids exposing secret values.
 - `external-skill-intake`: sandbox, inventory, score, evaluate, and package external skill/plugin/agent repos before any promotion.
 - `omc-reference`: maintain Oh My ClaudeCode as a separate Claude Code plugin from Codex without importing OMC workflow rules into ordinary Codex work.
-- `pdm-cli-operations`: inspect and operate Proxmox fleets through the official PDM client or a repository-owned pinned direct PDM adapter, with exact target selection and terminal task proof for mutations.
+
+Repo-targeted skills live outside the shared broadcast lane and install only into the repositories that own the environment they operate:
+
+- `pdm-cli-operations` (repo-only package `pdm-operations`): inspect and operate Proxmox fleets through the official PDM client or a repository-owned pinned direct PDM adapter. Targets `MooseGooseConsulting/coldaine-homelab`; also exposed to the Hermes runtime, which declares that repo. See `docs/workflows/skill-authority-and-frozen-sync.md` → **Repository-Targeted Skills**.
 
 The dedicated `codex-thread-organizer` package is available to Codex only. It reads related task bodies, renames Codex tasks with sparse semantic titles, identifies the current owner of unfinished work, and supports periodic Codex organization runs.
 
@@ -114,8 +118,11 @@ plugins/
     skills/                      Shared active skills
   codex-thread-organizer/        Dedicated Codex-only plugin package
     skills/                      Codex-only skill source
-  distribution.json             Exact shared/consumer package composition
+  pdm-operations/                Repo-only package (not client-installed)
+    skills/                      Repo-targeted skill source
+  distribution.json             Exact shared/consumer/repo-targeted composition
   skill-injector/                Experimental hook plugin
+mcp/                             MCP server templates for repo_targets entries
 scripts/
   sync_frozen_skills.py          Manifest-driven local synchronizer
 _incubator/                      Gated skills and scout snapshots

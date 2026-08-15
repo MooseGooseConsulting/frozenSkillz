@@ -1,7 +1,7 @@
 {
   "name": "frozen-skills",
-  "description": "Installs reviewed agent GitHub identity, delegation-contract, Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
-  "version": "2.7.1",
+  "description": "Installs reviewed agent GitHub identity, delegation-contract, Doppler, external-skill-intake, and OMC maintenance skills. Content under _incubator is not included.",
+  "version": "2.8.0",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
@@ -29,10 +29,6 @@
     {
       "name": "omc-reference",
       "path": "skills/omc-reference"
-    },
-    {
-      "name": "pdm-cli-operations",
-      "path": "skills/pdm-cli-operations"
     }
   ]
 }

@@ -58,6 +58,9 @@ FROZEN_MARKETPLACE_MANIFESTS = {
 }
 FROZEN_DISTRIBUTION = Path("plugins/distribution.json")
 SAFE_NAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+REPO_ID_PATTERN = re.compile(
+    r"^[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*$"
+)
 
 
 def load_json(filepath):
@@ -101,18 +104,107 @@ def validate_skill_entry(plugin_root, skill, seen_names):
         raise ValueError(f"Skill {skill_name} has invalid metadata: {exc}") from exc
 
 
-def validate_deployment_subsets(distribution, shared_names, available_by_consumer):
+def validate_repo_targets(distribution, plugin_root, lane_names, seen_names):
+    """Validate the optional repository axis.
+
+    A repo-targeted skill is routed only into the repositories that own the
+    environment it operates. Skills already in a shared/consumer lane inherit
+    their lane path; a repo-only skill declares a ``path`` in a dedicated
+    package outside the shared auto-discovery tree.
+    """
+
+    repo_targets = distribution.get("repo_targets", {})
+    if not isinstance(repo_targets, dict):
+        raise ValueError("distribution repo_targets field must be an object")
+    repo_root = plugin_root.parent
+    for skill_name, entry in repo_targets.items():
+        if not isinstance(skill_name, str) or not SAFE_NAME_PATTERN.fullmatch(skill_name):
+            raise ValueError(f"Unsafe repo_targets skill name {skill_name!r}")
+        if not isinstance(entry, dict):
+            raise ValueError(f"repo_targets entry for {skill_name} must be an object")
+        description = entry.get("description")
+        if not isinstance(description, str) or not description.strip():
+            raise ValueError(f"repo_targets entry for {skill_name} has no description")
+
+        relative_path = entry.get("path")
+        if skill_name in lane_names:
+            if relative_path is not None:
+                raise ValueError(
+                    f"repo_targets entry for {skill_name} must not carry a path; "
+                    "it inherits its shared/consumer lane path"
+                )
+        else:
+            if not isinstance(relative_path, str) or not relative_path:
+                raise ValueError(
+                    f"repo_targets skill {skill_name} is not in any shared/consumer "
+                    "lane, so it must declare a path in a dedicated repo-only package"
+                )
+            parts = Path(relative_path).parts
+            if (
+                len(parts) < 3
+                or parts[0] == "frozen-skills"
+                or parts[1] != "skills"
+                or ".." in parts
+            ):
+                raise ValueError(
+                    f"repo_targets skill {skill_name} must live in a dedicated "
+                    f"repo-only package (<package>/skills/{skill_name}), not in the "
+                    "shared auto-discovery tree"
+                )
+            validate_skill_entry(
+                plugin_root, {"name": skill_name, "path": relative_path}, seen_names
+            )
+
+        repos = entry.get("repos")
+        if not isinstance(repos, list) or not repos:
+            raise ValueError(f"repo_targets entry for {skill_name} has no repos")
+        if len(repos) != len(set(repos)):
+            raise ValueError(f"repo_targets entry for {skill_name} duplicates a repo")
+        for repo in repos:
+            if not isinstance(repo, str) or not REPO_ID_PATTERN.fullmatch(repo):
+                raise ValueError(
+                    f"repo_targets entry for {skill_name} has an unsafe repository "
+                    f"identifier {repo!r}; expected 'owner/repo'"
+                )
+
+        mcp = entry.get("mcp", [])
+        if not isinstance(mcp, list):
+            raise ValueError(f"repo_targets entry for {skill_name} mcp must be a list")
+        if len(mcp) != len(set(mcp)):
+            raise ValueError(
+                f"repo_targets entry for {skill_name} duplicates an MCP template"
+            )
+        for template in mcp:
+            if not isinstance(template, str) or not SAFE_NAME_PATTERN.fullmatch(template):
+                raise ValueError(
+                    f"repo_targets entry for {skill_name} has an unsafe MCP template "
+                    f"name {template!r}"
+                )
+            template_path = repo_root / "mcp" / f"{template}.json"
+            if not template_path.is_file():
+                raise ValueError(
+                    f"repo_targets entry for {skill_name} names MCP template "
+                    f"{template} but {template_path} does not exist"
+                )
+            load_json(template_path)
+    return set(repo_targets)
+
+
+def validate_deployment_subsets(distribution, shared_names, available_by_consumer, repo_targets=None):
     """Check every deployment subset against the aligned active distribution.
 
     A deployment comes in two kinds. A client-scoped deployment names the
     consumer whose client format it receives plus the exact subset of that
     consumer's active skills. A runtime deployment omits ``consumer`` because it
     is not one of the four clients — it may select only shared skills, since it
-    has no client packaging format to render a restricted package into.
+    has no client packaging format to render a restricted package into. A
+    runtime deployment that names the ``repo`` whose environment it operates may
+    additionally select repo-targeted skills aimed at that repository.
 
     Neither kind may select a skill the distribution does not already carry.
     """
 
+    repo_targets = repo_targets or {}
     deployments = distribution.get("deployments", {})
     if not isinstance(deployments, dict):
         raise ValueError("distribution deployments field must be an object")
@@ -131,12 +223,26 @@ def validate_deployment_subsets(distribution, shared_names, available_by_consume
                 f"{sorted(available_by_consumer)}, or omit consumer entirely for a "
                 "non-client runtime that receives only shared skills"
             )
+        deployment_repo = entry.get("repo")
+        if deployment_repo is not None and (
+            not isinstance(deployment_repo, str)
+            or not REPO_ID_PATTERN.fullmatch(deployment_repo)
+        ):
+            raise ValueError(
+                f"Deployment {name} has an unsafe repo identifier {deployment_repo!r}"
+            )
         skills = entry.get("skills")
         if not isinstance(skills, list) or not skills:
             raise ValueError(f"Deployment {name} has no skills")
         available = (
             shared_names if consumer is None else available_by_consumer[consumer]
         )
+        if deployment_repo is not None:
+            available = available | {
+                skill
+                for skill in repo_targets
+                if deployment_repo in distribution["repo_targets"][skill].get("repos", [])
+            }
         seen = set()
         for skill_name in skills:
             if not isinstance(skill_name, str) or not SAFE_NAME_PATTERN.fullmatch(
@@ -151,7 +257,8 @@ def validate_deployment_subsets(distribution, shared_names, available_by_consume
                     raise ValueError(
                         f"Deployment {name} declares no consumer, so it may only "
                         f"select shared skills; {skill_name} is a consumer-restricted "
-                        "package or is not in the distribution"
+                        "package, a repo-targeted skill this deployment's repo does "
+                        "not operate, or is not in the distribution"
                     )
                 raise ValueError(
                     f"Deployment {name} skill {skill_name} is not active for "
@@ -342,8 +449,16 @@ def _validate_frozen_consumer_contract():
                         f"distribution={sorted(expected_names)}"
                     )
 
+        lane_names = set(shared_names)
+        for entries in consumers.values():
+            lane_names |= {entry["name"] for entry in entries}
+        seen_names = set(lane_names)
+        repo_target_names = validate_repo_targets(
+            distribution, plugin_root, lane_names, seen_names
+        )
+
         deployment_count = validate_deployment_subsets(
-            distribution, shared_names, available_by_consumer
+            distribution, shared_names, available_by_consumer, repo_target_names
         )
     except ValueError as exc:
         print(f"  FAILED: {exc}")
@@ -440,7 +555,8 @@ def _validate_frozen_consumer_contract():
                 return False
 
     print(
-        "  PASSED: shared/consumer packages, identity/version, and "
+        "  PASSED: shared/consumer packages, identity/version, "
+        f"{len(repo_target_names)} repo-targeted skill(s), and "
         f"{deployment_count} deployment subset(s) are aligned"
     )
     return True

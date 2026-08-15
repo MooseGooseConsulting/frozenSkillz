@@ -8,6 +8,8 @@ This file is only an entrypoint. Repository policy and procedures live in the do
 | Check whether a skill is active, gated, or ready for promotion | `docs/skill-review/tracker.md` |
 | Change skill authority, packaging, distribution, synchronization, or promotion | `docs/workflows/skill-authority-and-frozen-sync.md`, then `plugins/distribution.json` |
 | Understand or change how a non-client runtime consumes skills | `docs/workflows/skill-authority-and-frozen-sync.md` → **Skill Consumer Shapes**, then `docs/deployments/hermes.md` |
+| Route a skill/MCP to specific repositories only | `docs/workflows/skill-authority-and-frozen-sync.md` → **Repository-Targeted Skills** |
+| Understand or run recurring skill/MCP evaluation | `docs/evaluation/README.md` (router), then the specific `docs/evaluation/` document for the layer |
 | Persist or set up agent configuration in a project repo | `docs/workflows/project-agent-config.md`, direction in `docs/platform/REFINED-V1.md` |
 | Change machine-global Codex prompts or custom agents | `docs/workflows/codex-global-config.md`, then `config/codex/global/` |
 | Evaluate or import an external skill, plugin, agent, or repository | `plugins/frozen-skills/skills/external-skill-intake/SKILL.md`, then `docs/workflows/external-skill-intake.md` |

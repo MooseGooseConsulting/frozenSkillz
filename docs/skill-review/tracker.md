@@ -3,7 +3,10 @@
 Active skills live under `plugins/` and are listed in `plugins/distribution.json`; gated
 skills live in `_incubator/` and are not installable. Promotion = move the skill into a
 package, register it in `plugins/distribution.json`, reconcile the marketplace manifests, bump the
-version (authority model: `docs/workflows/skill-authority-and-frozen-sync.md`). Quality bar = the `doppler` skill: clear trigger description (~300 chars), verified
+version (authority model: `docs/workflows/skill-authority-and-frozen-sync.md`). Since 2026-08-15
+(v2.8.0) there are three lanes: `shared` (every consumer), consumer-restricted dedicated packages,
+and `repo_targets` (repo-only packages routed to the repositories that own the environment; see
+the authority doc → **Repository-Targeted Skills**). Quality bar = the `doppler` skill: clear trigger description (~300 chars), verified
 content, scripts actually run, no project-specific leakage, progressive disclosure.
 
 ## Marketplace lane
@@ -15,7 +18,7 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `doppler` | active | Trigger narrowed 2026-08-10 to direct secret/injection work; opaque authentication through a trusted client or launcher is a non-trigger. |
 | `external-skill-intake` | active | None. |
 | `omc-reference` | active | None. |
-| `pdm-cli-operations` | active | Live-qualified 2026-07-20; 2026-08-10 removed mandatory Doppler handoff for trusted launchers with opaque authentication. |
+| `pdm-cli-operations` | repo-targeted | Live-qualified 2026-07-20; 2026-08-10 removed mandatory Doppler handoff for trusted launchers with opaque authentication. **2026-08-15: moved off the shared lane onto the new `repo_targets` axis** — now lives in the repo-only `pdm-operations` package and installs only into `MooseGooseConsulting/coldaine-homelab` (canonical owner verified via `gh`; `Coldaine/coldaine-homelab` redirects there) and the `hermes-ops` deployment, which declares that repo. Consumer syncs no longer receive it. |
 | `codex-thread-organizer` | active | Codex-only dedicated package; direct-rename contract (invocation = authorization; proposal gate removed 2026-07-31). Scope is the whole Codex-app sidebar: every conversation kind is inventoried and classified `title-mutable` / `not title-mutable`, and only the mutable ones are renamed. |
 | `skill-injector` | registered, dormant/untested | Qualify end-to-end or de-register; internal rename from skill-classifier unfinished. |
 | `plugin-authoring-guide` | gated | Rework; re-verify against current Claude Code docs. |
@@ -26,7 +29,7 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `stacked-pr-workflow` | gated | Run the 7 PowerShell helpers or cut it. |
 | `skill-manager` | gated | Verify `skills.sh` registry assumptions or cut it. |
 | `session-skill-inferencer` | gated | Produced junk auto-skills in May; fix generation quality or cut. |
-| `unifi-udm-access` | gated | New 2026-08-13. Surface routing verified live against UniFi Network 10.6.94 / UniFi OS 5.1.27; `scripts/udmssh.py` run end-to-end (reads succeed, exit codes propagate). Before promotion: re-verify the endpoint inventory on a second console and a different Network version, since the Legacy API carries no version contract; confirm the write guidance (`rest/*` PUT replaces the whole object) against an actual round-trip rather than inference. |
+| `unifi-udm-access` | gated | New 2026-08-13. Surface routing verified live against UniFi Network 10.6.94 / UniFi OS 5.1.27; `scripts/udmssh.py` run end-to-end (reads succeed, exit codes propagate). Before promotion: re-verify the endpoint inventory on a second console and a different Network version, since the Legacy API carries no version contract; confirm the write guidance (`rest/*` PUT replaces the whole object) against an actual round-trip rather than inference. **Promotion target: the repo axis** — register `repo_targets` → `MooseGooseConsulting/coldaine-homelab` at promotion time rather than joining the shared lane. |
 | `write-best-in-class-issue` | gated | New 2026-08-15. Mode-scoped issue-authoring skill (Full / Partial / Minimal) distilled from real design/proposal/epic/bug/bump issues, de-personalized to stay repo-independent; main `SKILL.md` routes to a `reference.md` teardown and `examples.md` (good / over-ceremonized / terse-bump). Before promotion: run one real Partial- and one Minimal-mode authoring pass to verify the mode router demotes correctly, and confirm the anti-ceremony guard prevents over-application to operational tasks (the retired `issue-pr-review` failure mode). |
 | `icepanel-api` | gated | Closest to ready: live-validate diagram push, diff hand-transcribed schemas against live OpenAPI, trim description to ~300 chars, rebalance content per owner (less phase-gate execution, more creativity). |
 

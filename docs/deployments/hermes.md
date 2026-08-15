@@ -13,7 +13,7 @@ The deploy script lives in `MooseGooseConsulting/coldaine-homelab` at `deploymen
 
 Hermes reads bare `SKILL.md` directories from that path. Nothing renders a client package for it.
 
-It consumes exactly `doppler` and `pdm-cli-operations`, expressed as the consumer-less `hermes-ops` deployment in `plugins/distribution.json`.
+It consumes `agent-github-identity`, `doppler`, and `pdm-cli-operations`, expressed as the consumer-less `hermes-ops` deployment in `plugins/distribution.json`. Because `pdm-cli-operations` is a repo-targeted skill (not a shared one), the deployment declares `"repo": "MooseGooseConsulting/coldaine-homelab"` — the repository whose environment Hermes operates — which is what keeps the skill selectable. See [`../workflows/skill-authority-and-frozen-sync.md`](../workflows/skill-authority-and-frozen-sync.md) → **Repository-Targeted Skills**.
 
 ## Invocation
 

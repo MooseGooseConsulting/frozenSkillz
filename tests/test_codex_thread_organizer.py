@@ -141,8 +141,8 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
 
         selected = {}
         for consumer in manifests:
-            _plugin_root, _version, _consumer, sources = sync_module.load_distribution(
-                ROOT, consumer
+            _plugin_root, _version, _consumer, _repo, sources, _mcp = (
+                sync_module.load_distribution(ROOT, consumer)
             )
             selected[consumer] = {source.name for source in sources}
 
@@ -204,7 +204,6 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
             "doppler",
             "external-skill-intake",
             "omc-reference",
-            "pdm-cli-operations",
         }
         with tempfile.TemporaryDirectory() as temporary:
             smoke_root = Path(temporary)

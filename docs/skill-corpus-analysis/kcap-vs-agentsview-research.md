@@ -63,8 +63,8 @@ convenience out of the box.
 
 AgentsView tracks 12 agent types natively: Claude (2,383 sessions), Codex (3,028), OpenCode
 (1,412), Cursor (500), Kimi (462), Antigravity (429), Kilo (424), Cowork (332), VS Code Copilot
-(215), Gemini (163), Amp (6), Copilot (2). KCAP records Claude Code only, though it can import
-sessions from Codex, Cursor, Copilot, Gemini, Kiro, Pi, OpenCode, and Antigravity via `kcap import`.
+(215), Gemini (163), Amp (6), Copilot (2). KCAP records Claude Code natively and can import
+Claude, Codex, Cursor, Copilot, Gemini, Kiro, Pi, OpenCode, and Antigravity via `kcap import`.
 
 The difference: AgentsView normalizes all agents into one schema automatically. KCAP imports are a
 manual step and the imported sessions live on the Kurrent server.

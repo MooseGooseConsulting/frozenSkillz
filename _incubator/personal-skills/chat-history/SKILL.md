@@ -223,6 +223,8 @@ leave them to the operating environment's temporary-file lifecycle after synthes
 
 ## Provider references
 
+When the choice of index is unclear, read [Choosing a provider](references/choosing-a-provider.md)
+first — it records which surface actually holds which data (coverage, plan-gating, empty stores).
 Load only the provider reached by the tree:
 
 - [Kurrent Capacitor](references/kurrent-capacitor.md) for project, repository, PR, file, and
@@ -234,5 +236,3 @@ Load only the provider reached by the tree:
   conversation body, and `chat_history_researcher` does not take interactive browser control.
 - [Raw recovery](references/raw-recovery.md) only after indexed coverage has been checked and a
   concrete gap remains.
-- [KCAP vs AgentsView](references/kcap-vs-agentsview.md) comparative briefing — capability
-  boundaries, overlap, plan-gating, and provider selection rationale.

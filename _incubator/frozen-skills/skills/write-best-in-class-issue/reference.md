@@ -47,7 +47,7 @@ single canonical section reduces drift as the issue ages.
 Failure without it: scope creep. A reviewer silently becomes an executor; a
 capability silently re-implements another issue's lane.
 
-### 4. Evidence-vs-proposal table
+### 4. Status table (shipped vs proposed; required vs chosen)
 
 For each component, split **shipped capability** from **boundary for this issue**.
 The reference issue's "What the research established" table has one row per
@@ -55,8 +55,14 @@ component (a session-capture tool, an agent runtime, a coding agent, the git
 host, an archiver, and PR/commit templates) with the shipped capability in one
 column and the boundary in another. Nothing proposed is mistaken for shipped.
 
+The same table carries a second axis: for every "must" the issue states, whether
+it is **required** (a source outside the repo's own precedent — cited) or
+**chosen** (a decision, with the alternative not taken named). Nothing chosen is
+mistaken for required. See "Why the requirement-or-convention step" below.
+
 Failure without it: an agent builds against a capability that does not exist yet,
-or cites a proposal as if it were deployed.
+cites a proposal as if it were deployed — or carries a past choice forward as a
+law and designs the next system around a constraint nobody imposed.
 
 ### 5. Activation gate
 
@@ -97,7 +103,7 @@ untestable, useless.
 
 Failure without it: the issue closes on a vibe, not a verdict.
 
-### 8. Cited source basis + cross-repo ownership map
+### 8. Cited source basis + ownership map
 
 Pinned versions with deep links, and an explicit map of which owning issue/PR
 each concern routes to. The reference issue cites the session-capture tool's
@@ -106,10 +112,52 @@ pinned release, the coding agent's app-server protocol, and the git host's
 webhook/status/reopen docs. Its "Cross-repository ownership" section assigns
 each concern to its owning issue — the semantic policy, the central plane, the
 read-only operations role, producer enrollment, and the derived persistence
-layer.
+layer. Cross-repository routing is only required when more than one repository
+is actually involved; a single-repo design still names its owning issues.
 
 Failure without it: an agent re-implements a lane another issue owns, or builds
 against a version it guessed at.
+
+## Why the requirement-or-convention step
+
+Step 2 of the skill exists because the most common way an issue becomes unsafe
+to act on later is not a missing beat — it is a **"must" that was never a must**.
+
+The mechanism, described generically from a real case: an orchestration API
+could not declare a second disk on a virtual machine. The repo's docs recorded
+the workaround as *"the API cannot declare extra disks, so the template supplies
+them."* Every clause was true. But "so" fused a fact (the API lacks the field)
+with a choice (put the disk in the template — instead of, say, attaching it
+after clone). The docs never named the alternative, so a later agent planning a
+*different* node class read "template supplies the disk" as a hard requirement,
+carried it into a plan, and — when challenged — produced a plausible rationale
+for why it had to be that way. It could not reconstruct the original reason,
+because none was written down. Nothing broke; it just would have been different.
+
+Three things make this failure structural rather than careless:
+
+- **The information is not in the text.** From "we did X" alone, a reader cannot
+  tell whether X was required or preferred — the same statement is consistent
+  with both. This is the identifiability problem known from inverse-constraint
+  learning: many (constraint, preference) pairs explain the same trajectory. No
+  amount of intelligence recovers what was never recorded.
+- **Aligned models tilt toward "ought."** Absent modality, an agent defaults to
+  the strongest reading, because honoring a constraint looks like diligence and
+  relaxing one looks reckless. A smarter model makes it *worse*: it can generate
+  a rationale on demand that makes the convention feel load-bearing.
+- **The canon already has the writer-side fix.** Architecture decision records
+  have carried "alternatives considered" since 2011 precisely so the *why-not*
+  survives. An issue is the same kind of artifact: it will be read later by
+  someone who has only the text.
+
+So the skill does two things. On the writer side, beat 4 makes every "must" show
+its status. On the reader side, Step 2 forces the author to classify each "must"
+*before* writing it, and — when the answer is Unknown — permits only the three
+exits that add information (find the record, find a counterexample, ask) and
+forbids the one that fabricates it (generate a reason). Chesterton's fence says
+do not remove what you do not understand; this is the mirror rule: do not
+*enshrine* what you do not understand. Both fail at the same missing step — go
+find out why.
 
 ## The mode test (re-stated)
 
@@ -141,6 +189,12 @@ all three modes. Findings that changed the skill:
 - **"State the boundary once"** validated: the reference issue restates its
   boundary four times, confirming the critique.
 
+**Not yet validated:** Step 2 (requirement or convention) was added 2026-08-15
+from one real agent-authored plan that laundered a convention into a
+requirement. It has not yet been run against a set of real issues; that is a
+promotion-gate item in the tracker. The expected finding is that most "must"
+statements in agent-authored issues have no cited source.
+
 ## Peer examples at the same bar
 
 These are described by shape, not by repo/number, so this skill stays
@@ -157,3 +211,11 @@ repo-independent. Each is a real issue that earns its mode.
   ("do not roll the control plane"), and acceptance. Partial mode, correct.
 - **A one-patch version bump** (OS patch n → n+1, matrix-tied): one paragraph,
   acceptance + rollback + an evidence link. Minimal mode, correct.
+- **A co-location plan that failed Step 2** (negative example): an agent-authored
+  plan carried "per-host templates must supply the data disk" from a README into
+  a design for a different node class. The README's "cannot declare … so the
+  template supplies" fused an API fact with a choice; the plan restated it as a
+  requirement and never named the post-clone alternative. Correct form: "the API
+  cannot declare a second disk (source: its storage schema has one boot-volume
+  field); the existing nodes supply it via the template — a choice; attaching
+  after clone is the alternative and was not evaluated."

@@ -234,3 +234,5 @@ Load only the provider reached by the tree:
   conversation body, and `chat_history_researcher` does not take interactive browser control.
 - [Raw recovery](references/raw-recovery.md) only after indexed coverage has been checked and a
   concrete gap remains.
+- [KCAP vs AgentsView](references/kcap-vs-agentsview.md) comparative briefing — capability
+  boundaries, overlap, plan-gating, and provider selection rationale.

@@ -1,6 +1,2 @@
-# Auto-generated .gitattributes for cross-platform line ending consistency
-# Default: LF for all text files
-* text=auto eol=lf
-
-# Preserve external scout evidence verbatim; do not lint upstream whitespace as repo-authored text.
-_incubator/scout/2026-07-23-obra-superpowers/source/** -whitespace
+# Captured third-party source must remain byte-faithful; do not lint its whitespace.
+_incubator/scout/2026-08-16-pionxzh-chatgpt-exporter/source/** -whitespace

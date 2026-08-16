@@ -27,8 +27,16 @@ status emoji, or current-owner state for ChatGPT conversations.
 
 ## Approved Mutation and Verification
 
-Apply only the approved title changes and moves in the browser. Re-open and read
-back every changed conversation and confirm the exact title and Project membership.
-Report exact applied, skipped, failed, and concurrently changed totals. A fresh
-local snapshot may accelerate large read-only analysis, but ChatGPT remains the
-source of truth; use live browser pages for mutation and verification.
+For every approved mutation, retain the exact live title and Project membership
+used as its approval baseline. Immediately before writing, reopen the target in
+the live browser and compare both values with that baseline. Apply the title or
+move only when they still match; when the browser offers a conditional/compare-
+and-set operation, use it. If either value is stale, do not mutate the target:
+report it as concurrently changed and include the live values. Never use a
+post-write read-back as a substitute for this pre-write check.
+
+Re-open and read back every successfully changed conversation and confirm the
+exact approved title and Project membership. Report exact applied, skipped,
+failed, and concurrently changed totals. A fresh local snapshot may accelerate
+large read-only analysis, but ChatGPT remains the source of truth; use live
+browser pages for mutation and verification.

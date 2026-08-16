@@ -61,6 +61,11 @@ Owner statements establish intent and requirements. Tests, measurements, and
 live probes establish technical or runtime evidence. Migration provenance is
 not automatically durable product intent, and a plan is not implementation.
 Do not blur these categories merely to fit a preferred document shape.
+
+A recorded past choice establishes neither intent nor requirement. Precedent is
+not a source. Every "must" in an authority doc carries its source or is written
+as a choice with its alternative; what cannot be classified is marked unknown
+and routed, never filled in (`references/requirements-vs-conventions.md`).
 </context>
 
 <task_router>
@@ -72,6 +77,7 @@ Do not blur these categories merely to fit a preferred document shape.
 | Reconcile multiple docs against each other | `references/authority-flow.md` |
 | Migrate instructions into the AGENTS.md pattern | `references/agents-md-guide.md` + `references/write-workflow.md` |
 | Handle current work / finished work / leftover PROGRESS | `references/current-work-and-lifecycle.md` (+ `references/progress-md-guide.md` only if migrating legacy PROGRESS away) |
+| Keep requirements and conventions apart — source every "must", name every alternative, audit a doc for laundered conventions | `references/requirements-vs-conventions.md` |
 | Understand the future Guardian boundary | `references/guardian-relationship.md` |
 
 Per-document guides:
@@ -186,6 +192,17 @@ See `references/guardian-relationship.md`.
 </vocabulary>
 
 ## Learnings
+
+### 2026-08-15
+
+#### What Failed (elsewhere — the reason this skill grew a procedure)
+- An infra repo's architecture prose recorded a workaround as a fact: "the API cannot declare extra disks, so the template supplies them." Every clause true; the alternative (attach after clone) never named. A later agent planning a different node class carried "template must supply the disk" forward as a hard requirement and, when challenged, generated a rationale for it — then admitted the original reason was never written down. Status labels would not have caught it: the claim was Current and true. It was a *choice* read as a *requirement*.
+- The exemplar `examples/architecture.md` had five invariants with no *why* — the guide required one; the exemplar did not comply. Fixed in the same change.
+
+#### What Changed
+- Added `references/requirements-vs-conventions.md`: the Modality Principle (required vs chosen, orthogonal to shipped vs proposed), the three states with what each must carry, the "what breaks if we don't?" test, the three legal exits for unknown (record · counterexample · ask) and the illegal one (generate a reason), the so-clause rule with sentence templates, an authoring pass, an audit pass with a report block, the reader-side AGENTS.md rule, and review findings. Grounded in arc42 §2/§9 (constraints vs decisions) and ADR "alternatives considered."
+- `architecture-md-guide.md` gained a Constraints and Conventions section, a Modality review lane, and "the laundered convention" as a named failure mode. `write-workflow.md`, `review-checklist.md`, `agents-md-guide.md` wired accordingly.
+- Deliberately not built: a grep-based modality gate. It is described; per `<smallest_change>` enforcement tooling waits for an explicit ask.
 
 ### 2026-07-16
 

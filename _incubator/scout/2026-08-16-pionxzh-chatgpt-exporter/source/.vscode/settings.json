@@ -1,0 +1,44 @@
+{
+  "eslint.experimental.useFlatConfig": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never",
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  },
+  "editor.formatOnSave": false,
+  "eslint.validate": [
+    "javascript",
+    "typescript",
+    "javascriptreact",
+    "typescriptreact",
+    "vue",
+    "html",
+    "markdown",
+    "json",
+    "jsonc",
+    "json5",
+    "yaml"
+  ],
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "**/*.code-search": true,
+    "**/dist": true
+  },
+  "prettier.enable": false,
+  "cSpell.words": [
+    "backoff",
+    "chatgpt",
+    "dalle",
+    "datetime",
+    "davinci",
+    "headlessui",
+    "mdast",
+    "micromark",
+    "ooba",
+    "preact",
+    "tabler",
+    "unist"
+  ],
+  "markdown.extension.toc.updateOnSave": false
+}

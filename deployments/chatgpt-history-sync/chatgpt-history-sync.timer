@@ -1,0 +1,9 @@
+[Unit]
+Description=Daily frozenSkillz ChatGPT organizer history synchronization
+
+[Timer]
+OnCalendar=daily
+Persistent=true
+
+[Install]
+WantedBy=timers.target

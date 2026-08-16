@@ -1,0 +1,7 @@
+[Unit]
+Description=frozenSkillz ChatGPT organizer history synchronization
+
+[Service]
+Type=oneshot
+ExecStart=%h/.local/bin/chatgpt-history-sync sync
+Environment=XDG_DATA_HOME=%h/.local/share

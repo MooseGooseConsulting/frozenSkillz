@@ -98,6 +98,14 @@ kagent apply-after-generate (revisit after CAPI/CAPMOX/Flux is stable).
 
 Scouts:
 
+- `pionxzh/chatgpt-exporter` — scout · **adapt concept only** (2026-08-16).
+  Guarded MIT snapshot at `_incubator/scout/2026-08-16-pionxzh-chatgpt-exporter/`
+  pinned to `45aca51`. Raw mapping/export-completion concepts inform the
+  repository-owned organizer sidecar; the browser userscript, deletion/archive
+  controls, endpoint assumptions, and UI are not active content. The recorded
+  forensic evaluation supports the snapshot's current source shape only; live
+  endpoint/authentication behavior remains a required controlled-export check.
+
 - danilo-aguiar-br/context7-cli — scout · **adopt-as-external-tool** (2026-07-31,
   owner-requested). Snapshot at `_incubator/scout/2026-07-31-context7-cli/` pinned to
   v0.5.2 / `e2f1935`. Rust CLI for the Context7 REST API with multi-key rotation

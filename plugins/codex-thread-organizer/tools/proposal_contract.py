@@ -26,6 +26,7 @@ REQUIRED_RECORD_FIELDS = {
     "proposed_project",
     "confidence",
     "evidence",
+    "relationships",
 }
 RELATIONSHIPS = {
     "continues",
@@ -36,6 +37,7 @@ RELATIONSHIPS = {
     "independent",
 }
 MAX_UTF16_UNITS = 60
+PREVIEW_EMOJI = {"🫫", "🫹", "🫺", "🫌", "🫝", "🛙", "🪋", "🪌", "🪍"}
 
 
 def utf16_units(value: str) -> int:
@@ -65,8 +67,9 @@ def validate_read_only_batch(batch: dict[str, Any]) -> dict[str, int]:
             raise ValueError(f"{record['id']}: confidence must be between zero and one")
         if record.get("acquisition") == "unreadable":
             unreadable += 1
-            if record["proposed_title"] is not None or record["proposed_project"] is not None:
-                raise ValueError(f"{record['id']}: unreadable body must not receive a proposal")
+            forbidden = ("proposed_title", "proposed_project", "preview_emoji", "emoji_reason", "collision_checked", "proposal_revision")
+            if record["relationships"] or any(record.get(key) is not None for key in forbidden):
+                raise ValueError(f"{record['id']}: unreadable body must not receive body-derived proposals or relationships")
             continue
         if not record["subject_summary"] or not record["evidence"]:
             raise ValueError(f"{record['id']}: body-derived summary and evidence are required")
@@ -75,16 +78,25 @@ def validate_read_only_batch(batch: dict[str, Any]) -> dict[str, int]:
             raise ValueError(f"{record['id']}: title is missing or exceeds {MAX_UTF16_UNITS} UTF-16 units")
         if title != record["current_title"]:
             changed_titles += 1
+        preview_characters = PREVIEW_EMOJI.intersection(title)
         preview = record.get("preview_emoji")
-        if preview and not preview.get("chrome_rendering_confirmed"):
-            raise ValueError(f"{record['id']}: preview emoji lacks Chrome rendering proof")
-        for relation in record["relationships"]:
+        if preview_characters:
+            if not isinstance(preview, dict) or preview.get("value") not in preview_characters or not preview.get("chrome_rendering_confirmed"):
+                raise ValueError(f"{record['id']}: preview emoji lacks matching Chrome rendering proof")
+        elif preview is not None:
+            raise ValueError(f"{record['id']}: preview emoji metadata does not match the proposed title")
+        relationships = record["relationships"]
+        if not isinstance(relationships, list):
+            raise ValueError(f"{record['id']}: relationships must be a list")
+        for relation in relationships:
+            if not isinstance(relation, dict):
+                raise ValueError(f"{record['id']}: relationship must be an object")
             relationship_count += 1
-            if relation["kind"] not in RELATIONSHIPS:
+            if relation.get("kind") not in RELATIONSHIPS:
                 raise ValueError(f"{record['id']}: unsupported relationship")
-            if relation["target_id"] not in ids:
+            if relation.get("target_id") not in ids:
                 raise ValueError(f"{record['id']}: relationship target is absent")
-            if not relation["evidence"]:
+            if not relation.get("evidence"):
                 raise ValueError(f"{record['id']}: relationship lacks evidence")
     return {
         "records": len(records),
@@ -97,8 +109,11 @@ def validate_read_only_batch(batch: dict[str, Any]) -> dict[str, int]:
 def grade(batch: dict[str, Any]) -> dict[str, float]:
     """Return visible proposal-rubric scores, not hidden reasoning."""
 
+    validate_read_only_batch(batch)
     records = batch["records"]
     readable = [item for item in records if item.get("acquisition") != "unreadable"]
+    if not readable:
+        return {"body_coverage": 0.0, "title_specificity": 0.0, "cluster_cohesion": 0.0, "emoji_fit": 0.0, "relationship_confidence": 0.0, "collision_risk": 0.0}
     relation_kinds = Counter(
         relation["kind"] for item in readable for relation in item["relationships"]
     )

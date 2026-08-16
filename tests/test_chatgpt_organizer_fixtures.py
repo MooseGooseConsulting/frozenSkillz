@@ -2,6 +2,7 @@ import importlib.util
 import json
 import sys
 import unittest
+from copy import deepcopy
 from pathlib import Path
 
 
@@ -44,7 +45,8 @@ class ChatGPTOrganizerForwardFixtureTests(unittest.TestCase):
         self.assertEqual(self.records["c08"]["proposed_project"], "Personal")
         self.assertEqual(self.records["c08"]["relationships"][0]["kind"], "duplicates")
         self.assertEqual(self.records["c04"]["relationships"][0]["kind"], "corrects")
-        self.assertEqual(self.records["c09"]["relationships"][0]["kind"], "continues")
+        self.assertEqual(self.records["c14"]["relationships"][0]["kind"], "continues")
+        self.assertEqual(self.records["c14"]["relationships"][0]["target_id"], "c13")
         self.assertEqual(self.records["c10"]["relationships"][0]["kind"], "supersedes")
 
     def test_unreadable_preview_and_self_correction_fail_closed(self):
@@ -54,6 +56,24 @@ class ChatGPTOrganizerForwardFixtureTests(unittest.TestCase):
         revision = self.records["c24"]["proposal_revision"]
         self.assertEqual(revision["failure"], "generic title")
         self.assertNotEqual(revision["initial_title"], revision["final_title"])
+        unreadable = deepcopy(self.batch)
+        unreadable["records"][10]["relationships"] = [{"kind": "related", "target_id": "c01", "evidence": "must fail"}]
+        with self.assertRaisesRegex(ValueError, "unreadable"):
+            contract.validate_read_only_batch(unreadable)
+        preview = deepcopy(self.batch)
+        preview["records"][22].pop("preview_emoji")
+        with self.assertRaisesRegex(ValueError, "matching Chrome"):
+            contract.validate_read_only_batch(preview)
+
+    def test_invalid_relationships_fail_with_record_context(self):
+        batch = deepcopy(self.batch)
+        batch["records"][0].pop("relationships")
+        with self.assertRaisesRegex(ValueError, "c01: missing"):
+            contract.validate_read_only_batch(batch)
+        batch = deepcopy(self.batch)
+        batch["records"][0]["relationships"] = None
+        with self.assertRaisesRegex(ValueError, "relationships must be a list"):
+            contract.validate_read_only_batch(batch)
 
     def test_visible_rubric_grades_are_complete_and_titles_fit_utf16_target(self):
         grades = contract.grade(self.batch)

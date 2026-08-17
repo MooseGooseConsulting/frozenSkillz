@@ -1,0 +1,7 @@
+- [ ] 1. Document at the main frozenSkillz entrypoints that AgentsView-derived skill analysis executes in agent-control-plane, while frozenSkillz owns skill definitions, eval cases, and lifecycle decisions.
+- [ ] 2. Document at the main agent-control-plane entrypoints that it owns read-only activation/effectiveness extraction, sampling, labels, and analysis runs from AgentsView.
+- [ ] 3. Create a concise skill-analysis skill with narrow triggers, explicit repo ownership routing, and negatives that avoid replacing skill-creator or generic code review.
+- [ ] 4. Package, register, validate, and forward-test the skill through the frozenSkillz distribution workflow.
+- [ ] 5. Add and verify line-ending attributes for both changed repositories without normalizing unrelated files or masking substantive diffs.
+- [ ] 6. Commit and push the frozenSkillz and agent-control-plane changes to their existing PR branches; keep completion state honest.
+- [ ] V. fresh-eyes verification passed

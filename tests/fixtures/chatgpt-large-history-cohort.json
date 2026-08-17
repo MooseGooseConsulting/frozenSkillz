@@ -1,0 +1,53 @@
+{
+  "history_total_estimate": 10000,
+  "scope": {
+    "requested_coverage": "Recent 30 ChatGPT chats",
+    "inventory_coverage": "Most recent history window; 9970 estimated chats remain uninspected",
+    "body_review_cohort_maximum": 30,
+    "body_review_cohort": ["chat-101", "chat-102", "chat-103", "chat-104", "chat-105"],
+    "deferred_set": {
+      "reason": "Remaining recent-history window exceeds the cohort maximum",
+      "next_cohort": "Next 30 older chats by update time"
+    }
+  },
+  "conversations": [
+    {
+      "id": "chat-101",
+      "availability": "body-reviewed",
+      "disposition": "canonical-reference",
+      "canonical_scope": "within this declared cohort",
+      "project_action": "none",
+      "proposed_mutation": "rename"
+    },
+    {
+      "id": "chat-102",
+      "availability": "body-reviewed",
+      "disposition": "duplicate-or-superseded",
+      "representative": "chat-101",
+      "project_action": "none",
+      "proposed_mutation": "none"
+    },
+    {
+      "id": "chat-103",
+      "availability": "unavailable",
+      "disposition": null,
+      "project_action": "none",
+      "proposed_mutation": "none"
+    },
+    {
+      "id": "chat-104",
+      "availability": "body-reviewed",
+      "disposition": "archive-candidate",
+      "project_action": "none",
+      "proposed_mutation": "none"
+    },
+    {
+      "id": "chat-105",
+      "availability": "body-reviewed",
+      "disposition": "project-home",
+      "project_action": "move-existing",
+      "proposed_mutation": "rename-and-move"
+    }
+  ],
+  "inventory_only_candidates": ["chat-106", "chat-107"]
+}

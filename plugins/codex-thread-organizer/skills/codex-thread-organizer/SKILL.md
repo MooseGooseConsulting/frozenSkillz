@@ -1,70 +1,43 @@
 ---
 name: codex-thread-organizer
-description: >-
-  Use when Codex sidebar titles are unclear, related tasks need completion or
-  supersession review, important unfinished work is hard to find, or a periodic
-  Codex organization pass is requested. Covers every conversation the Codex app's
-  sidebar exposes, including ChatGPT conversations shown there.
+description: Organize Codex sidebar tasks or ChatGPT web conversations from their bodies. Use for evidence-based titles, related-work grouping, cross-surface bridges, emoji semantics, ChatGPT Project proposals, and approved renames or moves.
 ---
 
-# Codex Thread Organizer
-
-Organize the conversations the Codex app exposes from their actual conversation bodies. When this skill is invoked, inventory the selected sidebar surface, rename the conversations the native title operation can act on, read the resulting titles back, and summarize the important unfinished work.
+# Conversation organizer
 
 ## Boundary
 
-- This skill covers what the Codex app's sidebar exposes, including ChatGPT conversations that appear there. Conversations the native title operation cannot act on are still inventoried and classified; they are reported honestly rather than renamed.
-- Anything the Codex sidebar does not expose is out of scope; there is no other client's history to reach from here.
-- Packaging is Codex-only: the source lives in frozenSkillz's dedicated Codex package and is not auto-installed with every skill.
-- A periodic Codex automation is the mechanism for recurring organization; the skill is not a background daemon.
+Packaging is Codex-only: this is a dedicated Codex package. It can organize two
+evidence surfaces:
 
-## Workflow
+- Codex sidebar tasks, using Codex's native task controls.
+- Authenticated ChatGPT web history, using the ChatGPT web UI after approval.
 
-1. **Inventory every accessible sidebar conversation.** Use the native list operation before filtering by kind. Record task ID, kind, host ID, current title, update time, working directory, project ID, and summary or preview. Never exclude ChatGPT conversations, pinned conversations, or another returned kind merely because it is not a Codex task. If the operation has a page, cursor, or load-more control, exhaust it. If its maximum result count prevents that, record a `bounded inventory` with `partial coverage`, state the exact limit, and never describe the result as “all chats.”
-2. **Classify title capability.** For each inventoried conversation, determine whether the native title operation supports its kind. Mark supported targets `title-mutable`; mark unsupported targets `not title-mutable` with the exact failed operation or missing capability. A request to organize or rename “all chats” scopes every accessible conversation; it does not authorize silently shrinking that scope.
-3. **Form tentative workstream clusters.** Use repository identity, project, branch, pull request, issue, artifact, and semantic goal. A working directory is a routing clue, not proof that tasks belong together.
-4. **Read the actual conversation bodies.** For every task being classified or renamed, identify the opening request, later changes of scope, delivered outcome, concrete required action, user acceptance or dispute, and references to successor tasks or durable artifacts.
-5. **Cross-read related tasks.** Compare every recent relevant task in the workstream before deciding which task owns unfinished work. Follow [references/cross-task-review.md](references/cross-task-review.md).
-6. **Classify and title.** Determine whether each task is `done`, `active-remaining`, `continued-elsewhere`, or `parked-unclear`, then apply [references/title-grammar.md](references/title-grammar.md).
-7. **Rename the `title-mutable` targets.** Recheck each `title-mutable` target's current title immediately before mutation; skip and report concurrent changes. Use the native Codex title operation. Re-read every resulting title and correct any mismatch or truncation. Do not write an internal state store or pretend a `not title-mutable` kind was renamed.
-8. **Report the result.** Report the inventory total with its coverage status — `complete`, or `bounded` with the exact limit from step 1 — and separate mutated, already-correct, skipped, and `not title-mutable` totals. Never present a bounded total as a complete one. List renamed tasks, the current owner of each unfinished workstream, important concrete remaining actions, tasks continued elsewhere, parked uncertainties, and archive candidates.
+Do not infer the contents of a ChatGPT web conversation from a title shown in a
+Codex sidebar. If the requested surface is unavailable, say which surface is
+unavailable and do not substitute an invented inventory.
 
-When several project clusters can be reviewed independently, dispatch one subagent per cluster. Give each subagent the task IDs and require it to read the actual conversation bodies. The main agent reconciles relationships and titles across the returned clusters.
+## Load order
 
-## Title Contract
+Always read:
 
-- Use one to five leading semantic symbols, never five by default. Most titles need one to three.
-- Keep the words specific and recognizable, normally about 5–12 words.
-- Preserve exact product, repository, issue, pull request, and artifact names when they aid recognition.
-- Keep the final title within 60 UTF-16 code units, the empirically observed native Codex title ceiling: a verified 2026-07-20 batch found longer values persisted with a literal trailing ellipsis. That ceiling is verified for `title-mutable` Codex targets; document a different verified limit before applying one to another conversation kind.
-- `✅` means the latest relevant user request was satisfied and no concrete required action remains in that task. It does not claim that the broader project is finished.
-- `🟡` means a concrete required action remains in the current owner task.
-- Use `🔴` sparingly on the clearest highest-priority unfinished task; omit it when the comparison is unclear.
-- `⏸️` means a named user or external response is the next required event; `🚧` means a specific obstacle blocks the required outcome.
-- `🗄️` marks a reasonable archive candidate. It may accompany `✅`, or identify an older unfinished task whose work clearly continued elsewhere.
-- Use `📌` and `↪️` only when cross-reading establishes a canonical task or a named successor.
+1. [Shared conversation model](references/shared-conversation-model.md)
+2. [Semantic emoji taxonomy](references/emoji-taxonomy.md)
 
-Examples:
+Then select the needed evidence surface:
 
-```text
-🌊 🧹 Crest Research Pruning
-🌊 🧹 ✅ Crest Research Pruning
-🟡 🌊 🛠️ Broadside Implementation Continuation
-🗄️ ↪️ 🧛 Vampire Survivors Continuation
-🗄️ ✅ Techdeals PR #84 Review
-```
+- For Codex sidebar tasks, read [Codex sidebar adapter](references/codex-sidebar-adapter.md).
+- For ChatGPT conversations at `chatgpt.com`, read [ChatGPT web adapter](references/chatgpt-web-adapter.md).
+- To relate ChatGPT conversations to Codex tasks, read both adapters and the
+  [cross-surface bridge](references/cross-surface-bridge.md).
 
-## Completion Check
+Do not combine the mutation rules from the two adapters. In particular, Codex
+lifecycle markers and the verified Codex title limit do not apply to ChatGPT
+web titles. A cross-surface bridge is evidence for organization, never by
+itself authority to mutate either surface.
 
-Before adding `✅`, answer these questions from the task body:
+## Common rule
 
-1. What was the latest relevant user request?
-2. Did the answer, artifact, change, test, publication, or other requested outcome actually satisfy it?
-3. Does any required execution, verification, recovery, decision, or user input remain?
-4. Did a later user turn extend the scope or dispute the claimed result?
-
-Optional ideas, recommendations, and explicitly deferred future phases do not block completion. A bounded task can be complete while its broader project remains unfinished. A planning task is complete when the requested plan was delivered; a request to implement that plan is not complete merely because the plan exists.
-
-## Periodic Automation
-
-Read [references/periodic-automation.md](references/periodic-automation.md) when defining or running recurring organization. Each run uses the same inventory, title-capability classification, body-reading, cross-task classification, rename, read-back, and unfinished-work report workflow.
+Read bodies before proposing a title, relationship, Project placement, or
+cross-surface bridge. A title is a compact retrieval label for actual work, not
+a guess from a colored marker, age, sidebar preview, or existing sidebar title.

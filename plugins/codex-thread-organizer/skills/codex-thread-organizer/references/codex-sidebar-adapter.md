@@ -1,0 +1,29 @@
+# Codex sidebar adapter
+
+Use this adapter only for conversations exposed by the Codex sidebar.
+
+Read the existing detailed Codex rules:
+
+1. [Cross-task review](cross-task-review.md) for lifecycle, current-owner, and
+   cross-task evidence rules.
+2. [Title grammar](title-grammar.md) for sparse semantic titles, lifecycle
+   markers, and the verified 60 UTF-16 code-unit ceiling.
+3. [Periodic automation](periodic-automation.md) only when the user requests
+   recurring Codex organization.
+
+Keep each mutable Codex title within the verified 60 UTF-16 code units. If a
+title must be shortened, use a literal trailing ellipsis rather than silently
+losing the distinguishing outcome.
+
+Inventory every accessible sidebar conversation and preserve its coverage
+status. A bounded inventory remains partial coverage; it is never reported as
+complete coverage. Use Codex's native title operation only for
+title-mutable tasks. Record conversations the sidebar exposes but cannot rename
+as `not title-mutable` rather than silently omitting them.
+
+For a ChatGPT-to-Codex bridge request, open the actual Codex task body and read
+[cross-surface bridge](cross-surface-bridge.md). A Codex title or sidebar
+preview is never evidence of what the task concerns.
+
+The Codex adapter retains its lifecycle/current-owner behavior and its native
+post-rename readback requirement. Those rules do not transfer to ChatGPT web.

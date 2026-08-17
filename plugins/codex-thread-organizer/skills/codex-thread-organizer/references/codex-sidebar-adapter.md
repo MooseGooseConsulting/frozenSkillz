@@ -16,10 +16,17 @@ title must be shortened, use a literal trailing ellipsis rather than silently
 losing the distinguishing outcome.
 
 Inventory every accessible sidebar conversation and preserve its coverage
-status. A bounded inventory remains partial coverage; it is never reported as
-complete coverage. Use Codex's native title operation only for
+status. Exhaust every native page, cursor, or load-more control before claiming
+complete coverage. If a native limit prevents exhaustion, record the exact
+limit and retain partial coverage. A bounded inventory remains partial
+coverage. Use Codex's native title operation only for
 title-mutable tasks. Record conversations the sidebar exposes but cannot rename
 as `not title-mutable` rather than silently omitting them.
+
+For every mutable title, record the title used during review. Immediately
+before the native rename, reread the current title. If it differs, skip the
+task and report the concurrent change; do not overwrite it. After a successful
+rename, read the title back and report the applied result.
 
 For a ChatGPT-to-Codex bridge request, open the actual Codex task body and read
 [cross-surface bridge](cross-surface-bridge.md). A Codex title or sidebar

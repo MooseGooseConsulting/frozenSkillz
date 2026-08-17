@@ -32,6 +32,7 @@ class CrossSurfaceBridgeContractTests(unittest.TestCase):
         self.assertIn("never by itself authority to mutate", router.replace("\n", " "))
         self.assertIn("Codex bridge", chatgpt)
         self.assertIn("only confirmed bridges inform proposals", chatgpt)
+        self.assertIn("each body-reviewed source in the declared", bridge)
 
     def test_large_history_contract_and_fixture_prevent_unbounded_claims(self):
         chatgpt = (SKILL_ROOT / "references" / "chatgpt-web-adapter.md").read_text(
@@ -51,6 +52,8 @@ class CrossSurfaceBridgeContractTests(unittest.TestCase):
         self.assertIn("canonical-reference` **within the declared cohort**", chatgpt)
         self.assertIn("new-project-candidate", chatgpt)
         self.assertIn("project-merge-candidate", chatgpt)
+        self.assertIn("was body-reviewed and is in the declared", chatgpt.replace("\n", " "))
+        self.assertIn("canonical-reference`/`duplicate-or-superseded", chatgpt)
         self.assertIn("Do not compare unbounded ChatGPT or Codex histories", bridge)
         self.assertIn("Inventory-only titles or previews cannot", bridge.replace("\n", " "))
 
@@ -58,9 +61,14 @@ class CrossSurfaceBridgeContractTests(unittest.TestCase):
         self.assertLessEqual(len(cohort), fixture["scope"]["body_review_cohort_maximum"])
         self.assertEqual(fixture["scope"]["body_review_cohort_maximum"], 30)
         self.assertTrue(fixture["scope"]["deferred_set"]["next_cohort"])
+        requested = set(fixture["scope"]["requested_chat_ids"])
+        deferred = set(fixture["scope"]["deferred_set"]["conversation_ids"])
+        self.assertEqual(requested, set(cohort) | deferred)
+        self.assertTrue(set(cohort).isdisjoint(deferred))
         self.assertEqual(by_id["chat-101"]["canonical_scope"], "within this declared cohort")
         self.assertEqual(by_id["chat-103"]["proposed_mutation"], "none")
         self.assertEqual(by_id["chat-104"]["project_action"], "none")
+        self.assertEqual(by_id["chat-104"]["proposed_mutation"], "flag-for-archive-approval")
         self.assertEqual(by_id["chat-105"]["project_action"], "move-existing")
         self.assertTrue(set(fixture["inventory_only_candidates"]).isdisjoint(cohort))
 

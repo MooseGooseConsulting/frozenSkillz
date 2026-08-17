@@ -13,7 +13,8 @@ cannot create, confirm, or rank a bridge.
 
 ## Compare actual work, not labels
 
-Build the normal shared card for each source, then compare body evidence for:
+Build the normal shared card for each body-reviewed source in the declared
+bridge cohort, then compare body evidence for:
 
 - the concrete problem or question;
 - systems, repositories, files, issues, devices, services, or other artifacts;

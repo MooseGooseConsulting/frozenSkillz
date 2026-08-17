@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Conversation Organizer",
     "shortDescription": "Organize Codex and ChatGPT conversations",
-    "longDescription": "Read Codex or ChatGPT conversation bodies, group related work, propose concrete semantic titles and Projects, then apply only approved mutations.",
+    "longDescription": "Read Codex or ChatGPT conversation bodies and group related work. Codex applies native lifecycle-aware titles directly; ChatGPT presents title and Project proposals for row-specific approval.",
     "developerName": "Coldaine",
     "category": "Productivity",
     "capabilities": [
@@ -27,7 +27,7 @@
       "Write"
     ],
     "defaultPrompt": [
-      "Read my recent related Codex tasks or ChatGPT web chats, group related work from their bodies, and propose clear semantic titles."
+      "For Codex sidebar tasks, read bodies and apply clear lifecycle-aware titles. For ChatGPT web chats, read bodies, group related work, and propose clear semantic titles and Projects for my approval."
     ]
   }
 }

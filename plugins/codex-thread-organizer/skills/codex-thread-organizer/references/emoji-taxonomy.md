@@ -21,8 +21,8 @@ emoji.
 
 ## Version-aware choices
 
-Unicode Emoji v17 is the released newer set. Unicode Emoji v18 is a preview
-reference, not a default title vocabulary. A preview emoji must not be used in
+Unicode Emoji v17 is the latest released set. Unicode Emoji v18 is a preview
+set, not a default title vocabulary. A preview emoji must not be used in
 an applied title until the target client is known to render it.
 
 When the needed category is absent, an emoji is newly released or preview-only,

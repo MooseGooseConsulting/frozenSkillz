@@ -62,6 +62,7 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
         self.assertIn("attention, then retention, then relationship", grammar_text.lower())
         self.assertIn("codex", openai_text.lower())
         self.assertIn("renames codex tasks", readme_text.lower())
+        self.assertIn("chatgpt web conversations", readme_text.lower())
         self.assertIn("applied markers", review_text.lower())
 
         for classification in (
@@ -106,7 +107,7 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
         self.assertIn("Packaging is Codex-only", skill_text)
         self.assertIn("$codex-thread-organizer", openai_metadata)
         self.assertIn(
-            "| `codex-thread-organizer` | active | Codex-only dedicated package;",
+            "| `codex-thread-organizer` | active | Codex-only dedicated package.",
             tracker_text,
         )
 
@@ -177,6 +178,8 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
         self.assertIn("bounded inventory", codex_text)
         self.assertIn("partial coverage", codex_text)
         self.assertIn("coverage status", codex_text.replace("\n", " "))
+        self.assertIn("page, cursor, or load-more", codex_text)
+        self.assertIn("reread the current title", codex_text)
         self.assertNotIn("full inventory total", codex_text)
         self.assertIn("lazy-loaded history", chatgpt_text)
         self.assertIn("evidence worksheet", chatgpt_text.lower())

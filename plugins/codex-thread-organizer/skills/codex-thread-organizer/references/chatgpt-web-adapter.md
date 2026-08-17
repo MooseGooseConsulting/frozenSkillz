@@ -71,6 +71,11 @@ identifies its source Projects, target Project, and the exact reviewed chats
 that would move; it does not claim that a ChatGPT move automatically merges
 Projects.
 
+`move-existing` may serve `project-home`, or a `canonical-reference` or
+`duplicate-or-superseded` chat when body evidence establishes a specific
+existing Project as its useful home. It remains optional for those latter
+dispositions; retaining a standalone reference is valid.
+
 ## Produce a proposal before mutation
 
 Group the body-reviewed cards into workstreams, compare relationships, and
@@ -92,15 +97,18 @@ target Projects, and no action is implied until each move is approved.
 
 Then self-grade the proposal. For every actionable row, check that:
 
-1. The conversation is in the declared body-review cohort; inventory-only and
-   deferred conversations have no classification or proposed mutation.
+1. The conversation was body-reviewed and is in the declared body-review
+   cohort; inventory-only, deferred, and unavailable conversations have no
+   classification or proposed mutation.
 2. The summary, relationship, title, and disposition are supported by body evidence.
 3. The title names a concrete system/artifact and action/outcome, or the
    specific answer/decision that makes a reference retrievable.
 4. Each emoji has a stated semantic reason, there are one to three at most, and
    no Codex lifecycle/status marker has been added.
-5. `move-existing` is proposed only for `project-home`; `create-new` meets the
-   new-Project evidence rule; a merge names source, target, and exact moves.
+5. `move-existing` is proposed for `project-home`, or for a
+   `canonical-reference`/`duplicate-or-superseded` chat with a body-evidenced
+   existing Project; `create-new` meets the new-Project evidence rule; a merge
+   names source, target, and exact moves.
 6. Archive candidates remain proposals, duplicate/superseded chats identify
    their representative chat, and unavailable chats have no invented proposal.
 7. Each Codex bridge is `confirmed`, `plausible`, `unresolved`, or `no-link`
@@ -118,5 +126,8 @@ as unavailable. A Project merge consists only of the individually approved
 moves to its target; do not claim a merge when the UI does not expose one.
 Treat archive as a separate explicitly approved action; this adapter does not
 infer archive approval from an approved rename or Project move. Browser mutation
-belongs to this ChatGPT adapter; it is not a general browser-tab operation. Do
-not require a separate post-mutation readback pass unless the user asks for one.
+belongs to this ChatGPT adapter; it is not a general browser-tab operation.
+Before each action, confirm the selected chat and intended control. If the
+expected control is unavailable, targets the wrong chat, or leaves an ambiguous
+visible outcome, stop that row and report it failed or unverified. Do not
+require a separate post-mutation readback pass unless the user asks for one.

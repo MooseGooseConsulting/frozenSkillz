@@ -4,10 +4,24 @@
     "requested_coverage": "Recent 30 ChatGPT chats",
     "inventory_coverage": "Most recent history window; 9970 estimated chats remain uninspected",
     "body_review_cohort_maximum": 30,
+    "requested_chat_ids": [
+      "chat-101", "chat-102", "chat-103", "chat-104", "chat-105", "chat-106",
+      "chat-107", "chat-108", "chat-109", "chat-110", "chat-111", "chat-112",
+      "chat-113", "chat-114", "chat-115", "chat-116", "chat-117", "chat-118",
+      "chat-119", "chat-120", "chat-121", "chat-122", "chat-123", "chat-124",
+      "chat-125", "chat-126", "chat-127", "chat-128", "chat-129", "chat-130"
+    ],
     "body_review_cohort": ["chat-101", "chat-102", "chat-103", "chat-104", "chat-105"],
     "deferred_set": {
-      "reason": "Remaining recent-history window exceeds the cohort maximum",
-      "next_cohort": "Next 30 older chats by update time"
+      "reason": "The requested recent-30 range was intentionally partitioned after five body reviews",
+      "conversation_ids": [
+        "chat-106", "chat-107", "chat-108", "chat-109", "chat-110", "chat-111",
+        "chat-112", "chat-113", "chat-114", "chat-115", "chat-116", "chat-117",
+        "chat-118", "chat-119", "chat-120", "chat-121", "chat-122", "chat-123",
+        "chat-124", "chat-125", "chat-126", "chat-127", "chat-128", "chat-129",
+        "chat-130"
+      ],
+      "next_cohort": "Deferred recent-30 chats chat-106 through chat-130"
     }
   },
   "conversations": [
@@ -39,7 +53,7 @@
       "availability": "body-reviewed",
       "disposition": "archive-candidate",
       "project_action": "none",
-      "proposed_mutation": "none"
+      "proposed_mutation": "flag-for-archive-approval"
     },
     {
       "id": "chat-105",
@@ -49,5 +63,5 @@
       "proposed_mutation": "rename-and-move"
     }
   ],
-  "inventory_only_candidates": ["chat-106", "chat-107"]
+  "inventory_only_candidates": ["chat-131", "chat-132"]
 }

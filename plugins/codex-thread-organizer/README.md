@@ -13,9 +13,11 @@ skill instructions.
   relationships, semantic emoji titles, and existing-Project-first proposals.
 - Large ChatGPT histories are reviewed in declared cohorts of at most 30 chats.
   Inventory chooses candidates but cannot classify or mutate them; every pass
-  records the next deferred cohort.
-- A canonical reference is canonical only within its declared reviewed cohort,
-  never a claim about unreviewed history.
+  records the next deferred cohort only when the request was partitioned or
+  otherwise incomplete.
+- A canonical reference is canonical only among successfully body-reviewed
+  chats in its declared cohort, never a claim about unread or unreviewed
+  history.
 - A cross-surface bridge compares readable ChatGPT and Codex bodies. It uses
   shared work and artifacts, not a matching Project name or sidebar title.
 - ChatGPT triage does not force every conversation into a Project: it separates
@@ -40,7 +42,7 @@ flowchart TD
     E --> H["Bodies, lifecycle/current owner, native Codex title"]
     F --> I["Declare inventory and 30-chat body-review cohort"]
     G --> J["Compare declared body cohorts"]
-    I --> K["Detailed chat cards and next deferred cohort"]
+    I --> K["Detailed chat cards and deferred coverage when incomplete"]
     J --> K
     K --> L["Triage: Project, reference, archive candidate, duplicate, or undecided"]
     L --> M["Cohort-scoped canonical references and relationships"]

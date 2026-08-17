@@ -53,8 +53,9 @@ body-reviewed chat, assign one disposition from its body evidence:
 | Disposition | Meaning | Initial proposal |
 | --- | --- | --- |
 | `project-home` | Durable work that belongs with an existing, coherent ChatGPT Project | Propose that existing Project and a specific title |
-| `canonical-reference` | The best known answer, decision, artifact, or source **within this declared cohort** for a question likely to recur | Retain it as the cohort's named reference; move it only if a Project genuinely fits |
+| `canonical-reference` | The best known answer, decision, artifact, or source **among successfully body-reviewed chats in this declared cohort** for a question likely to recur | Retain it as the cohort's named reference; move it only if a Project genuinely fits |
 | `standalone-reference` | A useful answer worth finding again, but not part of a durable Project | Improve its title; do not force a Project move |
+| `new-project-candidate` | A durable, coherent workstream with no existing Project fit | Propose a new Project only when the new-Project evidence rule is met |
 | `archive-candidate` | Trivial, one-off, or already-resolved material that should no longer crowd active history | Flag for separate user approval; do not archive automatically |
 | `duplicate-or-superseded` | An older or parallel chat whose useful result is represented by another identified chat | Link it to the representative chat; propose no move unless its destination is clear |
 | `needs-human-choice` | The body is meaningful but does not establish a confident home or retention decision | Keep unchanged and state the exact ambiguity |
@@ -79,9 +80,10 @@ dispositions; retaining a standalone reference is valid.
 ## Produce a proposal before mutation
 
 Group the body-reviewed cards into workstreams, compare relationships, and
-identify at most one `canonical-reference` **within the declared cohort** per
-concrete question or decision unless the evidence shows distinct answers. Carry
-the cohort scope with that label. A `canonical-reference` title must name what
+identify at most one `canonical-reference` **among successfully body-reviewed
+chats in the declared cohort** per concrete question or decision unless the
+evidence shows distinct answers. Carry the cohort scope and any unavailable
+chat coverage gap with that label. A `canonical-reference` title must name what
 it lets the user find again, not merely the chat's original question.
 
 Show the scope declaration before the evidence worksheet. The worksheet has one
@@ -107,8 +109,9 @@ Then self-grade the proposal. For every actionable row, check that:
    no Codex lifecycle/status marker has been added.
 5. `move-existing` is proposed for `project-home`, or for a
    `canonical-reference`/`duplicate-or-superseded` chat with a body-evidenced
-   existing Project; `create-new` meets the new-Project evidence rule; a merge
-   names source, target, and exact moves.
+   existing Project; `create-new` is supported by one or more
+   `new-project-candidate` chats and meets the new-Project evidence rule; a
+   merge names source, target, and exact moves.
 6. Archive candidates remain proposals, duplicate/superseded chats identify
    their representative chat, and unavailable chats have no invented proposal.
 7. Each Codex bridge is `confirmed`, `plausible`, `unresolved`, or `no-link`

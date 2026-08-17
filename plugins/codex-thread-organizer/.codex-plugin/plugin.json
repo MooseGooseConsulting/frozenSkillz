@@ -27,7 +27,7 @@
       "Write"
     ],
     "defaultPrompt": [
-      "For Codex sidebar tasks, read bodies and apply clear lifecycle-aware titles. For ChatGPT web chats, read bodies, group related work, and propose clear semantic titles and Projects for my approval."
+      "For Codex: title tasks from bodies. For ChatGPT: summarize, group, and propose emoji titles and Projects for my approval."
     ]
   }
 }

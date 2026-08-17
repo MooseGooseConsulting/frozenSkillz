@@ -49,7 +49,9 @@ class CrossSurfaceBridgeContractTests(unittest.TestCase):
         self.assertIn("at most 30 conversations", chatgpt)
         self.assertIn("next deferred cohort", chatgpt)
         self.assertIn("inventory-only", chatgpt)
-        self.assertIn("canonical-reference` **within the declared cohort**", chatgpt)
+        self.assertIn(
+            "canonical-reference` **among successfully body-reviewed", chatgpt
+        )
         self.assertIn("new-project-candidate", chatgpt)
         self.assertIn("project-merge-candidate", chatgpt)
         self.assertIn("was body-reviewed and is in the declared", chatgpt.replace("\n", " "))

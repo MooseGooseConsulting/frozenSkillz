@@ -17,6 +17,49 @@ SPEC.loader.exec_module(sync_module)
 
 
 class SyncFrozenTests(unittest.TestCase):
+    @mock.patch.object(sync_module.sync_codex_global_config, "main", side_effect=[0, 0])
+    @mock.patch.object(sync_module.sync_frozen_skills, "main", side_effect=[0, 0])
+    def test_apply_runs_preflight_then_applies_skills_and_config(
+        self, skills_main, config_main
+    ):
+        alternate = Path("alternate-codex-home")
+
+        result = sync_module.main(
+            ["--consumer", "codex", "--apply", "--codex-home", str(alternate)]
+        )
+
+        self.assertEqual(0, result)
+        self.assertEqual(
+            [
+                mock.call(
+                    [
+                        "--check",
+                        "--consumer",
+                        "codex",
+                        "--destination",
+                        str(alternate / "skills"),
+                    ]
+                ),
+                mock.call(
+                    [
+                        "--apply",
+                        "--consumer",
+                        "codex",
+                        "--destination",
+                        str(alternate / "skills"),
+                    ]
+                ),
+            ],
+            skills_main.call_args_list,
+        )
+        self.assertEqual(
+            [
+                mock.call(["--check", "--codex-home", str(alternate)]),
+                mock.call(["--apply", "--codex-home", str(alternate)]),
+            ],
+            config_main.call_args_list,
+        )
+
     @mock.patch.object(sync_module.sync_codex_global_config, "main", return_value=0)
     @mock.patch.object(sync_module.sync_frozen_skills, "main", side_effect=[0, 2])
     def test_config_apply_is_skipped_when_skill_apply_fails(self, skills_main, config_main):

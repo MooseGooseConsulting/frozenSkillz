@@ -1,11 +1,11 @@
 ---
 name: brightdata
 description: Use this skill whenever a task needs Bright Data or structured public-web collection from eBay, Amazon, Reddit, Google Shopping, Google/Bing/Yandex, ChatGPT/Perplexity/Gemini/Grok/Google AI Mode, a protected or CAPTCHA-blocked website, or a custom scraper. Covers live scraper inventory, known-URL collection, keyword/category discovery, Discover API source finding, SERP capture, Web Unlocker, Browser API escalation, AI answer-engine scraping, Scraper Studio, usage/cost, snapshots, cancellation, and durable collection. Use even when the user names the target site but not Bright Data.
+metadata:
+  last-tested: "2026-08-18"
 ---
 
 # Bright Data
-
-> SCRATCH V3 — grouped from Anthropic official-skill patterns. Shared routing, workflow, safety, and target recognition stay here. Only deep/disjoint capability families move to references.
 
 ## Supported targets
 
@@ -49,7 +49,7 @@ This skill explicitly covers:
 8. Trigger once. Do not silently rerun, expand, or schedule.
 9. Persist raw output plus exact inputs/config, provider job ID, timestamps, errors, schema fingerprint, and usage.
 10. Normalize with a versioned target adapter; preserve unknown fields.
-11. Report returned/usable rows, cost per returned/usable row, remaining balance, and what was not established.
+11. Report returned/usable rows, cost per returned/usable row when supported by available billing data, remaining balance, and what was not established.
 
 ## Evidence boundaries
 
@@ -68,7 +68,7 @@ This skill explicitly covers:
 - A recurring search is a saved recipe, not a schedule.
 - No auto-rerun or auto-expansion.
 - Automation requires explicit purpose, bounded spend, durable webhook, idempotency, recovery, and monitored operational alerts.
-- Use `scripts/usage.py` before and after paid runs; billing can post late, so unchanged immediate balance is not proof of zero cost.
+- Use `scripts/usage.py` before and after paid runs for account balance, bandwidth, and zone-scoped costs; `/zone/cost` does not include Web Scraper API or Scraper Studio charges. Billing can post late, so unchanged immediate balance is not proof of zero cost.
 - Preserve snapshot IDs immediately so long-running jobs can be monitored or canceled.
 
 ## Escalation

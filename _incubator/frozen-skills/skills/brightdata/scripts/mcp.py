@@ -22,6 +22,7 @@ import argparse
 import json
 import os
 import sys
+import urllib.error
 import urllib.parse
 import urllib.request
 from typing import Any
@@ -47,14 +48,25 @@ def parse_sse(body: str) -> list[dict[str, Any]]:
     return records
 
 
+def parse_response(body: str) -> list[dict[str, Any]]:
+    stripped = body.strip()
+    if not stripped:
+        return []
+    try:
+        value = json.loads(stripped)
+    except json.JSONDecodeError:
+        return parse_sse(body)
+    return [value] if isinstance(value, dict) else []
+
+
 class Client:
     def __init__(self, groups: str | None = None, tools: str | None = None) -> None:
         query = {"token": token()}
         if groups:
             query["groups"] = groups
-        elif tools:
+        if tools:
             query["tools"] = tools
-        else:
+        if not groups and not tools:
             query["pro"] = "1"
         self.url = f"{BASE}?{urllib.parse.urlencode(query)}"
         self.session_id: str | None = None
@@ -71,21 +83,32 @@ class Client:
         if self.session_id:
             headers["Mcp-Session-Id"] = self.session_id
         req = urllib.request.Request(self.url, data=json.dumps(payload).encode(), method="POST", headers=headers)
-        with urllib.request.urlopen(req, timeout=timeout) as response:
-            self.session_id = response.headers.get("Mcp-Session-Id", self.session_id)
-            messages = parse_sse(response.read().decode(errors="replace"))
+        try:
+            with urllib.request.urlopen(req, timeout=timeout) as response:
+                self.session_id = response.headers.get("Mcp-Session-Id", self.session_id)
+                messages = parse_response(response.read().decode(errors="replace"))
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError) as exc:
+            return {"error": {"type": "transport_error", "message": str(exc)}, "id": request_id}
         for message in messages:
             if message.get("id") == request_id:
                 return message
         return {"responses": messages}
 
-    def initialize(self) -> None:
-        self.post("initialize", {"protocolVersion": "2025-11-25", "capabilities": {}, "clientInfo": {"name": "hyperagent-brightdata-api", "version": "1.0"}}, 60)
-        headers = {"Content-Type": "application/json", "Accept": "application/json, text/event-stream", "Mcp-Session-Id": self.session_id or ""}
+    def initialize(self) -> dict[str, Any]:
+        response = self.post("initialize", {"protocolVersion": "2025-11-25", "capabilities": {}, "clientInfo": {"name": "frozen-skills-brightdata", "version": "1.0"}}, 60)
+        if response.get("error"):
+            return response
+        headers = {"Content-Type": "application/json", "Accept": "application/json, text/event-stream"}
+        if self.session_id:
+            headers["Mcp-Session-Id"] = self.session_id
         payload = {"jsonrpc": "2.0", "method": "notifications/initialized", "params": {}}
         req = urllib.request.Request(self.url, data=json.dumps(payload).encode(), method="POST", headers=headers)
-        with urllib.request.urlopen(req, timeout=60):
-            pass
+        try:
+            with urllib.request.urlopen(req, timeout=60):
+                pass
+        except (urllib.error.HTTPError, urllib.error.URLError, TimeoutError, OSError) as exc:
+            return {"error": {"type": "transport_error", "message": str(exc)}}
+        return response
 
 
 def main() -> int:
@@ -105,9 +128,15 @@ def main() -> int:
     except json.JSONDecodeError as exc:
         parser.error(f"invalid --arguments JSON: {exc}")
     client = Client(args.groups, args.tools)
-    client.initialize()
+    initialized = client.initialize()
+    if initialized.get("error"):
+        print(json.dumps(initialized, indent=2))
+        return 1
     if args.list:
         result = client.post("tools/list", {}, 60)
+        if result.get("error"):
+            print(json.dumps(result, indent=2))
+            return 1
         tool_list = result.get("result", {}).get("tools", [])
         print(json.dumps({"tool_count": len(tool_list), "tools": tool_list}, indent=2))
     elif args.sequence:
@@ -123,20 +152,22 @@ def main() -> int:
         if not isinstance(sequence, list):
             parser.error("--sequence must be a JSON array")
         results = []
+        failed = False
         for item in sequence:
             if not isinstance(item, dict) or not isinstance(item.get("name"), str):
                 parser.error("each sequence item must contain a string name")
             arguments = item.get("arguments", {})
             if not isinstance(arguments, dict):
                 parser.error("each sequence arguments value must be an object")
-            results.append({
-                "name": item["name"],
-                "response": client.post("tools/call", {"name": item["name"], "arguments": arguments}, args.timeout),
-            })
+            response = client.post("tools/call", {"name": item["name"], "arguments": arguments}, args.timeout)
+            failed = failed or bool(response.get("error"))
+            results.append({"name": item["name"], "response": response})
         print(json.dumps({"results": results}, indent=2))
+        return 1 if failed else 0
     else:
-        print(json.dumps(client.post("tools/call", {"name": args.tool, "arguments": tool_args}, args.timeout), indent=2))
-    return 0
+        response = client.post("tools/call", {"name": args.tool, "arguments": tool_args}, args.timeout)
+        print(json.dumps(response, indent=2))
+        return 1 if response.get("error") else 0
 
 
 if __name__ == "__main__":

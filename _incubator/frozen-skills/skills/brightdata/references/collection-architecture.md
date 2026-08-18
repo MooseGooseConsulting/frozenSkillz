@@ -1,9 +1,7 @@
 # Durable collection architecture
 
-> SCRATCH V3 — grouped architecture reference. Only load when persistence, schema variation, webhooks, adapters, or downstream promotion matters.
-
 ## Goal
-Explorer agents can run bounded probes and preserve arbitrary Bright Data output without first designing a TechDeals table or universal flat schema.
+Explorer agents can run bounded probes and preserve arbitrary Bright Data output without first designing a downstream canonical table or universal flat schema.
 
 ## Stage 1: immutable permissive receipt
 Persist:

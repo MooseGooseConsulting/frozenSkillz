@@ -28,10 +28,12 @@ def main()->int:
     sub=p.add_subparsers(dest="cmd",required=True)
     inv=sub.add_parser("inventory"); inv.add_argument("--match")
     for cmd in ("scrape","trigger","discover"):
-        q=sub.add_parser(cmd); q.add_argument("dataset_id"); q.add_argument("--input",required=True); q.add_argument("--format",default="json",choices=["json","ndjson","jsonl","csv"]); q.add_argument("--custom-output-fields"); q.add_argument("--include-errors",action="store_true"); q.add_argument("--output"); q.add_argument("--wait",action="store_true"); q.add_argument("--timeout",type=int,default=900)
+        formats=["json","ndjson","csv"] if cmd=="scrape" else ["json","ndjson","jsonl","csv"]
+        q=sub.add_parser(cmd); q.add_argument("dataset_id"); q.add_argument("--input",required=True); q.add_argument("--format",default="json",choices=formats); q.add_argument("--custom-output-fields"); q.add_argument("--include-errors",action=argparse.BooleanOptionalAction,default=True); q.add_argument("--output"); q.add_argument("--wait",action="store_true"); q.add_argument("--timeout",type=int,default=900)
         if cmd=="discover":
             q.add_argument("--discover-by",required=True); q.add_argument("--limit-per-input",required=True,type=int); q.add_argument("--limit-total",required=True,type=int)
-    st=sub.add_parser("status"); st.add_argument("snapshot_id"); st.add_argument("--format",default="json"); st.add_argument("--output")
+    st=sub.add_parser("status"); st.add_argument("snapshot_id")
+    dl=sub.add_parser("download"); dl.add_argument("snapshot_id"); dl.add_argument("--format",default="json",choices=["json","ndjson","jsonl","csv"]); dl.add_argument("--output")
     ca=sub.add_parser("cancel"); ca.add_argument("snapshot_id")
     a=p.parse_args()
     if a.cmd=="inventory":
@@ -42,10 +44,14 @@ def main()->int:
     if a.cmd=="cancel":
         s,_,data=request("POST",f"/datasets/v3/snapshot/{a.snapshot_id}/cancel",timeout=60); print_json({"status":s,"data":data}); return 0 if s==200 else 1
     if a.cmd=="status":
+        s,_,data=request("GET",f"/datasets/v3/progress/{a.snapshot_id}",timeout=60); print_json({"status":s,"snapshot_id":a.snapshot_id,"data":data}); return 0 if s==200 else 1
+    if a.cmd=="download":
         s,_,data=request("GET",f"/datasets/v3/snapshot/{a.snapshot_id}",params={"format":a.format},timeout=120); write_or_print({"status":s,"snapshot_id":a.snapshot_id,"data":data},a.output); return 0 if s==200 else 1
     inputs=parse_json_or_file(a.input)
     if isinstance(inputs,dict): inputs=[inputs]
     if not isinstance(inputs,list) or not all(isinstance(x,dict) for x in inputs): raise SystemExit("--input must be a JSON object/array or JSON file")
+    if a.cmd=="scrape" and len(inputs)>20: p.error("synchronous scrape supports at most 20 inputs; use trigger for larger jobs")
+    if a.cmd=="discover" and (a.limit_per_input<1 or a.limit_total<1): p.error("discovery limits must be positive")
     path="/datasets/v3/scrape" if a.cmd=="scrape" else "/datasets/v3/trigger"
     params={"dataset_id":a.dataset_id,"format":a.format,"custom_output_fields":a.custom_output_fields,"include_errors":str(a.include_errors).lower()}
     if a.cmd=="discover":
@@ -58,9 +64,11 @@ def main()->int:
     if not a.wait: write_or_print({"status":s,"snapshot_id":snapshot,"data":data},a.output); return 0
     deadline=time.time()+a.timeout
     while time.time()<deadline:
-        fs,_,result=request("GET",f"/datasets/v3/snapshot/{snapshot}",params={"format":a.format},timeout=120)
-        if fs==200 and (isinstance(result,list) or not (isinstance(result,dict) and result.get("status") in ACTIVE)):
-            write_or_print({"status":fs,"snapshot_id":snapshot,"data":result},a.output); return 0
+        fs,_,result=request("GET",f"/datasets/v3/progress/{snapshot}",timeout=60)
+        state=result.get("status") if isinstance(result,dict) else None
+        if fs==200 and state=="ready":
+            ds,_,data=request("GET",f"/datasets/v3/snapshot/{snapshot}",params={"format":a.format},timeout=120); write_or_print({"status":ds,"snapshot_id":snapshot,"data":data},a.output); return 0 if ds==200 else 1
+        if fs==200 and state=="failed": write_or_print({"status":fs,"snapshot_id":snapshot,"data":result},a.output); return 1
         if fs not in (200,202): write_or_print({"status":fs,"snapshot_id":snapshot,"data":result},a.output); return 1
         time.sleep(5)
     write_or_print({"status":408,"snapshot_id":snapshot,"error":"timeout"},a.output); return 1

@@ -1,7 +1,5 @@
 # Search, research, and answer-engine collection
 
-> SCRATCH V3 — grouped because Discover, SERP, and AI answer-engine scraping all begin with a query/prompt but produce different evidence.
-
 ## Choose the right query surface
 
 | Need | Surface |
@@ -15,7 +13,7 @@ Discover searches the open web and uses `intent` as a relevance rubric. It does 
 
 - Sync: `POST /discover/sync` within a 60-second window.
 - Async: `POST /discover` then poll by `task_id`.
-- Inputs: query, intent, depth, exact filter keywords, result count, duplicate removal, content/images, country/city/language, date bounds.
+- Inputs: query, intent, `mode` (`standard`, `zeroRanking`, `deep`, `fast`), exact filter keywords, result count (1–20 outside `zeroRanking`), duplicate removal, content/images, country/city/language, date bounds. `zeroRanking` ignores `num_results` and does not support `include_content`.
 - Use for primary-source discovery, supplier/source discovery, and bounded RAG seeds.
 - A relevance score is not factual confidence.
 

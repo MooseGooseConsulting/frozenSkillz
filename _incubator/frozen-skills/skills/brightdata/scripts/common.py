@@ -1,6 +1,6 @@
 """Shared direct HTTP helpers for the Bright Data skill.
 
-Run through Hyperagent RunWithCredentials so BRIGHTDATA_API_KEY is injected.
+Inject BRIGHTDATA_API_KEY or BRIGHTDATA_API_TOKEN through the consuming runtime.
 Never print or persist the credential.
 """
 from __future__ import annotations
@@ -19,7 +19,7 @@ API_BASE = "https://api.brightdata.com"
 def token() -> str:
     value = os.environ.get("BRIGHTDATA_API_KEY") or os.environ.get("BRIGHTDATA_API_TOKEN")
     if not value:
-        raise SystemExit("BRIGHTDATA_API_KEY is missing. Run this through RunWithCredentials for the brightdata skill.")
+        raise SystemExit("BRIGHTDATA_API_KEY or BRIGHTDATA_API_TOKEN is required.")
     return value
 
 
@@ -64,6 +64,8 @@ def request(
             return error.code, headers_out, json.loads(text)
         except json.JSONDecodeError:
             return error.code, headers_out, text
+    except (urllib.error.URLError, TimeoutError, OSError) as error:
+        return 0, {}, {"type": "transport_error", "error": str(error)}
 
 
 def print_json(value: Any) -> None:

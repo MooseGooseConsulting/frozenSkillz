@@ -1,0 +1,51 @@
+{
+  "last_tested": "2026-08-18",
+  "contracts": [
+    {
+      "name": "amazon-products-discover-by-keyword",
+      "dataset_id": "gd_l7q7dkf244hwjntr0",
+      "type": "discover_new",
+      "discover_by": "keyword",
+      "required_input_fields": ["keyword"],
+      "optional_input_fields": ["zipcode"]
+    },
+    {
+      "name": "amazon-products-global-discover-by-keyword",
+      "dataset_id": "gd_lwhideng15g8jg63s7",
+      "type": "discover_new",
+      "discover_by": "keyword",
+      "required_input_fields": ["keyword", "url"],
+      "optional_input_fields": ["pages_to_search"]
+    },
+    {
+      "name": "amazon-products-search",
+      "dataset_id": "gd_lwdb4vjm1ehb499uxs",
+      "required_input_fields": ["keyword", "url"],
+      "optional_input_fields": ["pages_to_search"]
+    },
+    {
+      "name": "reddit-posts-discover-by-keyword",
+      "dataset_id": "gd_lvz8ah06191smkebj4",
+      "type": "discover_new",
+      "discover_by": "keyword",
+      "required_input_fields": ["keyword", "date"],
+      "optional_input_fields": ["num_of_posts"]
+    },
+    {
+      "name": "reddit-posts-discover-by-subreddit-url",
+      "dataset_id": "gd_lvz8ah06191smkebj4",
+      "type": "discover_new",
+      "discover_by": "subreddit_url",
+      "required_input_fields": ["url"],
+      "optional_input_fields": ["sort_by"]
+    },
+    {
+      "name": "google-shopping-discover-by-keyword",
+      "dataset_id": "gd_ltppk50q18kdw67omz",
+      "type": "discover_new",
+      "discover_by": "keyword",
+      "required_input_fields": ["keyword"],
+      "optional_input_fields": ["country"]
+    }
+  ]
+}

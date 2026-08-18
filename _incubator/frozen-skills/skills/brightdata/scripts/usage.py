@@ -6,6 +6,7 @@ rather than silently consuming credits. This is observation only.
 """
 from __future__ import annotations
 
+import argparse
 from datetime import datetime, timezone
 import os
 import sys
@@ -22,7 +23,12 @@ def month_range() -> tuple[str, str]:
 
 
 def main() -> int:
-    start, end = month_range()
+    default_start, default_end = month_range()
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--from-date", default=default_start)
+    parser.add_argument("--to-date", default=default_end, help="exclusive YYYY-MM-DD")
+    args = parser.parse_args()
+    start, end = args.from_date, args.to_date
     balance_status, _, balance = request("GET", "/customer/balance", timeout=60)
     zones_status, _, zones = request("GET", "/zone/get_active_zones", timeout=60)
     bw_status, _, bandwidth = request("GET", "/customer/bw", params={"from": start, "to": end}, timeout=60)
@@ -33,7 +39,7 @@ def main() -> int:
             if name:
                 status, _, cost = request("GET", "/zone/cost", params={"zone": name, "from": start, "to": end}, timeout=60)
                 costs[name] = {"status": status, "data": cost}
-    print_json({"window": {"from": start, "to_exclusive": end}, "balance": {"status": balance_status, "data": balance}, "zones": {"status": zones_status, "data": zones}, "bandwidth": {"status": bw_status, "data": bandwidth}, "zone_costs": costs})
+    print_json({"window": {"from": start, "to_exclusive": end}, "balance": {"status": balance_status, "data": balance}, "zones": {"status": zones_status, "data": zones}, "bandwidth": {"status": bw_status, "data": bandwidth}, "zone_costs": costs, "cost_coverage": {"zone_products": "included via /zone/cost", "web_scraper_api": "not included", "scraper_studio": "not included"}})
     required_ok = balance_status == 200 and zones_status == 200 and bw_status == 200
     zone_costs_ok = all(row.get("status") == 200 for row in costs.values())
     return 0 if required_ok and zone_costs_ok else 1

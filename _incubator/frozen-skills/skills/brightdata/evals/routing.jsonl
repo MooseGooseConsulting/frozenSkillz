@@ -1,0 +1,6 @@
+{"prompt":"Use Bright Data to collect these 200 Amazon product URLs and preserve the snapshot ID.","should_activate":true,"reason":"explicit Bright Data structured collection"}
+{"prompt":"Find up to 100 Reddit posts about local LLM inference using Bright Data and keep the raw evidence.","should_activate":true,"reason":"explicit Bright Data discovery"}
+{"prompt":"This product page is CAPTCHA-blocked. Use our Bright Data access to retrieve it.","should_activate":true,"reason":"protected-page Bright Data access"}
+{"prompt":"Summarize Amazon's latest quarterly earnings.","should_activate":false,"reason":"ordinary company research; no Bright Data or structured collection requested"}
+{"prompt":"Translate this Reddit post into English.","should_activate":false,"reason":"text transformation, not web collection"}
+{"prompt":"What is Google Shopping?","should_activate":false,"reason":"general explanation, not a collection task"}

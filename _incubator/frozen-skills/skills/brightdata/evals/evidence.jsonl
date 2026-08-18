@@ -1,0 +1,4 @@
+{"observation":{"sold_count":37},"must_not_claim":"37 dated completed sales","principle":"sold_count is aggregate evidence, not a dated transaction ledger"}
+{"observation":{"price":299.99,"scraped_at":"2026-08-18T12:00:00Z"},"must_not_claim":"price history","principle":"one scrape is a current observation, not a longitudinal series"}
+{"observation":{"source":"ChatGPT answer-engine scraper","answer":"Product X is cheapest"},"must_not_claim":"canonical market price","principle":"answer-engine output is sampled model evidence, not canonical fact"}
+{"observation":{"source":"Google Shopping","offer_price":199.99},"must_not_claim":"verified destination-page offer","principle":"shopping feed must be verified at destination for actionable offer evidence"}

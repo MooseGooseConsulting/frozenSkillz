@@ -3,6 +3,21 @@
 Use KCap when the task is centered on a repository, project, PR, file, session chain, or the
 reasoning behind implementation work. Prefer the `kcap-sessions` MCP tools when available.
 
+The first KCap search is a probe, not a verdict. An empty, noisy, or weak result means that query
+failed; it does not establish that the conversation is missing from KCap. Before switching
+providers, run a bounded retry set with materially different shapes:
+
+1. the user's natural-language question scoped to the current repository or project;
+2. stable exact anchors such as a session fragment, PR, file, command, quotation, or distinctive
+   phrase;
+3. a relaxed scope over date, machine, agent, child, continuation, or session chain; and
+4. when the task is a swarm or comparison, the parent/session population plus child or continuation
+   queries.
+
+Record each query and its result in the localization artifact. If the user says the source should
+be in KCap, treat that as a retrieval warning: keep KCap active through the retry set and check
+capability/coverage before reporting absence. Only then widen to AgentsView or another provider.
+
 ## Capability gate
 
 Check the live surface before depending on optional features:
@@ -23,10 +38,12 @@ Use the MCP sequence:
 
 1. `search_sessions` with a natural-language question; default to the current repo or pass
    `repo: "all"` only when cross-repo discovery is intended.
-2. `get_session_summary` to orient on a candidate.
-3. `list_turns` to map the session semantically without loading its entire transcript.
-4. `get_turn` for one complete turn, or `get_session_transcript` around the returned event index.
-5. Preserve `agent_id` when the hit belongs to a subagent stream.
+2. If the result is empty or weak, repeat `search_sessions` with the exact-anchor and relaxed-scope
+   queries above before treating the route as incomplete.
+3. `get_session_summary` to orient on a candidate.
+4. `list_turns` to map the session semantically without loading its entire transcript.
+5. `get_turn` for one complete turn, or `get_session_transcript` around the returned event index.
+6. Preserve `agent_id` when the hit belongs to a subagent stream.
 
 CLI fallback:
 

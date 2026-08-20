@@ -16,6 +16,12 @@ provider reference reached by the route.
   anchor such as a session ID, file, PR, error, command, or quotation.
 - A provider route is not a one-shot query. An empty or weak result is evidence that that query
   failed, not evidence that the conversation is absent.
+- Do not infer the history provider from the ambient working directory. Current repository context
+  may scope a search, but it does not by itself select KCAP.
+- Treat KCAP as the first route only when the user supplies an explicit repository, project, PR,
+  file, session, or implementation-history anchor, or explicitly asks for KCAP. For a generic
+  locate/find/which-transcripts request, use the provider or harness clue to choose the broadest
+  appropriate index, then use KCAP to drill into candidates when it can add turn-level detail.
 - When KCAP is a viable route, exhaust a bounded retry set before falling back: try the semantic
   question, stable exact anchors, and a relaxed scope over project, date, machine, agent, child,
   continuation, or session chain. Use materially different query shapes rather than repeating the
@@ -96,23 +102,24 @@ Need information from previous conversations
          │                 └─ nothing useful → record the coverage gap
          │
          ├─ Known subject, but unknown conversation
-         │  ├─ reliable current repository context exists
+         │  ├─ the user supplied an explicit repository/project/PR/file/session anchor or asks for
+         │  │  implementation reasoning
          │  │  └─ KCap semantic search first → references/kurrent-capacitor.md
          │  │     ├─ useful candidates → write candidate map
          │  │     └─ weak/empty → run the bounded KCap retry set, then use AgentsView with
          │  │        progressively relaxed scope → references/agentsview.md
-         │  └─ no reliable repository context
+         │  └─ no explicit KCAP anchor
          │     └─ AgentsView broad semantic search first → references/agentsview.md
          │        └─ Pieces when the conversation may be browser-based
          │           → references/pieces.md
          │
          ├─ Comparing conversations or running a retrospective
-         │  ├─ use KCap to find the repository/project population
-         │  │  → references/kurrent-capacitor.md
-         │  ├─ if the population is thin, retry KCap with alternate subject, date, child, and
-         │  │  continuation scopes before treating the corpus as incomplete
-         │  ├─ use AgentsView for cross-harness or cross-project candidates
+         │  ├─ explicit repository/project or implementation-history anchor → use KCap to find
+         │  │  the population → references/kurrent-capacitor.md
+         │  ├─ otherwise use AgentsView for cross-harness or cross-project candidates
          │  │  → references/agentsview.md
+         │  ├─ if the selected population is thin, retry its active provider with alternate
+         │  │  subject, date, child, and continuation scopes before treating it as incomplete
          │  └─ return a candidate population, not only the highest-ranked hit
          │
          ├─ Browser application, page, title, or approximate time is the clue
@@ -149,8 +156,9 @@ and artifact path.
 Localization briefs and candidate maps returned
 ├─ No candidates
 │  └─ follow up with the same localization agent for a second pass
-│     ├─ require a different KCAP semantic framing or stable-anchor query first
-│     ├─ only change provider after the KCAP retry set is recorded as exhausted
+│     ├─ require a materially different framing in the active provider first
+│     ├─ if the active provider is KCAP, use a semantic, stable-anchor, and relaxed-scope retry set
+│     ├─ only change provider after the active provider's retry set is recorded as exhausted
 │     ├─ relax unreliable project/date filters
 │     ├─ include child, continuation, automated, local, and fleet sessions as relevant
 │     └─ still nothing

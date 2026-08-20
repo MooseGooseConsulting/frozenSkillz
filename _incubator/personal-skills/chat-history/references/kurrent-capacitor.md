@@ -1,7 +1,10 @@
 # Kurrent Capacitor route
 
-Use KCap when the task is centered on a repository, project, PR, file, session chain, or the
-reasoning behind implementation work. Prefer the `kcap-sessions` MCP tools when available.
+Use KCap when the user supplies a repository, project, PR, file, session-chain, or implementation-
+history anchor, or explicitly asks for KCap. Prefer the `kcap-sessions` MCP tools when available.
+Ambient current-repository context may scope a search, but a working directory alone does not make
+KCap the first provider. For generic transcript discovery, start with the broadest provider or
+harness index suggested by the request, then use KCap to drill into identified candidates.
 
 The first KCap search is a probe, not a verdict. An empty, noisy, or weak result means that query
 failed; it does not establish that the conversation is missing from KCap. Before switching

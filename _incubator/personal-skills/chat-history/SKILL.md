@@ -223,6 +223,8 @@ leave them to the operating environment's temporary-file lifecycle after synthes
 
 ## Provider references
 
+When the choice of index is unclear, read [Choosing a provider](references/choosing-a-provider.md)
+first — it records which surface actually holds which data (coverage, plan-gating, empty stores).
 Load only the provider reached by the tree:
 
 - [Kurrent Capacitor](references/kurrent-capacitor.md) for project, repository, PR, file, and

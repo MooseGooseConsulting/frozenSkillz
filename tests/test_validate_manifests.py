@@ -159,12 +159,111 @@ class ValidateManifestsTests(unittest.TestCase):
             {
                 "hermes-ops": {
                     "description": "bare-SKILL.md service runtime, not a client",
+                    "skills": ["doppler"],
+                }
+            }
+        )
+        self.assertTrue(valid, output)
+        self.assertIn("1 deployment subset(s) are aligned", output)
+
+    def test_contract_accepts_a_runtime_deployment_repo_targeted_skill(self):
+        valid, output = self._contract_with_deployments(
+            {
+                "hermes-ops": {
+                    "description": "runtime operating the homelab environment",
+                    "repo": "MooseGooseConsulting/coldaine-homelab",
                     "skills": ["doppler", "pdm-cli-operations"],
                 }
             }
         )
         self.assertTrue(valid, output)
         self.assertIn("1 deployment subset(s) are aligned", output)
+
+    def test_contract_rejects_repo_targeted_skill_without_a_declared_repo(self):
+        valid, output = self._contract_with_deployments(
+            {
+                "hermes-ops": {
+                    "description": "runtime without a repo declaration",
+                    "skills": ["doppler", "pdm-cli-operations"],
+                }
+            }
+        )
+        self.assertFalse(valid)
+        self.assertIn("repo-targeted skill", output)
+
+    def test_contract_rejects_a_deployment_with_an_unsafe_repo(self):
+        valid, output = self._contract_with_deployments(
+            {
+                "hermes-ops": {
+                    "description": "runtime with a malformed repo",
+                    "repo": "not-a-repo-id",
+                    "skills": ["doppler"],
+                }
+            }
+        )
+        self.assertFalse(valid)
+        self.assertIn("unsafe repo identifier", output)
+
+    def test_contract_rejects_repo_targets_entry_for_an_unknown_skill(self):
+        distribution = validate_module.load_json(validate_module.FROZEN_DISTRIBUTION)
+        distribution["repo_targets"]["ghost-skill"] = {
+            "description": "not in any lane and no path",
+            "repos": ["MooseGooseConsulting/coldaine-homelab"],
+        }
+        output = self._contract_with_distribution(distribution)
+        self.assertIn("must declare a path", output)
+
+    def test_contract_rejects_a_repo_targets_path_for_a_lane_skill(self):
+        distribution = validate_module.load_json(validate_module.FROZEN_DISTRIBUTION)
+        distribution["repo_targets"]["doppler"] = {
+            "description": "lane skills inherit their path",
+            "path": "somewhere/skills/doppler",
+            "repos": ["MooseGooseConsulting/coldaine-homelab"],
+        }
+        output = self._contract_with_distribution(distribution)
+        self.assertIn("must not carry a path", output)
+
+    def test_contract_rejects_a_repo_only_skill_in_the_shared_tree(self):
+        distribution = validate_module.load_json(validate_module.FROZEN_DISTRIBUTION)
+        distribution["repo_targets"]["rogue-skill"] = {
+            "description": "repo-only skills must not live in the shared tree",
+            "path": "frozen-skills/skills/rogue-skill",
+            "repos": ["MooseGooseConsulting/coldaine-homelab"],
+        }
+        output = self._contract_with_distribution(distribution)
+        self.assertIn("repo-only package", output)
+
+    def test_contract_rejects_a_missing_mcp_template(self):
+        distribution = validate_module.load_json(validate_module.FROZEN_DISTRIBUTION)
+        distribution["repo_targets"]["pdm-cli-operations"]["mcp"] = ["no-such-template"]
+        output = self._contract_with_distribution(distribution)
+        self.assertIn("does not exist", output)
+
+    def test_contract_rejects_an_unsafe_repo_identifier(self):
+        distribution = validate_module.load_json(validate_module.FROZEN_DISTRIBUTION)
+        distribution["repo_targets"]["pdm-cli-operations"]["repos"] = ["not-a-repo"]
+        output = self._contract_with_distribution(distribution)
+        self.assertIn("unsafe repository identifier", output)
+
+    def _contract_with_distribution(self, distribution):
+        real_load_json = validate_module.load_json
+
+        def load_with_patched_distribution(path):
+            if path == validate_module.FROZEN_DISTRIBUTION:
+                return distribution
+            return real_load_json(path)
+
+        output = io.StringIO()
+        with (
+            mock.patch.object(
+                validate_module,
+                "load_json",
+                side_effect=load_with_patched_distribution,
+            ),
+            redirect_stdout(output),
+        ):
+            validate_module.validate_frozen_consumer_contract()
+        return output.getvalue()
 
     def test_contract_rejects_a_restricted_package_in_a_consumer_less_deployment(self):
         valid, output = self._contract_with_deployments(

@@ -127,7 +127,7 @@ There are two kinds, distinguished by whether the deployment declares a `consume
 
 Do not give a non-client runtime a placeholder consumer. A consumer that is inert today because every selected skill happens to be shared becomes a false statement the moment a restricted skill is added, and the omission is what makes the shared-only constraint enforceable.
 
-Every listed skill must already be active in the aligned manifests for that deployment's scope — its consumer's set, or `shared` when it declares none. A deployment cannot select a skill the distribution does not carry, and a runtime deployment that names a consumer-restricted package is rejected by name.
+Every listed skill must already be active in the aligned manifests for that deployment's scope — its consumer's set, or `shared` when it declares none. A deployment cannot select a skill the distribution does not carry, and a runtime deployment that names a consumer-restricted package is rejected by name. A runtime deployment may optionally name the repository whose environment it operates (`"repo": "owner/repo"`); it may then also select repo-targeted skills aimed at that repository — see **Repository-Targeted Skills** below.
 
 ```powershell
 python scripts/sync_frozen_skills.py --check --deployment hermes-ops --destination /srv/hermes/skill-sets/hermes-ops --prune
@@ -141,6 +141,37 @@ Rules specific to deployment mode:
 - A destination is owned by exactly one deployment (or by the full, undeployed consumer distribution) for its lifetime. Reusing a destination under a different deployment, or under the full distribution, is a conflict. Ownership is recorded in the destination's `.frozen-skills-sync.json`, which omits `consumer` for a runtime deployment.
 - Pruning is exact: any top-level destination content that is neither an active deployment skill nor a still-recorded retired one is reported as a conflict, not silently ignored.
 - `python scripts/validate_manifests.py` validates every deployment against the active distribution as part of ordinary manifest validation.
+
+## Repository-Targeted Skills
+
+The consumer axis picks a client *format*. It says nothing about which GitHub repository a skill belongs to. A skill that only makes sense for one environment — Proxmox fleet operations, a Kubernetes distribution, a single product's internals — should not broadcast to every consumer on every machine. The `repo_targets` object in `plugins/distribution.json` is that third axis: it routes a skill only into the repositories that own the environment the skill operates.
+
+```json
+"repo_targets": {
+  "pdm-cli-operations": {
+    "description": "Proxmox PDM fleet operations for the homelab environment.",
+    "path": "pdm-operations/skills/pdm-cli-operations",
+    "repos": ["MooseGooseConsulting/coldaine-homelab"],
+    "mcp": []
+  }
+}
+```
+
+Rules:
+
+- A repo-targeted skill that also lives in a shared or consumer lane inherits its lane path and must not repeat it in `repo_targets`. A skill targeted **only** at repositories lives in a dedicated repo-only package (`plugins/<package>/skills/<name>/`, never under `plugins/frozen-skills/skills/`, which every client auto-discovers) and declares its `path` in the entry.
+- `repos` is a non-empty list of canonical `owner/repo` identifiers. The synchronizer does not follow redirects or guess mirrors; the identifier is the reviewed target.
+- `mcp` names templates from `mcp/<name>.json` at this repository's root. On apply, the synchronizer merges the named templates into one `mcpServers` document at `<destination>/.frozen-skills-mcp.json` with the same adopt/conflict discipline as skills — it never edits a project's own `.mcp.json` or client settings file. Wiring that artifact into a client is the project repo's decision (see `docs/workflows/project-agent-config.md`).
+- Promotion onto the repo axis is a normal review-gate change: the skill moves into or stays out of the lanes, `repo_targets` names the repositories, and the tracker records the routing decision.
+
+Synchronize one repository's targeted set by running inside any clone of this repository:
+
+```powershell
+python scripts/sync_frozen_skills.py --repo MooseGooseConsulting/coldaine-homelab --check --destination D:\_projects\coldaine-homelab\.agents\skills
+python scripts/sync_frozen_skills.py --repo MooseGooseConsulting/coldaine-homelab --apply --destination D:\_projects\coldaine-homelab\.agents\skills
+```
+
+`--repo` requires an explicit `--destination` (the project skill root) and does not combine with `--consumer` or `--deployment`. The destination records `"repo": "owner/repo"` in its management record and cannot be reused as a consumer or deployment destination. Unlike a deployment, a project skill root is project-owned: it is never pruned to exactness, and `--prune` only retires skills this repository's targets previously managed. The project keeps its own local skills beside the managed set, and its `AGENTS.md` carries the thin route that tells agents the skill exists (for example, "PDM fleet operations → invoke the `pdm-cli-operations` skill").
 
 ## Personal/Gated Skill Sync
 

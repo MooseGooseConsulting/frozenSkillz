@@ -114,7 +114,10 @@ class SyncFrozenSkillsTests(unittest.TestCase):
         force=False,
         deployment=None,
         destination=None,
+        repo=None,
     ):
+        if repo is not None:
+            consumer = None
         return sync_module.sync(
             self.repo,
             destination or self.destination,
@@ -123,6 +126,7 @@ class SyncFrozenSkillsTests(unittest.TestCase):
             prune=prune,
             force=force,
             deployment=deployment,
+            repo=repo,
         )
 
     def test_fresh_install_then_check_is_current(self):
@@ -854,6 +858,210 @@ class SyncFrozenSkillsTests(unittest.TestCase):
         self.assertEqual(sync_module.main(["--check", *common]), 1)
         self.assertEqual(sync_module.main(["--apply", *common]), 0)
         self.assertEqual(sync_module.main(["--check", *common]), 0)
+
+    def _write_repo_targets(self, targets):
+        path = self.repo / "plugins" / sync_module.DISTRIBUTION_PATH
+        distribution = json.loads(path.read_text(encoding="utf-8"))
+        distribution["repo_targets"] = targets
+        path.write_text(json.dumps(distribution), encoding="utf-8")
+
+    def _write_repo_only_skill(self, package, name, body):
+        skill = self.repo / "plugins" / package / "skills" / name
+        skill.mkdir(parents=True, exist_ok=True)
+        (skill / "SKILL.md").write_text(body, encoding="utf-8")
+
+    def _write_mcp_template(self, name, server):
+        template_dir = self.repo / sync_module.MCP_TEMPLATES_ROOT
+        template_dir.mkdir(parents=True, exist_ok=True)
+        (template_dir / f"{name}.json").write_text(
+            json.dumps({"mcpServers": {name: server}}), encoding="utf-8"
+        )
+
+    def test_repo_sync_installs_repo_only_skill_and_mcp_artifact(self):
+        self._write_repo_only_skill("beta-ops", "beta", "beta v1")
+        self._write_mcp_template("beta", {"command": "npx", "args": ["-y", "beta-mcp"]})
+        self._write_repo_targets(
+            {
+                "beta": {
+                    "description": "repo-only skill with an MCP template",
+                    "path": "beta-ops/skills/beta",
+                    "repos": ["owner/project"],
+                    "mcp": ["beta"],
+                }
+            }
+        )
+        result = self._sync(repo="owner/project", apply=True)
+        self.assertFalse(result.conflicts)
+        self.assertTrue((self.destination / "beta" / "SKILL.md").is_file())
+
+        artifact = self.destination / sync_module.MCP_ARTIFACT_NAME
+        document = json.loads(artifact.read_text(encoding="utf-8"))
+        self.assertEqual(
+            document["mcpServers"]["beta"]["args"], ["-y", "beta-mcp"]
+        )
+
+        state = json.loads(
+            (self.destination / sync_module.STATE_FILE).read_text(encoding="utf-8")
+        )
+        self.assertEqual(state["repo"], "owner/project")
+        self.assertNotIn("consumer", state)
+        self.assertIn("mcp", state)
+
+        checked = self._sync(repo="owner/project", apply=False)
+        self.assertFalse(checked.changes)
+
+    def test_repo_sync_targets_a_lane_skill_without_a_path(self):
+        self._write_repo_targets(
+            {
+                "alpha": {
+                    "description": "shared skill also routed to one repo",
+                    "repos": ["owner/project"],
+                }
+            }
+        )
+        result = self._sync(repo="owner/project", apply=True)
+        self.assertFalse(result.conflicts)
+        self.assertTrue((self.destination / "alpha" / "SKILL.md").is_file())
+        # A consumer destination stays uninvolved with repo state.
+        self.assertIsNone(
+            json.loads(
+                (self.destination / sync_module.STATE_FILE).read_text(encoding="utf-8")
+            ).get("consumer")
+        )
+
+    def test_repo_sync_rejects_a_consumer_managed_destination(self):
+        self._sync(consumer="codex", apply=True)
+        self._write_repo_targets(
+            {
+                "alpha": {
+                    "description": "shared skill also routed to one repo",
+                    "repos": ["owner/project"],
+                }
+            }
+        )
+        with self.assertRaisesRegex(sync_module.SyncError, "consumer 'codex'"):
+            self._sync(repo="owner/project", apply=True)
+
+    def test_repo_sync_rejects_an_untargeted_repo(self):
+        self._write_repo_targets(
+            {
+                "alpha": {
+                    "description": "shared skill routed elsewhere",
+                    "repos": ["owner/other"],
+                }
+            }
+        )
+        with self.assertRaisesRegex(sync_module.SyncError, "owner/project"):
+            self._sync(repo="owner/project", apply=False)
+
+    def test_repo_cli_requires_destination_and_refuses_combinations(self):
+        self._write_repo_targets(
+            {
+                "alpha": {
+                    "description": "shared skill also routed to one repo",
+                    "repos": ["owner/project"],
+                }
+            }
+        )
+        self.assertEqual(
+            sync_module.main(["--check", "--repo-root", str(self.repo), "--repo", "owner/project"]),
+            2,
+        )
+        self.assertEqual(
+            sync_module.main(
+                [
+                    "--check",
+                    "--repo-root",
+                    str(self.repo),
+                    "--repo",
+                    "owner/project",
+                    "--consumer",
+                    "codex",
+                    "--destination",
+                    str(self.destination),
+                ]
+            ),
+            2,
+        )
+
+    def test_runtime_deployment_with_repo_selects_repo_targeted_skill(self):
+        self._write_repo_only_skill("beta-ops", "beta", "beta v1")
+        self._write_repo_targets(
+            {
+                "beta": {
+                    "description": "repo-only skill for the runtime's environment",
+                    "path": "beta-ops/skills/beta",
+                    "repos": ["owner/project"],
+                    "mcp": [],
+                }
+            }
+        )
+        path = self.repo / "plugins" / sync_module.DISTRIBUTION_PATH
+        distribution = json.loads(path.read_text(encoding="utf-8"))
+        distribution["deployments"] = {
+            "ops-runtime": {
+                "description": "runtime operating the owner/project environment",
+                "repo": "owner/project",
+                "skills": ["alpha", "beta"],
+            }
+        }
+        path.write_text(json.dumps(distribution), encoding="utf-8")
+
+        result = self._sync(consumer=None, deployment="ops-runtime", apply=True, prune=True)
+        self.assertFalse(result.conflicts)
+        installed = {
+            path.name
+            for path in self.destination.iterdir()
+            if (path / "SKILL.md").is_file()
+        }
+        self.assertEqual(installed, {"alpha", "beta"})
+
+    def test_runtime_deployment_without_repo_cannot_select_repo_only_skill(self):
+        self._write_repo_only_skill("beta-ops", "beta", "beta v1")
+        self._write_repo_targets(
+            {
+                "beta": {
+                    "description": "repo-only skill",
+                    "path": "beta-ops/skills/beta",
+                    "repos": ["owner/project"],
+                    "mcp": [],
+                }
+            }
+        )
+        self._write_deployment("ops-runtime", ["alpha", "beta"], consumer=None)
+        with self.assertRaisesRegex(sync_module.SyncError, "repo-targeted skill"):
+            self._sync(consumer=None, deployment="ops-runtime", apply=False, prune=True)
+
+    def test_mcp_artifact_local_modification_is_a_conflict_unless_forced(self):
+        self._write_repo_only_skill("beta-ops", "beta", "beta v1")
+        self._write_mcp_template("beta", {"command": "npx", "args": ["-y", "beta-mcp"]})
+        self._write_repo_targets(
+            {
+                "beta": {
+                    "description": "repo-only skill with an MCP template",
+                    "path": "beta-ops/skills/beta",
+                    "repos": ["owner/project"],
+                    "mcp": ["beta"],
+                }
+            }
+        )
+        self._sync(repo="owner/project", apply=True)
+        artifact = self.destination / sync_module.MCP_ARTIFACT_NAME
+        artifact.write_text('{"mcpServers": {"local": {}}}\n', encoding="utf-8")
+
+        conflicted = self._sync(repo="owner/project", apply=True)
+        self.assertTrue(conflicted.conflicts)
+        self.assertEqual(
+            json.loads(artifact.read_text(encoding="utf-8"))["mcpServers"].keys(),
+            {"local"},
+        )
+
+        forced = self._sync(repo="owner/project", apply=True, force=True)
+        self.assertFalse(forced.conflicts)
+        self.assertEqual(
+            json.loads(artifact.read_text(encoding="utf-8"))["mcpServers"].keys(),
+            {"beta"},
+        )
 
 
 if __name__ == "__main__":

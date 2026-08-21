@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "plugin": "frozen-skills",
-  "version": "2.7.1",
+  "version": "2.8.0",
   "shared": [
     {
       "name": "agent-github-identity",
@@ -22,10 +22,6 @@
     {
       "name": "omc-reference",
       "path": "frozen-skills/skills/omc-reference"
-    },
-    {
-      "name": "pdm-cli-operations",
-      "path": "frozen-skills/skills/pdm-cli-operations"
     }
   ],
   "consumer_packages": {
@@ -45,9 +41,18 @@
     "cursor": [],
     "gemini": []
   },
+  "repo_targets": {
+    "pdm-cli-operations": {
+      "description": "Proxmox PDM fleet operations. Repo-scoped: installs only into repositories that own or operate the Proxmox environment, not broadcast to every consumer.",
+      "path": "pdm-operations/skills/pdm-cli-operations",
+      "repos": ["MooseGooseConsulting/coldaine-homelab"],
+      "mcp": []
+    }
+  },
   "deployments": {
     "hermes-ops": {
-      "description": "Reviewed shared skills exposed to the standing Hermes operations runtime. Hermes is a bare-SKILL.md service runtime, not a Claude/Codex/Cursor/Gemini client: it reads skill directories from a read-only bind mount, so it has no client packaging format and declares no consumer.",
+      "description": "Reviewed shared skills plus the homelab repo-scoped PDM operations skill, exposed to the standing Hermes operations runtime. Hermes is a bare-SKILL.md service runtime, not a Claude/Codex/Cursor/Gemini client: it reads skill directories from a read-only bind mount, so it has no client packaging format and declares no consumer. It declares the repo whose environment it operates so repo-targeted skills for that environment remain selectable.",
+      "repo": "MooseGooseConsulting/coldaine-homelab",
       "skills": [
         "agent-github-identity",
         "doppler",

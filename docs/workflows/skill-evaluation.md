@@ -32,7 +32,9 @@ corpus tooling here. The personal `skill-analysis` skill connects the two reposi
 
 1. Build a complete, read-only candidate manifest in `agent-control-plane`. The unit is a
    deployment episode: one request/task segment and its associated skill activity, not every file
-   read or an entire long session.
+   read or an entire long session. A scheduled **extraction** job may refresh derived signal
+   stores from the corpus on a timer (see **Scheduled extraction** below); interpretation and
+   judgment stay human-triggered.
 2. Declare the review corpus before judging usefulness. Include the relevant work shapes,
    owner-corrected cases, and explicit no-load or near-miss cases when they exist. State what was
    not recoverable.
@@ -44,7 +46,26 @@ corpus tooling here. The personal `skill-analysis` skill connects the two reposi
    body guidance, or a skill-to-skill handoff. Keep owner corrections distinct from acceptance and
    mark any causal interpretation as inference.
 6. Validate the exact diff and the relevant repository checks. Future ordinary deployments become
-   the next evidence set; do not manufacture traffic, force activations, or schedule a monitor.
+   the next evidence set; do not manufacture traffic, force activations, or schedule a monitor
+   **that judges**. Scheduled extraction is not a judging monitor — see below.
+
+## Scheduled extraction
+
+Since 2026-08-15, a timer-driven extraction job is an approved part of this workflow. The
+distinction that matters is **extraction vs judgment**:
+
+- **Allowed on a timer:** cheap-LLM extraction of observable behavioral signals from new corpus
+  sessions into per-variant derived stores (`eval/` in `agent-control-plane`: registry, drivers,
+  prompt library, comparison harness). Extraction is mechanical, idempotent, watermarked, and
+  writes only to its own derived store — never to the corpus, never to a skill.
+- **Still forbidden on a timer:** any scheduled process that *judges* — auto-grading sessions,
+  auto-rewriting/promoting/disabling skills, or closing review items without a human. Scheduled
+  automation (Cursor Automations, Codex scheduled tasks) may **kick off a human-in-the-loop
+  review cycle** (open the candidate query, prep a reader batch); it must not act on the result.
+
+The retired nightly grader violated exactly this boundary (agent in the write path, grades without
+a human). Extraction infrastructure keeps the cheap part cheap and leaves judgment where it
+belongs.
 
 Use the open [deployment-debrief prompt and rationale](../../_incubator/personal-skills/skill-analysis/references/deployment-debrief.md).
 The live personal `skill-analysis` skill is preferred when installed, but the checked-in copy

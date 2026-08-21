@@ -30,6 +30,11 @@ IGNORED_NAMES = {".DS_Store", "Thumbs.db", "__pycache__"}
 IGNORED_SUFFIXES = {".pyc", ".pyo"}
 SKILL_NAME_PATTERN = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
 DIGEST_PATTERN = re.compile(r"^[0-9a-f]{64}$")
+REPO_ID_PATTERN = re.compile(
+    r"^[A-Za-z0-9][A-Za-z0-9._-]*/[A-Za-z0-9][A-Za-z0-9._-]*$"
+)
+MCP_TEMPLATES_ROOT = "mcp"
+MCP_ARTIFACT_NAME = ".frozen-skills-mcp.json"
 
 
 class SyncError(RuntimeError):
@@ -111,6 +116,15 @@ def _validate_safe_name(name: str, kind: str, source: Path) -> None:
         or name in {".", ".."}
     ):
         raise SyncError(f"Unsafe {kind} name {name!r} in {source}")
+
+
+def _validate_repo_id(repo: str, source: Path) -> None:
+    """Reject repository identifiers that are not an exact ``owner/repo`` pair."""
+
+    if not isinstance(repo, str) or not REPO_ID_PATTERN.fullmatch(repo):
+        raise SyncError(
+            f"Unsafe repository identifier {repo!r} in {source}; expected 'owner/repo'"
+        )
 
 
 def _validate_skill_name(name: str, source: Path) -> None:
@@ -203,11 +217,113 @@ def _resolve_distribution_skill(source_root: Path, name: str, relative_path: str
     return candidate
 
 
+def validate_repo_targets(
+    distribution: dict,
+    source: Path,
+    source_root: Path,
+    repo_root: Path,
+    lane_names: set[str],
+) -> dict[str, dict]:
+    """Validate the optional ``repo_targets`` repository axis.
+
+    The repo axis routes a skill (and any MCP templates it needs) only into the
+    repositories that own the environment the skill operates, instead of
+    broadcasting it to every consumer. A skill listed here may either inherit
+    its path from the shared/consumer lanes or declare its own ``path`` in a
+    dedicated repo-only package outside the shared auto-discovery tree.
+
+    Returns a map of skill name to ``{"path": str | None, "repos": tuple,
+    "mcp": tuple}``. A ``None`` path means the skill inherits its lane path.
+    """
+
+    repo_targets = distribution.get("repo_targets", {})
+    if not isinstance(repo_targets, dict):
+        raise SyncError(f"Distribution repo_targets must be an object: {source}")
+
+    validated: dict[str, dict] = {}
+    for skill_name, entry in repo_targets.items():
+        _validate_skill_name(skill_name, source)
+        if not isinstance(entry, dict):
+            raise SyncError(f"repo_targets entry for {skill_name!r} must be an object: {source}")
+        description = entry.get("description")
+        if not isinstance(description, str) or not description.strip():
+            raise SyncError(f"repo_targets entry for {skill_name!r} has no description: {source}")
+
+        relative_path = entry.get("path")
+        if skill_name in lane_names:
+            if relative_path is not None:
+                raise SyncError(
+                    f"repo_targets entry for {skill_name!r} must not carry a path; "
+                    f"it inherits its shared/consumer lane path: {source}"
+                )
+        else:
+            if not isinstance(relative_path, str) or not relative_path:
+                raise SyncError(
+                    f"repo_targets entry for {skill_name!r} is not in any "
+                    f"shared/consumer lane, so it must declare a path in a dedicated "
+                    f"repo-only package: {source}"
+                )
+            parts = Path(relative_path).parts
+            if (
+                len(parts) < 3
+                or parts[0] == "frozen-skills"
+                or parts[1] != "skills"
+                or ".." in parts
+            ):
+                raise SyncError(
+                    f"repo_targets skill {skill_name!r} must live in a dedicated "
+                    f"repo-only package (<package>/skills/{skill_name}), not in the "
+                    f"shared auto-discovery tree: {source}"
+                )
+            _resolve_distribution_skill(source_root, skill_name, Path(relative_path).as_posix())
+
+        repos = entry.get("repos")
+        if not isinstance(repos, list) or not repos:
+            raise SyncError(f"repo_targets entry for {skill_name!r} has no repos: {source}")
+        seen_repos: set[str] = set()
+        for repo in repos:
+            _validate_repo_id(repo, source)
+            if repo in seen_repos:
+                raise SyncError(
+                    f"repo_targets entry for {skill_name!r} duplicates repo {repo!r}: {source}"
+                )
+            seen_repos.add(repo)
+
+        mcp = entry.get("mcp", [])
+        if not isinstance(mcp, list):
+            raise SyncError(f"repo_targets entry for {skill_name!r} mcp must be a list: {source}")
+        seen_mcp: set[str] = set()
+        for template in mcp:
+            _validate_safe_name(template, "MCP template", source)
+            if template in seen_mcp:
+                raise SyncError(
+                    f"repo_targets entry for {skill_name!r} duplicates MCP template "
+                    f"{template!r}: {source}"
+                )
+            seen_mcp.add(template)
+            template_path = repo_root / MCP_TEMPLATES_ROOT / f"{template}.json"
+            if not template_path.is_file():
+                raise SyncError(
+                    f"repo_targets entry for {skill_name!r} names MCP template "
+                    f"{template!r} but {template_path} does not exist"
+                )
+            _load_json(template_path)
+
+        validated[skill_name] = {
+            "description": description,
+            "path": Path(relative_path).as_posix() if relative_path else None,
+            "repos": tuple(repos),
+            "mcp": tuple(mcp),
+        }
+    return validated
+
+
 def validate_deployments(
     distribution: dict,
     source: Path,
     shared_names: set[str],
     available_by_consumer: dict[str, set[str]],
+    repo_targets: dict[str, dict] | None = None,
 ) -> dict[str, dict]:
     """Validate the optional deployment subsets against the active distribution.
 
@@ -216,8 +332,13 @@ def validate_deployments(
     runtime deployment omits ``consumer`` because it is not a Claude/Codex/
     Cursor/Gemini client at all, and may therefore select only shared skills:
     it has no client packaging format to render a restricted package into.
+
+    A runtime deployment may additionally name the ``repo`` whose environment it
+    operates (for example the homelab repository for a homelab runtime); it may
+    then also select repo-targeted skills aimed at that repository.
     """
 
+    repo_targets = repo_targets or {}
     deployments = distribution.get("deployments", {})
     if not isinstance(deployments, dict):
         raise SyncError(f"Distribution deployments must be an object: {source}")
@@ -237,6 +358,9 @@ def validate_deployments(
                 f"{sorted(available_by_consumer)}, or omit 'consumer' entirely for "
                 f"a non-client runtime that receives only shared skills: {source}"
             )
+        deployment_repo = entry.get("repo")
+        if deployment_repo is not None:
+            _validate_repo_id(deployment_repo, source)
         names = entry.get("skills")
         if not isinstance(names, list) or not names:
             raise SyncError(f"Deployment {name!r} has no skills: {source}")
@@ -245,6 +369,13 @@ def validate_deployments(
             if deployment_consumer is None
             else available_by_consumer[deployment_consumer]
         )
+        if deployment_repo is not None:
+            repo_selectable = {
+                skill
+                for skill, target in repo_targets.items()
+                if deployment_repo in target["repos"]
+            }
+            available = available | repo_selectable
         selected: list[str] = []
         for skill_name in names:
             _validate_safe_name(skill_name, "skill", source)
@@ -257,7 +388,8 @@ def validate_deployments(
                     raise SyncError(
                         f"Deployment {name!r} declares no consumer, so it may only "
                         f"select shared skills; {skill_name!r} is a consumer-restricted "
-                        f"package or is not in the distribution: {source}"
+                        f"package, a repo-targeted skill this deployment's repo does "
+                        f"not operate, or is not in the distribution: {source}"
                     )
                 raise SyncError(
                     f"Deployment {name!r} skill {skill_name!r} is not active for "
@@ -267,23 +399,36 @@ def validate_deployments(
         validated[name] = {
             "description": description,
             "consumer": deployment_consumer,
+            "repo": deployment_repo,
             "skills": tuple(selected),
         }
     return validated
 
 
 def load_distribution(
-    repo_root: Path, consumer: str | None = None, *, deployment: str | None = None
-) -> tuple[Path, str, str | None, tuple[SkillSource, ...]]:
-    """Validate all manifests and load one consumer or deployment's distribution.
+    repo_root: Path,
+    consumer: str | None = None,
+    *,
+    deployment: str | None = None,
+    repo: str | None = None,
+) -> tuple[Path, str, str | None, str | None, tuple[SkillSource, ...], tuple[str, ...]]:
+    """Validate all manifests and load one consumer, deployment, or repo distribution.
 
     The returned consumer is the one actually selected. It is ``None`` only for
     a runtime deployment, which declares no consumer and receives shared skills
-    exclusively.
+    (plus repo-targeted skills when the deployment declares the repo it operates).
+
+    The returned repo is the selected repository target for a ``--repo`` run.
+    The final tuple is the merged MCP template names the selection requires.
     """
 
     if consumer is not None and consumer not in MANIFEST_PATHS:
         raise SyncError(f"Unknown skill consumer: {consumer!r}")
+    if repo is not None and (consumer is not None or deployment is not None):
+        raise SyncError(
+            "--repo selects a repository's targeted skills on its own; do not "
+            "combine it with --consumer or --deployment"
+        )
 
     source_root = (repo_root / "plugins").resolve()
     plugin_root = source_root / "frozen-skills"
@@ -393,6 +538,12 @@ def load_distribution(
         _resolve_distribution_skill(source_root, name, relative_path)
 
     shared_names = {name for name, _path in shared_skills}
+    lane_names = shared_names | {
+        name for entries in consumer_skills.values() for name, _path in entries
+    }
+    repo_targets = validate_repo_targets(
+        distribution, distribution_path, source_root, repo_root, lane_names
+    )
     deployments = validate_deployments(
         distribution,
         distribution_path,
@@ -401,6 +552,7 @@ def load_distribution(
             manifest_consumer: shared_names | {name for name, _path in entries}
             for manifest_consumer, entries in consumer_skills.items()
         },
+        repo_targets,
     )
 
     if deployment is not None:
@@ -420,14 +572,32 @@ def load_distribution(
                 "a deployment already selects its own consumer"
             )
         consumer = deployment_consumer
-    elif consumer is None:
-        raise SyncError("A consumer or a deployment must be selected")
+    elif consumer is None and repo is None:
+        raise SyncError("A consumer, a deployment, or a repo must be selected")
 
-    if deployment is not None:
+    if repo is not None:
+        _validate_repo_id(repo, distribution_path)
+        selected_names = [
+            name for name, target in repo_targets.items() if repo in target["repos"]
+        ]
+        if not selected_names:
+            raise SyncError(
+                f"No repo_targets skills name repository {repo!r} in "
+                f"{distribution_path}; nothing to synchronize"
+            )
+        lane_paths = dict(all_distribution_entries)
+        selected_skills = tuple(
+            (name, repo_targets[name]["path"] or lane_paths[name])
+            for name in selected_names
+        )
+    elif deployment is not None:
         available_skills = (
             shared_skills if consumer is None else shared_skills + consumer_skills[consumer]
         )
-        path_by_name = dict(available_skills)
+        path_by_name = dict(all_distribution_entries) | dict(available_skills)
+        for name, target in repo_targets.items():
+            if target["path"] is not None:
+                path_by_name.setdefault(name, target["path"])
         selected_skills = tuple(
             (name, path_by_name[name]) for name in deployments[deployment]["skills"]
         )
@@ -439,10 +609,33 @@ def load_distribution(
         candidate = _resolve_distribution_skill(source_root, name, relative_path)
         sources.append(SkillSource(name, candidate, digest_directory(candidate)))
 
-    return source_root, version, consumer, tuple(sources)
+    selected_mcp: tuple[str, ...] = ()
+    if repo is not None:
+        selected_mcp = tuple(
+            dict.fromkeys(
+                template
+                for name in selected_names
+                for template in repo_targets[name]["mcp"]
+            )
+        )
+    elif deployment is not None:
+        deployment_repo = deployments[deployment].get("repo")
+        if deployment_repo is not None:
+            selected_mcp = tuple(
+                dict.fromkeys(
+                    template
+                    for name in deployments[deployment]["skills"]
+                    if name in repo_targets
+                    for template in repo_targets[name]["mcp"]
+                )
+            )
+
+    return source_root, version, consumer, repo, tuple(sources), selected_mcp
 
 
-def _empty_state(consumer: str | None, deployment: str | None = None) -> dict:
+def _empty_state(
+    consumer: str | None, deployment: str | None = None, repo: str | None = None
+) -> dict:
     """Return a new empty synchronization management record."""
 
     state = {
@@ -454,33 +647,54 @@ def _empty_state(consumer: str | None, deployment: str | None = None) -> dict:
         state["consumer"] = consumer
     if deployment is not None:
         state["deployment"] = deployment
+    if repo is not None:
+        state["repo"] = repo
     return state
 
 
-def _owner_label(deployment: str | None) -> str:
+def _owner_label(deployment: str | None, repo: str | None = None) -> str:
     """Describe which distribution scope owns a destination."""
 
+    if repo is not None:
+        return f"repo {repo!r}"
     if deployment is None:
         return "the full consumer distribution"
     return f"deployment {deployment!r}"
 
 
 def load_state(
-    destination: Path, consumer: str | None, deployment: str | None = None
+    destination: Path,
+    consumer: str | None,
+    deployment: str | None = None,
+    repo: str | None = None,
 ) -> dict:
     """Load and validate the destination's management record."""
 
     path = destination / STATE_FILE
     if not path.exists():
-        return _empty_state(consumer, deployment)
+        return _empty_state(consumer, deployment, repo)
     data = _load_json(path)
     if data.get("schema") != STATE_SCHEMA or data.get("plugin") != "frozen-skills":
         raise SyncError(
             f"Unsupported or unrelated sync state: {path}; use a fresh consumer-specific "
             "destination or migrate the state deliberately"
         )
+    state_repo = data.get("repo")
+    if state_repo is not None:
+        _validate_repo_id(state_repo, path)
     state_consumer = data.get("consumer")
-    if state_consumer != consumer:
+    if repo is not None:
+        if state_repo != repo or state_consumer is not None:
+            raise SyncError(
+                f"Destination is managed for {_owner_label(None, state_repo) if state_repo else f'consumer {state_consumer!r}'}, "
+                f"not repo {repo!r}: {path}"
+            )
+    elif state_repo is not None:
+        raise SyncError(
+            f"Destination is managed for repo {state_repo!r}, not "
+            f"{_owner_label(deployment)}: {path}"
+        )
+    elif state_consumer != consumer:
         raise SyncError(
             f"Destination is managed for consumer {state_consumer!r}, not "
             f"{consumer!r}: {path}"
@@ -504,6 +718,12 @@ def load_state(
             str(entry.get("digest", ""))
         ):
             raise SyncError(f"Invalid digest for skill {name!r} in {path}")
+    state_mcp = data.get("mcp")
+    if state_mcp is not None and (
+        not isinstance(state_mcp, dict)
+        or not DIGEST_PATTERN.fullmatch(str(state_mcp.get("digest", "")))
+    ):
+        raise SyncError(f"Invalid mcp state in {path}")
     return data
 
 
@@ -608,7 +828,7 @@ def plan_sync(
                 )
 
     if exact and destination.is_dir():
-        known_names = active_names | set(recorded) | {STATE_FILE}
+        known_names = active_names | set(recorded) | {STATE_FILE, MCP_ARTIFACT_NAME}
         for entry in sorted(destination.iterdir(), key=lambda item: item.name):
             if entry.name not in known_names:
                 actions.append(
@@ -691,6 +911,53 @@ def _write_state(destination: Path, state: dict) -> None:
             staged.unlink()
 
 
+def _write_json_atomic(path: Path, document: dict) -> None:
+    """Atomically write one JSON document with deterministic formatting."""
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    staged = path.parent / f".{path.name}.{uuid.uuid4().hex}.tmp"
+    try:
+        with staged.open("w", encoding="utf-8", newline="\n") as handle:
+            json.dump(document, handle, indent=2, sort_keys=True)
+            handle.write("\n")
+        os.replace(staged, path)
+    finally:
+        if staged.exists():
+            staged.unlink()
+
+
+def _mcp_document(repo_root: Path, template_names: tuple[str, ...]) -> dict:
+    """Merge named mcp/<name>.json templates into one mcpServers document."""
+
+    servers: dict = {}
+    for name in template_names:
+        template = _load_json(repo_root / MCP_TEMPLATES_ROOT / f"{name}.json")
+        servers.update(template.get("mcpServers", {}))
+    return {"mcpServers": servers}
+
+
+def _canonical_digest(document: dict) -> str:
+    """Digest a JSON document in canonical form for drift comparison."""
+
+    canonical = json.dumps(document, sort_keys=True, separators=(",", ":"))
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
+
+
+def _mcp_artifact_digest(path: Path) -> str | None:
+    """Digest an existing MCP artifact's parsed content, or None when absent."""
+
+    if not path.exists():
+        return None
+    if not path.is_file():
+        raise SyncError(f"MCP artifact destination is not a file: {path}")
+    try:
+        document = _load_json(path)
+    except SyncError:
+        # Unparseable project content is a conflict, not a digest.
+        return "unparseable"
+    return _canonical_digest(document)
+
+
 def sync(
     repo_root: Path,
     destination: Path,
@@ -700,8 +967,9 @@ def sync(
     prune: bool,
     force: bool,
     deployment: str | None = None,
+    repo: str | None = None,
 ) -> SyncResult:
-    """Check or apply one consumer or deployment distribution to one skill root."""
+    """Check or apply one consumer, deployment, or repo distribution to one skill root."""
 
     repo_root = repo_root.resolve()
     destination = destination.resolve()
@@ -711,10 +979,10 @@ def sync(
             "Deployment synchronization requires --prune so the destination "
             "converges to the exact deployment"
         )
-    source_root, version, consumer, sources = load_distribution(
-        repo_root, consumer, deployment=deployment
+    source_root, version, consumer, repo, sources, mcp_templates = load_distribution(
+        repo_root, consumer, deployment=deployment, repo=repo
     )
-    state = load_state(destination, consumer, deployment)
+    state = load_state(destination, consumer, deployment, repo)
     actions = list(
         plan_sync(
             sources,
@@ -733,6 +1001,58 @@ def sync(
                 "management record plugin version differs",
             )
         )
+
+    mcp_document = (
+        _mcp_document(repo_root, mcp_templates) if mcp_templates else None
+    )
+    mcp_target = destination / MCP_ARTIFACT_NAME
+    mcp_digest = _canonical_digest(mcp_document) if mcp_document is not None else None
+    recorded_mcp = state.get("mcp")
+    recorded_mcp_digest = (
+        recorded_mcp.get("digest") if isinstance(recorded_mcp, dict) else None
+    )
+    current_mcp_digest = _mcp_artifact_digest(mcp_target)
+    if mcp_digest is not None:
+        if current_mcp_digest == mcp_digest:
+            mcp_kind = "current" if recorded_mcp_digest == mcp_digest else "adopt"
+            mcp_detail = "MCP artifact already matches reviewed templates"
+        elif current_mcp_digest is None:
+            mcp_kind = "install"
+            mcp_detail = "MCP artifact is missing"
+        elif recorded_mcp_digest and current_mcp_digest == recorded_mcp_digest:
+            mcp_kind = "update"
+            mcp_detail = "managed MCP artifact differs from reviewed templates"
+        elif force:
+            mcp_kind = "update"
+            mcp_detail = "overwrite locally modified MCP artifact (--force)"
+        else:
+            mcp_kind = "conflict"
+            mcp_detail = "MCP artifact has locally modified or unmanaged content"
+        actions.append(Action(mcp_kind, MCP_ARTIFACT_NAME, mcp_detail, current_mcp_digest))
+    elif recorded_mcp_digest and prune:
+        if current_mcp_digest is None:
+            actions.append(
+                Action("forget", MCP_ARTIFACT_NAME, "managed MCP artifact is already absent", None)
+            )
+        elif current_mcp_digest == recorded_mcp_digest or force:
+            actions.append(
+                Action(
+                    "remove",
+                    MCP_ARTIFACT_NAME,
+                    "no MCP templates are targeted at this selection",
+                    current_mcp_digest,
+                )
+            )
+        else:
+            actions.append(
+                Action(
+                    "conflict",
+                    MCP_ARTIFACT_NAME,
+                    "retired managed MCP artifact has local modifications",
+                    current_mcp_digest,
+                )
+            )
+
     result = SyncResult(tuple(actions))
 
     if not apply or result.conflicts:
@@ -741,6 +1061,13 @@ def sync(
     source_by_name = {source.name: source for source in sources}
     for action in actions:
         if action.kind == "state":
+            continue
+        if action.name == MCP_ARTIFACT_NAME:
+            if action.kind in {"install", "update", "adopt"}:
+                if mcp_document is not None and action.kind != "adopt":
+                    _write_json_atomic(mcp_target, mcp_document)
+            elif action.kind == "remove":
+                _remove_path(mcp_target)
             continue
         target = destination / action.name
         if action.kind in {"install", "update"}:
@@ -846,6 +1173,10 @@ def sync(
         next_state["consumer"] = consumer
     if deployment is not None:
         next_state["deployment"] = deployment
+    if repo is not None:
+        next_state["repo"] = repo
+    if mcp_digest is not None:
+        next_state["mcp"] = {"digest": mcp_digest}
     _write_state(destination, next_state)
     return result
 
@@ -897,6 +1228,14 @@ def build_parser() -> argparse.ArgumentParser:
         ),
     )
     parser.add_argument(
+        "--repo",
+        help=(
+            "repository identifier (owner/repo) whose repo_targets skills and MCP "
+            "templates should be synchronized into a project skill root; requires "
+            "explicit --destination and does not combine with --consumer/--deployment"
+        ),
+    )
+    parser.add_argument(
         "--destination",
         type=_expanded_path,
         help=(
@@ -931,7 +1270,19 @@ def main(argv: list[str] | None = None) -> int:
 
     args = build_parser().parse_args(argv)
     try:
-        if args.deployment is not None:
+        if args.repo is not None:
+            if args.consumer is not None or args.deployment is not None:
+                raise SyncError(
+                    "--repo does not combine with --consumer or --deployment; a "
+                    "repository sync selects its own targeted skill set"
+                )
+            if args.destination is None:
+                raise SyncError(
+                    "--repo requires an explicit --destination (the project's skill "
+                    "root); there is no default repository destination"
+                )
+            destination = args.destination
+        elif args.deployment is not None:
             if args.destination is None:
                 raise SyncError(
                     "--deployment requires an explicit --destination; there is no "
@@ -944,7 +1295,7 @@ def main(argv: list[str] | None = None) -> int:
                 )
             destination = args.destination
         elif args.consumer is None:
-            raise SyncError("One of --consumer or --deployment is required")
+            raise SyncError("One of --consumer, --deployment, or --repo is required")
         else:
             destination = resolve_destination(args.consumer, args.destination)
         result = sync(
@@ -955,6 +1306,7 @@ def main(argv: list[str] | None = None) -> int:
             prune=args.prune,
             force=args.force,
             deployment=args.deployment,
+            repo=args.repo,
         )
     except SyncError as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
@@ -973,6 +1325,8 @@ def main(argv: list[str] | None = None) -> int:
         selection = (
             f"deployment {args.deployment}"
             if args.deployment is not None
+            else f"repo {args.repo} skills"
+            if args.repo is not None
             else f"{args.consumer} skills"
         )
         print(f"Synchronized {selection} into {destination.resolve()}")

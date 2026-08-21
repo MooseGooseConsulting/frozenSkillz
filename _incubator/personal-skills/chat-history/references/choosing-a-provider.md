@@ -1,7 +1,10 @@
 # Choosing between KCap and AgentsView
 
 Distilled from the 2026-08-15 capability research (KCAP v0.11.20 vs AgentsView v0.40.1). Full
-analysis: `docs/skill-corpus-analysis/kcap-vs-agentsview-research.md`.
+analysis: `docs/skill-corpus-analysis/kcap-vs-agentsview-research.md` in the `frozenSkillz` repo.
+That path only resolves when the current working tree is that checkout; when this skill runs
+against a different project, treat this file as the complete reference instead of following the
+link.
 
 ## Start with AgentsView when
 
@@ -11,8 +14,10 @@ analysis: `docs/skill-corpus-analysis/kcap-vs-agentsview-research.md`.
   token usage — stored locally and queryable with FTS5/semantic/hybrid search or SQL.
 - The task needs telemetry: health grades, outcome classification, tool-failure/edit-churn
   signals, usage/cost accounting, or secret-findings data. All computed locally at zero LLM cost.
-- Data must stay local. AgentsView is SQLite + your own optional Postgres; KCap sessions live on
-  the Kurrent server.
+- Data must stay local. AgentsView's own store is SQLite; KCap sessions live on the Kurrent
+  server regardless of configuration. This only holds for AgentsView when its optional Postgres
+  sync is not configured or is disabled — when sync is active, treat it as data ownership
+  (you control the remote), not strict locality.
 
 ## Start with KCap when
 
@@ -27,9 +32,13 @@ analysis: `docs/skill-corpus-analysis/kcap-vs-agentsview-research.md`.
 - **AgentsView recall** (`query_recall`, `recall query`): the recall infrastructure exists (20
   tables, evidence-linked) but is EMPTY — 0 entries. Use recall only as a lead check, never as a
   primary surface, until extraction has been run.
-- **KCap workitems and analytics MCP families**: plan-gated on the current plan (HTTP 403
-  `work_items_not_in_plan` / `analytics_not_in_plan`). Probe once per environment; on 403, fall
-  back to AgentsView usage/health surfaces.
+- **KCap analytics MCP family**: plan-gated on the current plan (HTTP 403 `analytics_not_in_plan`).
+  Probe once per environment; on 403, fall back to AgentsView usage/health surfaces.
+- **KCap workitems MCP family**: plan-gated on the current plan (HTTP 403
+  `work_items_not_in_plan`). This is orchestration, not history retrieval, so it is out of scope
+  for `chat-history` regardless (see below) — but note AgentsView has no fallback for it either;
+  AgentsView does not model work items. On 403, report the capability as unavailable rather than
+  substituting AgentsView usage/health telemetry.
 - **KCap for non-Claude sessions** unless an import is known to have covered them.
 
 ## Unique-but-out-of-scope KCap surfaces

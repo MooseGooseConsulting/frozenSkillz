@@ -10,9 +10,9 @@ reference; operational procedures stay in `kurrent-capacitor.md` and `agentsview
 
 | Metric | KCAP | AgentsView |
 |---|---|---|
-| Agents supported | Claude Code only | 12 (Claude, Codex, OpenCode, Cursor, Kimi, Antigravity, Kilo, Cowork, VS Code Copilot, Gemini, Amp, Copilot) |
+| Agents supported | Claude Code only | 12 (Claude, Codex, OpenCode, Cursor, Kimi, Antigravity, Kilo, Cowork, VS Code Copilot extension, Gemini, Amp, Copilot CLI) |
 | Sessions recorded | server-side, count unknown locally | 9,356 local + Postgres archive |
-| Messages stored | server-side summaries and turn access | 538,636 with full content, thinking text, token usage |
+| Messages stored | server-side; summary, turn, and on-demand full-transcript access | 538,636 with full content, thinking text, token usage |
 | Tool calls tracked | not exposed per-call | 531,644 with category, input/output, file path, skill, subagent link |
 | Secret findings | none | 216 across 9 rule types |
 | Usage events | plan-gated analytics | 13,908 with per-model token breakdowns |
@@ -23,8 +23,9 @@ reference; operational procedures stay in `kurrent-capacitor.md` and `agentsview
 
 ### KCAP
 
-Hooks-based Claude Code plugin. Registers 8 hook events (SessionStart ×2, SessionEnd, SubagentStart,
-SubagentStop, Notification, Stop, PermissionRequest, UserPromptSubmit) and 6 MCP server families
+Hooks-based Claude Code plugin. Registers 9 hook registrations across 8 event types (SessionStart
+×2, SessionEnd, SubagentStart, SubagentStop, Notification, Stop, PermissionRequest,
+UserPromptSubmit) and 6 MCP server families
 (sessions, review, memory, flows, workitems, analytics). The `kcap.exe` binary handles both hooks
 and MCP stdio transport. Data lives on the Kurrent server; the local binary is a client.
 
@@ -52,19 +53,25 @@ tools (`search_sessions`, `get_session_summary`, `list_turns`, `get_turn`,
 message with full content, thinking text, and token counts. AgentsView stores locally; KCAP stores
 remotely.
 
-AgentsView's message-level storage means you have the complete transcript, not a server-side
-summary. KCAP's natural-language search is convenient but AgentsView's FTS5 and semantic/hybrid
-search cover the same retrieval need, plus you can run arbitrary SQL against the normalized schema.
+Both can retrieve the complete transcript, not just a summary: KCAP's `get_session_transcript` MCP
+tool and `kcap recap --full <session-id>` CLI form pull the whole conversation from the server on
+demand. The real difference is locality and ownership — AgentsView's copy is already local SQLite
+you can query with FTS5, semantic/hybrid search, or arbitrary SQL; KCAP's full transcript is a
+per-request server fetch, not a standing local copy.
 
-**Edge: AgentsView** for data completeness and local ownership. **Edge: KCAP** for natural-language
+**Edge: AgentsView** for local ownership and ad hoc SQL access. **Edge: KCAP** for natural-language
 convenience out of the box.
 
 ### Multi-agent support
 
 AgentsView tracks 12 agent types natively: Claude (2,383 sessions), Codex (3,028), OpenCode
 (1,412), Cursor (500), Kimi (462), Antigravity (429), Kilo (424), Cowork (332), VS Code Copilot
-(215), Gemini (163), Amp (6), Copilot (2). KCAP records Claude Code natively and can import
-Claude, Codex, Cursor, Copilot, Gemini, Kiro, Pi, OpenCode, and Antigravity via `kcap import`.
+extension (215), Gemini (163), Amp (6), Copilot CLI (2). "VS Code Copilot" and "Copilot" are
+distinct agent sources in AgentsView's own schema (`vscode-copilot` vs `copilot`, confirmed against
+a live `sessions.db`), not a duplicate listing — AgentsView also tracks a third, currently-empty
+`visualstudio-copilot` source for the separate Visual Studio extension. KCAP records Claude Code
+natively and can import Claude, Codex, Cursor, Copilot, Gemini, Kiro, Pi, OpenCode, and Antigravity
+via `kcap import`.
 
 The difference: AgentsView normalizes all agents into one schema automatically. KCAP imports are a
 manual step and the imported sessions live on the Kurrent server.
@@ -123,8 +130,10 @@ AgentsView has a full recall infrastructure (20 tables) covering: entries with
 type/scope/status/review state/confidence/uncertainty, evidence linking to transcript spans with
 ordinal precision, FTS5 and embedding-backed search, extraction generations with model/segmenter
 versioning, provenance chains, supersession tracking, and transferability flags. The schema is
-more sophisticated than KCAP's flat memory model. However, **it is currently empty** — 0 recall
-entries, 0 evidence records, 0 extract generations. The infrastructure exists but is not wired up.
+more sophisticated than KCAP's flat memory model. However, **it is currently empty on this
+machine** — 0 recall entries, 0 evidence records, 0 extract generations. `recall extract`/`import`
+(`agentsview.md`) are documented commands that populate it; the gap observed here is that
+extraction has not been run, not that the infrastructure is unavailable.
 
 **Edge: KCAP** today, because its memory actually has content and injects at session start.
 **Architecturally: AgentsView** is more capable once activated.
@@ -245,6 +254,10 @@ For session recording, retrieval, quality analysis, cost tracking, secret detect
 coverage, and data ownership, AgentsView is equal or ahead. The recall infrastructure in AgentsView
 is architecturally more sophisticated than KCAP's memory system but is not yet activated.
 
-For the chat-history skill specifically: use KCAP for PR-linked context and repository-scoped
-session search. Use AgentsView for everything else — it has 12× the agent coverage, local data
-sovereignty, full-text search across all messages, and built-in quality signals at zero LLM cost.
+This is capability rationale, not routing instructions — it does not override the `chat-history`
+skill's routing tree (`SKILL.md`), which also sends continuation-centered lookups and
+repository-anchored retrospectives to KCAP first. Within that tree, KCAP is strongest for
+PR-linked context, repository-scoped session search, and continuation-centered discovery.
+AgentsView is strongest for the rest: broad cross-harness, cross-machine, message-level, usage, and
+health retrieval — it has 12× the agent coverage, local data sovereignty, full-text search across
+all messages, and built-in quality signals at zero LLM cost.

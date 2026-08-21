@@ -24,6 +24,16 @@ class SyncFrozenTests(unittest.TestCase):
     ):
         alternate = Path("alternate-codex-home")
 
+        # Attach both mocks to one manager so we can assert the *combined*
+        # call order across collaborators, not just each mock's own order.
+        # Per-mock call_args_list assertions alone would still pass for an
+        # implementation that ran skills.check, skills.apply, config.check,
+        # config.apply -- which violates the "both preflights precede either
+        # apply" contract this test is named for.
+        manager = mock.Mock()
+        manager.attach_mock(skills_main, "skills_main")
+        manager.attach_mock(config_main, "config_main")
+
         result = sync_module.main(
             ["--consumer", "codex", "--apply", "--codex-home", str(alternate)]
         )
@@ -31,7 +41,7 @@ class SyncFrozenTests(unittest.TestCase):
         self.assertEqual(0, result)
         self.assertEqual(
             [
-                mock.call(
+                mock.call.skills_main(
                     [
                         "--check",
                         "--consumer",
@@ -40,7 +50,8 @@ class SyncFrozenTests(unittest.TestCase):
                         str(alternate / "skills"),
                     ]
                 ),
-                mock.call(
+                mock.call.config_main(["--check", "--codex-home", str(alternate)]),
+                mock.call.skills_main(
                     [
                         "--apply",
                         "--consumer",
@@ -49,15 +60,9 @@ class SyncFrozenTests(unittest.TestCase):
                         str(alternate / "skills"),
                     ]
                 ),
+                mock.call.config_main(["--apply", "--codex-home", str(alternate)]),
             ],
-            skills_main.call_args_list,
-        )
-        self.assertEqual(
-            [
-                mock.call(["--check", "--codex-home", str(alternate)]),
-                mock.call(["--apply", "--codex-home", str(alternate)]),
-            ],
-            config_main.call_args_list,
+            manager.mock_calls,
         )
 
     @mock.patch.object(sync_module.sync_codex_global_config, "main", return_value=0)

@@ -4,7 +4,7 @@
 
 It is aspirational and operational. It says how the app is being put together and structured: what it is built in; what sidecars, services, stores, queues, or integrations are involved; what the approach is; what the key differentiator is; what is current, planned, candidate, and deferred; and where deeper technical details live.
 
-The real problem with this document is not aspiration. The problem is **unlabeled aspiration**.
+The real problem with this document is not aspiration. The problem is **unlabeled aspiration** — and its quieter twin, **unlabeled choice**.
 
 ---
 
@@ -13,6 +13,12 @@ The real problem with this document is not aspiration. The problem is **unlabele
 > architecture.md may describe where we are going, but it must not let the agent confuse where we are going with what already exists.
 
 Every forward-looking claim wears a status label. The labels are the seam between strategy and code.
+
+## The Modality Principle
+
+> architecture.md may record what was chosen, but it must not let the agent confuse what was chosen with what was required.
+
+Every "must" wears a source; every choice names its alternative; anything else is marked unknown and routed. Status labels keep *shipped* apart from *proposed*; modality keeps *required* apart from *chosen*. Two axes, same claims. The full procedure — vocabulary, the test, the three exits, the audit — is `requirements-vs-conventions.md`.
 
 ---
 
@@ -27,7 +33,7 @@ Every forward-looking claim wears a status label. The labels are the seam betwee
 - runtime / deployment model
 - sidecars, services, queues, stores, integrations
 - technical differentiators
-- architectural constraints and invariants
+- architectural constraints (each with its source), conventions (each with its alternative), and invariants
 - links to ADRs and detailed component docs
 
 `architecture.md` does not own:
@@ -54,6 +60,7 @@ When component detail bloats architecture.md, move it to `docs/components/` or a
 | Target Architecture | When the project has a deliberate target shape that differs from current. | If current == target, the Current Architecture section suffices. |
 | Current Architecture | Always once code exists. | Pre-implementation projects can defer. |
 | Major Components (table) | When the project has more than two named components. | Single-component projects skip. |
+| Constraints and Conventions | As soon as the doc contains a "must" or a "we always." Requirements with sources; conventions with alternatives. | A doc with no modal claims yet. Do not pad it — an empty section is honest. |
 | Architectural Invariants | When the project has rules that hold across all components. | Early projects without earned invariants leave the section empty until experience produces them. |
 | ADR Index | When `docs/decisions/` has ADRs. | If no ADRs exist yet, the section appears when the first one is written. |
 | Open Architecture Questions | When undecided choices affect downstream work. | If everything is decided, the section is empty. |
@@ -119,9 +126,35 @@ When the project has named components (modules, services, subsystems), enumerate
 
 ---
 
+## Constraints and Conventions
+
+Two short lists, kept apart on purpose. This is arc42's constraints-vs-decisions split at sentence granularity.
+
+**Constraints** — requirements imposed from outside the repo's own precedent. One line each, with the source inline or one link away:
+
+- (rule) — required: (API/schema limit · hardware fact · owner instruction, dated · policy · incident · upstream contract)
+
+**Conventions** — practices this project chose. One line each, with the alternative not taken and, if known, the reason or a decision link:
+
+- (practice) — chosen; alternative: (…); because (…) / reason not recorded — see (decision)
+
+### Rules
+
+- **The test is "what breaks if we don't?"** Something breaks or someone with authority objects → constraint, name it. Nothing breaks → convention, name the alternative. Cannot tell → mark it unknown and take an exit (record · counterexample · ask). See `requirements-vs-conventions.md`.
+- **Never fuse a fact to a choice with "so."** "The API cannot declare X, *so* the template supplies it" is a true sentence that will be read as a law. Split it: the fact with its source, the choice with its alternative.
+- **A convention promoted by the owner is a constraint** — and the owner (dated) is its source. Promotion is legal; silent promotion by a reader is not.
+- **"Alternative: none considered" is a valid entry.** Record the road not taken; do not manufacture one.
+- **Do not strip modality words to dodge the rule.** A doc with no "must" has hidden its requirements, not resolved them.
+
+### Failure mode
+
+The laundered convention. A past choice is written as a fact ("extra disks are template inputs"), a later agent reads it as a requirement, designs the next system around it, and — when challenged — invents a reason for it. Nothing broke; it just would have been different. The fix is three parentheticals, not a rewrite.
+
+---
+
 ## Architectural Invariants
 
-These are the rules the agent enforces when touching the system. Invariants are stronger than working rules: violating an invariant is a structural problem, not a style problem.
+These are the rules the agent enforces when touching the system. Invariants are stronger than working rules: violating an invariant is a structural problem, not a style problem. An invariant is a *self-imposed* requirement — the owner is the authority and the named failure mode is the reason — so it obeys the same modality rule as everything else.
 
 ### Rules
 
@@ -173,6 +206,7 @@ When reviewing architecture.md, check four lanes separately:
 | **Target** | What are we intentionally building toward? Are the labels right? |
 | **Candidate** | What is under consideration but not decided? Is the rationale captured? |
 | **Deferred / rejected** | What are we intentionally not doing now? Is the reason recorded? |
+| **Modality** | Of everything stated as a "must": which are required (source?) and which are chosen (alternative?)? Run the audit pass in `requirements-vs-conventions.md`. |
 
 ---
 
@@ -182,6 +216,9 @@ When reviewing, flag:
 
 - planned architecture written as if already implemented
 - candidate approach written as if accepted
+- a "must" with no source, or a convention written as a must (laundered convention)
+- a fact fused to a choice with "so / therefore" and no alternative named
+- a rationale with no owner phrasing, link, or record behind it (fabricated source)
 - current implementation missing from the system map
 - technical differentiator described only in product language
 - ADR-level decision buried in prose without a decision record
@@ -200,6 +237,7 @@ When reviewing, flag:
 | Architecture Thesis | "Does this PR contradict the project's technical thesis?" | Surface; the thesis may need revision in NORTH_STAR.md first. |
 | Status Legend | "Are status labels preserved in this PR?" | Hard-block on PRs that remove or change labels without rationale. |
 | System Shape / Components | "Does this PR add a Current item that was previously Planned, or break a Current item back to Planned?" | Update the status label in the same PR. |
+| Constraints and Conventions | "Does this PR add a 'must' without a source, or treat a listed convention as a constraint?" | Surface. Require the source, or demote to convention with its alternative. |
 | Architectural Invariants | "Does this PR violate an invariant?" | Soft-block with citation. Invariants are stronger than working rules. |
 | ADR Index | "Does this PR make an architecturally significant decision without writing an ADR?" | Soft-block. Require the ADR. |
 | Open Architecture Questions | "Does this PR implicitly answer an open question without resolving it?" | Surface the implicit answer; require an ADR. |
@@ -209,6 +247,8 @@ When reviewing, flag:
 ## Common Failure Modes
 
 **Unlabeled aspiration.** The most common failure. Future-state claims are written as if Current. The agent reads them and treats them as fact. The fix is mechanical: add the label.
+
+**The laundered convention.** The second most common, and the harder to see, because every sentence in it is true. A choice is recorded as a fact ("extra disks are template inputs"); a later agent reads it as a requirement; the next system is designed around a constraint nobody imposed; and when asked why, the agent supplies a reason that was never written down. The fix is mechanical too: source the requirement, name the alternative to the choice, mark and route the unknown. Procedure in `requirements-vs-conventions.md`.
 
 **The code inventory creep.** architecture.md grows into a description of every file. The diff between architecture.md and a `tree` of the repo shrinks toward zero. The fix is to push detail down into `docs/components/` and keep the top-level doc strategic.
 

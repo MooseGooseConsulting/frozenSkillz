@@ -116,7 +116,7 @@ Anti-goals define identity through exclusion: "What will agents assume we are bu
 
 ### Identity-level only — the minor-rule-explosion guard
 
-"Not a marketing site. Not a multi-user SaaS." — identity drift, good. "Must not use Redis" is a prescription hiding in an anti-goal; it belongs in conventions, where it can change without touching identity.
+"Not a marketing site. Not a multi-user SaaS." — identity drift, good. "Must not use Redis" is a prescription hiding in an anti-goal; it belongs in `architecture.md` → Constraints and Conventions — as a convention with its alternative named, or as a constraint with its source — where it can change without touching identity.
 
 Fabricated anti-goals are the **primary way a minor rule becomes a major one** — it gets written into the highest-authority doc on a hunch and then enforced everywhere. Keep every anti-goal identity-level ("not a SaaS"), never implementation-level ("must not use Redis"), and keep the default at zero.
 

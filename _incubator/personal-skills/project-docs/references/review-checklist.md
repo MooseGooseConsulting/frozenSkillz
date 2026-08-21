@@ -17,6 +17,7 @@ declares a nonstandard stack, review its declared roles and routes through
 | CLAUDE.md | One-line pointer to AGENTS only, unless declared an authority document |
 | Legacy PROGRESS.md | `progress-md-guide.md` — migrate away; do not refresh as living handoff |
 | Plans / Issues usage | `current-work-and-lifecycle.md` |
+| Any doc — modality pass | `requirements-vs-conventions.md` — every "must" sourced, every choice with its alternative, unknowns routed. In a review, its rewrites are *proposed in the report*; a review never edits the files. |
 
 </by_document>
 
@@ -26,6 +27,7 @@ declares a nonstandard stack, review its declared roles and routes through
 
 **Structural** — wrong agent behavior:
 - Fabricated constraints
+- Laundered conventions — a "must" with no source; a convention written as a must; a fact fused to a choice with "so" and no alternative named; a rationale with no owner phrasing, link, or record behind it. Fabrication invents a rule; laundering promotes one. (`requirements-vs-conventions.md`)
 - AGENTS inlining doctrine / over 60 lines / `@` inside AGENTS
 - CLAUDE.md with prose or multi-file doctrine (not a defect when the repository declares CLAUDE.md an authority document)
 - New PROGRESS.md or recommended `docs/history/` roll-off
@@ -73,6 +75,12 @@ Default quick pairs: architecture vs NORTH_STAR · plans/Issues vs architecture
 ### Structural findings
 - [finding] — citing [section]; suggested fix: [edit]
 
+### Modality findings
+- required, no source — [sentence] at [section]; source found: [x] / exit: [record | counterexample | ask]
+- convention written as must — [sentence] at [section]; alternative: [y]; demoted
+- fused so-clause — [sentence] at [section]; split into [fact (required: …)] + [choice (chosen; alternative: …)]
+- unsourced practice (no modal word) — [sentence] at [section]; alternative: [y] / source: [x]
+
 ### Drift findings
 - [finding] — citing [section]; suggested action: [promote-delete / refresh / fix route]
 
@@ -83,6 +91,7 @@ Default quick pairs: architecture vs NORTH_STAR · plans/Issues vs architecture
 - [finding] — between [A] and [B]; downstream is [B]; suggested action: [edit]
 ```
 
-Do not silently rewrite neighboring docs.
+Do not silently rewrite neighboring docs. Modality rewrites are *proposed* in
+this report, never applied — a review does not edit the doc it reviews.
 
 </reporting>

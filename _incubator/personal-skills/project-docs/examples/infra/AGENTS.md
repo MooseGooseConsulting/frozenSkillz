@@ -31,6 +31,7 @@ Authority order: NORTH_STAR > architecture.md > AGENTS.md. Downstream never over
 - Manifests only in tofu/, talos/, platform/, apps/. No prose docs there; one-line pointer exception only.
 - No undocumented architectural decisions for storage, database, ingress, or secrets strategy.
 - Status means applied, not authored.
+- A "must" whose only source is precedent is a convention. Before planning around any constraint, find its source, a counterexample, or ask — never generate a reason for it.
 - Promote lasting facts, then delete finished plans/scratch. Do not create PROGRESS.md or docs/history/.
 - Branch from main; PR to main.
 

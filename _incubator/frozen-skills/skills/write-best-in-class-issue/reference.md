@@ -56,9 +56,10 @@ host, an archiver, and PR/commit templates) with the shipped capability in one
 column and the boundary in another. Nothing proposed is mistaken for shipped.
 
 The same table carries a second axis: for every "must" the issue states, whether
-it is **required** (a source outside the repo's own precedent — cited) or
-**chosen** (a decision, with the alternative not taken named). Nothing chosen is
-mistaken for required. See "Why the requirement-or-convention step" below.
+it is **required** (a source outside pure habit — cited, including a binding
+document this repository enforces) or **chosen** (a decision, with the
+alternative not taken named). Nothing chosen is mistaken for required. See "Why
+the requirement-or-convention step" below.
 
 Failure without it: an agent builds against a capability that does not exist yet,
 cites a proposal as if it were deployed — or carries a past choice forward as a

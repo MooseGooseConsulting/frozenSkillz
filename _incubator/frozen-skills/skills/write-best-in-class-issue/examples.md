@@ -8,18 +8,21 @@ stays repo-independent.
 ## Full mode — design issue (condensed from the reference issue's shape)
 
 ```markdown
+## Outcome and status
+
+Design an agent-to-agent repository reconciler with two jobs: review work at
+an authoring boundary and return specific criticism to the model that can
+still fix it; and periodically reconcile recent traces with repository state
+so lasting knowledge does not disappear between sessions. This issue designs
+and gates the reconciler; it does not activate it. The activation gate and
+completion evidence below define what must be true before a later issue may
+turn it on.
+
 ## Sequencing decision — 2026-07-20
 
 Blocked on the primary executor role in [the executor issue]. Do not implement
 this reviewer until the executor runtime is fully standing and has passed
 [the executor issue]'s acceptance.
-
-## Outcome and status
-
-Design (not deploy) an agent-to-agent repository reconciler with two jobs:
-review work at an authoring boundary and return specific criticism to the model
-that can still fix it; and periodically reconcile recent traces with repository
-state so lasting knowledge does not disappear between sessions.
 
 ## Hard boundary: reviewer, not executor
 
@@ -30,11 +33,11 @@ effect. Execution is owned by [the executor issue].
 
 ## What the research established
 
-| Component | Shipped capability | Boundary for this issue |
-|---|---|---|
-| Session-capture tool | agent capture; SQLite→central sync; read-only API | session evidence corpus, not the active reviewer |
-| Agent runtime | HMAC webhooks, cron, zero-token gates | execution substrate; still needs a dedicated profile |
-| Git host | PR/issue webhooks, commit statuses, reopen API | closing keywords do not prove acceptance; failed webhooks not redelivered |
+| Component | Shipped capability | Boundary for this issue | Required or chosen |
+|---|---|---|---|
+| Session-capture tool | agent capture; SQLite→central sync; read-only API | session evidence corpus, not the active reviewer | Required — the sync pipeline ships today (release linked) |
+| Agent runtime | HMAC webhooks, cron, zero-token gates | execution substrate; still needs a dedicated profile | Chosen — a poll-based runner was not evaluated |
+| Git host | PR/issue webhooks, commit statuses, reopen API | closing keywords do not prove acceptance; failed webhooks not redelivered | Required — the reopen API is the only supported un-close path (docs linked) |
 
 ## Activation gate
 
@@ -150,9 +153,10 @@ image schematic + kube minor): a bump means regenerating the boot image and
 re-pinning the installer reference in the four places that carry it, as a set.
 
 **Acceptance:** the changelog is read and one of two decisions is recorded in
-this issue — (a) it carries security content → a matrix refresh is scheduled
-with all four pins updated together, or (b) it does not → this issue closes as
-"fold into the next deliberate matrix bump" with the changelog linked.
+this issue with the changelog linked — (a) it carries security content → a
+matrix refresh is scheduled with all four pins updated together, or (b) it does
+not → this issue closes as "fold into the next deliberate matrix bump." Closing
+with neither decision recorded, or without the changelog link, fails acceptance.
 **Rollback** (if bumped): standing nodes keep the patch-10 boot image; revert
 the four pins.
 

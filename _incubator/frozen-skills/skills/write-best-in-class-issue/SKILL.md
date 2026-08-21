@@ -28,9 +28,10 @@ bump is the failure mode this skill exists to prevent.
 | Issue type | Mode | Apply |
 |---|---|---|
 | Design / governance / epic / proposal | **Full** | All 8 beats, with 2/5/6 conditional (see below) |
-| Bug report (human- or agent-authored) | **Partial** | Outcome, the gap, the hard constraint (with its source), acceptance; a live-measurement table is common when measurements exist |
-| Bump / one-line operational — **no live mutation** | **Minimal** | Title + Acceptance + Rollback only |
-| Bump / operational that **mutates a live running system** (control-plane roll, service restart) | **Partial** | Treat as a bug: the hard constraint is the live-mutation boundary |
+| Bug report (human- or agent-authored) | **Partial** | Outcome, the gap, acceptance; the hard constraint (with its source) only when a real external boundary exists — an ordinary bug with no such boundary skips it rather than inventing one |
+| Already-decided implementation — a feature, refactor, test, or doc change with no open design question | **Partial** | Outcome, what changes, acceptance; a hard constraint only when a real boundary exists |
+| Bump / one-line operational — **no live mutation** | **Minimal** | Title + Acceptance + Rollback + a linked evidence source only |
+| Bump / operational that **mutates a live running system** (control-plane roll, service restart) | **Partial** | Treat as a bug: the hard constraint is the live-mutation boundary, plus Rollback (as in Minimal) |
 
 The Minimal/Partial line is **"does it mutate a live running system,"** not "is it a bump." A
 pin, digest, or manifest change consumed later is Minimal; a version bump that rolls the live
@@ -45,8 +46,8 @@ operator which mode before drafting.
 
 Beats 2, 5, and 6 are **conditional**, not universal — verified against real issues:
 
-- **Beat 2 (sequencing)** — include only when the issue is *blocked on* something. A coordination epic that "decides nothing" has no blocker.
-- **Beat 5 (activation gate)** — include only when the issue *deploys or activates*. A pure design/decision issue has no activation.
+- **Beat 2 (sequencing)** — include when the issue is *blocked on* something external, or when it coordinates parts that have their own internal ordering or dependencies. A coordination epic that decides nothing and has no internal ordering has no sequencing to state.
+- **Beat 5 (activation gate)** — include whenever the capability the issue describes will eventually be activated or deployed, even when this issue itself only designs it; gate that future activation on the conditions this issue defines. Omit only when nothing described here is ever activated — a pure choice or decision issue with no capability behind it.
 - **Beat 6 (structured contracts)** — include only when there are *contracts worth freezing*. A spike proposal, a capability decision, or an issue whose contracts live in another repo correctly omit it.
 
 ## Step 2 — Requirement or convention? (every mode)
@@ -54,11 +55,15 @@ Beats 2, 5, and 6 are **conditional**, not universal — verified against real i
 Before you write **must**, **cannot**, **so**, **therefore**, or **required** —
 anywhere in the issue, in any mode — classify it:
 
-- **Requirement** — has a source *outside the repo's own precedent*: an API or
-  schema that lacks the field, a hardware or physical fact, an explicit operator
-  instruction, a policy, an incident. Cite the source inline.
-- **Convention** — its only support is "the repo does it this way," "the doc says
-  so," or "we did it last time." Write it as a choice: what was chosen, the
+- **Requirement** — has a source outside pure habit: an API or schema that lacks
+  the field, a hardware or physical fact, an explicit operator instruction, an
+  incident, or a binding source the repository actually enforces — a committed
+  policy document, schema, ADR, or contribution rule — even when that source
+  lives in this repository. Cite the source inline; "lives in this repo" does
+  not by itself demote a binding document to Convention.
+- **Convention** — its only support is unwritten precedent: "we did it last
+  time," "that's how the last one looked," with no document the repository
+  enforces standing behind it. Write it as a choice: what was chosen, the
   alternative not taken, and why (if known).
 - **Unknown** — you cannot tell. Say so in the issue ("not yet established whether
   X is required"), then take one of the three legal exits: **find the record**
@@ -84,7 +89,8 @@ lane.
 - [ ] 1. Outcome and status up front — what changes, and honestly whether it is
        deployed or design-only.
 - [ ] 2. Sequencing / blocked-on — what must stand first, before any design.
-       (Conditional: only when the issue is blocked on something.)
+       (Conditional: only when the issue is blocked on something external, or
+       coordinates parts with their own internal ordering.)
 - [ ] 3. Hard scope boundary — what this issue does NOT do (e.g. "reviewer, not
        executor"). State the boundary once; point back to it instead of restating.
 - [ ] 4. Status table — for each component or claim, split what is *shipped*
@@ -93,7 +99,9 @@ lane.
        nothing chosen is mistaken for required.
 - [ ] 5. Activation gate — explicit "do not activate until…" conditions. A clean
        verdict is forbidden when evidence is incomplete.
-       (Conditional: only when the issue deploys or activates.)
+       (Conditional: include whenever the described capability will eventually
+       be activated, even if this issue only designs it. Omit only when nothing
+       described here is ever activated.)
 - [ ] 6. Structured contracts — the request/result shapes, fingerprints, or
        coverage states the work freezes before implementation.
        (Conditional: only when there are contracts worth freezing. A spike, a
@@ -106,9 +114,11 @@ lane.
        when more than one repository is actually involved.
 ```
 
-**Partial mode:** beat 1 (outcome), the gap, the hard constraint with its source
-(Step 2), beat 7 (acceptance); a live-measurement table when measurements exist.
-**Minimal mode:** title, acceptance, rollback.
+**Partial mode:** beat 1 (outcome), the gap, beat 7 (acceptance); the hard
+constraint with its source (Step 2) only when a real external boundary exists;
+a live-measurement table when measurements exist.
+**Minimal mode:** title, acceptance, rollback, a linked evidence source (the
+release notes or changelog entry backing the bump).
 
 ## Step 4 — Anti-ceremony check
 

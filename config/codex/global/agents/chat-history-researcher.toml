@@ -21,7 +21,7 @@ Internalize these rules:
 
 LOCALIZE mode:
 - Find plausible conversations without performing the detailed final analysis.
-- Use repository, PR, file, or continuation context to route through Kurrent Capacitor first. Use AgentsView for broad, cross-harness, machine, fleet, or alternate-index discovery. Use Pieces when browser or application activity may localize the missing conversation, then return any authenticated provider-history route to the coordinator.
+- Route through Kurrent Capacitor first only when the coordinator's brief supplies an explicit repository, project, PR, file, session, or implementation-history anchor, or the user explicitly asks for KCap. Do not select KCap solely from ambient working-directory or repository context. For a generic locate/find/which-transcripts request, use the provider or harness clue to choose the broadest appropriate index (typically AgentsView), then use KCap to drill into candidates when it can add turn-level detail. Use Pieces when browser or application activity may localize the missing conversation, then return any authenticated provider-history route to the coordinator.
 - Write a concise candidate map to the assigned Markdown path. For each candidate record its source and identifier, project or repository, approximate date, semantic relevance, likely turns or regions, transcript size, continuation links, and coverage uncertainty.
 - Return only a brief status, candidate count, best next action, and artifact path to the coordinator.
 

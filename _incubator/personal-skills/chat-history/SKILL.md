@@ -14,19 +14,19 @@ provider reference reached by the route.
   user's current terminology.
 - Prefer indexed search and summaries for localization. Use exact search only when given a stable
   anchor such as a session ID, file, PR, error, command, or quotation.
-- A provider route is not a one-shot query. An empty or weak result is evidence that that query
+- A provider route is not a one-shot query. An empty or weak result is evidence that the query
   failed, not evidence that the conversation is absent.
 - Do not infer the history provider from the ambient working directory. Current repository context
-  may scope a search, but it does not by itself select KCAP.
-- Treat KCAP as the first route only when the user supplies an explicit repository, project, PR,
-  file, session, or implementation-history anchor, or explicitly asks for KCAP. For a generic
+  may scope a search, but it does not by itself select KCap.
+- Treat KCap as the first route only when the user supplies an explicit repository, project, PR,
+  file, session, or implementation-history anchor, or explicitly asks for KCap. For a generic
   locate/find/which-transcripts request, use the provider or harness clue to choose the broadest
-  appropriate index, then use KCAP to drill into candidates when it can add turn-level detail.
-- When KCAP is a viable route, exhaust a bounded retry set before falling back: try the semantic
+  appropriate index, then use KCap to drill into candidates when it can add turn-level detail.
+- When KCap is a viable route, exhaust a bounded retry set before falling back: try the semantic
   question, stable exact anchors, and a relaxed scope over project, date, machine, agent, child,
   continuation, or session chain. Use materially different query shapes rather than repeating the
-  same wording. If the user says the source should be in KCAP, treat that as a retrieval warning:
-  keep KCAP active, run the retry set, and verify coverage before calling it absent.
+  same wording. If the user says the source should be in KCap, treat that as a retrieval warning:
+  keep KCap active, run the retry set, and verify coverage before calling it absent.
 - Do not begin by grepping or parsing raw transcript trees.
 - Narrow progressively by project, repository, session, agent, machine, date, continuation, PR, or
   file.
@@ -108,7 +108,7 @@ Need information from previous conversations
          │  │     ├─ useful candidates → write candidate map
          │  │     └─ weak/empty → run the bounded KCap retry set, then use AgentsView with
          │  │        progressively relaxed scope → references/agentsview.md
-         │  └─ no explicit KCAP anchor
+         │  └─ no explicit KCap anchor
          │     └─ AgentsView broad semantic search first → references/agentsview.md
          │        └─ Pieces when the conversation may be browser-based
          │           → references/pieces.md
@@ -134,8 +134,11 @@ Need information from previous conversations
             └─ AgentsView broad semantic search → references/agentsview.md
                ├─ plausible candidates → write candidate map
                └─ no candidates
-                  └─ try current-repository KCap, then Pieces, then record coverage
-                     → references/kurrent-capacitor.md or references/pieces.md
+                  └─ retry AgentsView with alternate search modes (fts, regex, hybrid) and a
+                     relaxed project/date/child scope before treating it as exhausted
+                     ├─ plausible candidates → write candidate map
+                     └─ still nothing → try Pieces, then record the coverage gap
+                        → references/pieces.md
 ```
 
 Every localization artifact must contain a candidate map with:
@@ -146,7 +149,8 @@ Every localization artifact must contain a candidate map with:
 - likely relevant turns or regions;
 - transcript size;
 - continuation or related-session links;
-- KCAP query shapes attempted, what each returned, and why fallback or another retry was chosen;
+- active-provider query shapes attempted, what each returned, and why fallback or another retry was
+  chosen;
 - coverage gaps and uncertainty.
 
 The worker's chat return is only a brief: candidate count, strongest match, recommended next action,
@@ -157,7 +161,7 @@ Localization briefs and candidate maps returned
 ├─ No candidates
 │  └─ follow up with the same localization agent for a second pass
 │     ├─ require a materially different framing in the active provider first
-│     ├─ if the active provider is KCAP, use a semantic, stable-anchor, and relaxed-scope retry set
+│     ├─ use the active provider's documented retry set (kurrent-capacitor.md or agentsview.md)
 │     ├─ only change provider after the active provider's retry set is recorded as exhausted
 │     ├─ relax unreliable project/date filters
 │     ├─ include child, continuation, automated, local, and fleet sessions as relevant

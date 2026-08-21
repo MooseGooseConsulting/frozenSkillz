@@ -6,7 +6,7 @@ Ambient current-repository context may scope a search, but a working directory a
 KCap the first provider. For generic transcript discovery, start with the broadest provider or
 harness index suggested by the request, then use KCap to drill into identified candidates.
 
-The first KCap search is a probe, not a verdict. An empty, noisy, or weak result means that query
+The first KCap search is a probe, not a verdict. An empty, noisy, or weak result means the query
 failed; it does not establish that the conversation is missing from KCap. Before switching
 providers, run a bounded retry set with materially different shapes:
 
@@ -41,8 +41,8 @@ Use the MCP sequence:
 
 1. `search_sessions` with a natural-language question; default to the current repo or pass
    `repo: "all"` only when cross-repo discovery is intended.
-2. If the result is empty or weak, repeat `search_sessions` with the exact-anchor and relaxed-scope
-   queries above before treating the route as incomplete.
+2. If the result is empty or weak, repeat `search_sessions` with the exact-anchor, relaxed-scope,
+   and swarm/comparison queries above before treating the route as incomplete.
 3. `get_session_summary` to orient on a candidate.
 4. `list_turns` to map the session semantically without loading its entire transcript.
 5. `get_turn` for one complete turn, or `get_session_transcript` around the returned event index.

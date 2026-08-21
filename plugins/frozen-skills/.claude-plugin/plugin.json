@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "frozen-skills",
-  "description": "Installs reviewed delegation-contract, Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
+  "description": "Installs reviewed Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
   "version": "2.7.2",
   "category": "reference",
   "author": {
@@ -11,11 +11,6 @@
   "license": "MIT",
   "tags": ["secrets", "doppler", "intake", "omc", "proxmox", "pdm", "reference"],
   "skills": [
-    {
-      "name": "delegation-contract",
-      "path": "skills/delegation-contract",
-      "description": "Brief and receive work from subagents so intent survives the handoff. Use when delegating multi-phase work, spawning subagents or parallel workers, writing a Task or Agent prompt, fanning out research, or deciding whether to delegate at all. Covers what a spawn prompt must carry, what a worker must return, and which work must stay single-threaded."
-    },
     {
       "name": "doppler",
       "path": "skills/doppler",

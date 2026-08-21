@@ -11,7 +11,7 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | Skill | Status | Next action |
 |---|---|---|
 | `agent-github-identity` | gated | Demoted 2026-08-24: the per-write skill adds prompt and operational overhead while GitHub attribution remains environment-specific. Retained under `_incubator/frozen-skills` for reference only; do not distribute or reactivate it without a demonstrated native identity path for each supported agent product. |
-| `delegation-contract` | active | None — adapted doctrine validated for contract compliance and single-writer coordination; outcome-quality evidence remains intentionally limited to the recorded n=1 eval. |
+| `delegation-contract` | gated | Demoted 2026-08-21: the skill imposed a broad ledger, briefing, return, and verification protocol but shipped no agent-launch or enforcement mechanism. The n=1 evaluation measured contract compliance rather than improved outcomes. Keep in `_incubator/` until its scope is reduced to an honest briefing reference or a complete operational delegation system is implemented and evaluated. |
 | `doppler` | active | Trigger narrowed 2026-08-10 to direct secret/injection work; opaque authentication through a trusted client or launcher is a non-trigger. |
 | `external-skill-intake` | active | None. |
 | `omc-reference` | active | None. |

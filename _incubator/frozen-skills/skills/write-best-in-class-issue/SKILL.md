@@ -29,9 +29,9 @@ bump is the failure mode this skill exists to prevent.
 |---|---|---|
 | Design / governance / epic / proposal | **Full** | All 8 beats, with 2/5/6 conditional (see below) |
 | Bug report (human- or agent-authored) | **Partial** | Outcome, the gap, acceptance; the hard constraint (with its source) only when a real external boundary exists — an ordinary bug with no such boundary skips it rather than inventing one |
-| Already-decided implementation — a feature, refactor, test, or doc change with no open design question | **Partial** | Outcome, what changes, acceptance; a hard constraint only when a real boundary exists |
+| Already-decided implementation, or a low-risk open design question — a feature, refactor, test, or doc change | **Partial** | Outcome, what changes (or the open question, marked Unknown per Step 2), acceptance; a hard constraint only when a real boundary exists |
 | Bump / one-line operational — **no live mutation** | **Minimal** | Title + Acceptance + Rollback + a linked evidence source only |
-| Bump / operational that **mutates a live running system** (control-plane roll, service restart) | **Partial** | Treat as a bug: the hard constraint is the live-mutation boundary, plus Rollback (as in Minimal) |
+| Bump / operational that **mutates a live running system** (control-plane roll, service restart) | **Partial** | Outcome, the live-mutation boundary as the hard constraint, acceptance, and Rollback (as in Minimal); a gap section only when the mutation is fixing an actual defect |
 
 The Minimal/Partial line is **"does it mutate a live running system,"** not "is it a bump." A
 pin, digest, or manifest change consumed later is Minimal; a version bump that rolls the live
@@ -93,12 +93,17 @@ lane.
        coordinates parts with their own internal ordering.)
 - [ ] 3. Hard scope boundary — what this issue does NOT do (e.g. "reviewer, not
        executor"). State the boundary once; point back to it instead of restating.
-- [ ] 4. Status table — for each component or claim, split what is *shipped*
-       from what is *proposed*, and what is *required* (source cited) from what
-       is *chosen* (alternative named). Nothing proposed is mistaken for shipped;
-       nothing chosen is mistaken for required.
-- [ ] 5. Activation gate — explicit "do not activate until…" conditions. A clean
-       verdict is forbidden when evidence is incomplete.
+- [ ] 4. Status table — for each component, split what is *shipped* from what
+       is *proposed*. For each normative claim this issue makes about that
+       component (a dependency, a "must," a design commitment) — not for the
+       component's own descriptive facts — split what is *required* (source
+       cited) from what is *chosen* (alternative named). Nothing proposed is
+       mistaken for shipped; nothing chosen is mistaken for required; a fact is
+       never laundered into a mandate by forcing it through this axis.
+- [ ] 5. Activation gate — explicit "do not activate until…" conditions. For a
+       capability that emits verdicts (a reviewer, a gate, a check), a clean
+       verdict is forbidden when evidence is incomplete; for a capability that
+       does not, activation itself stays blocked on the same conditions.
        (Conditional: include whenever the described capability will eventually
        be activated, even if this issue only designs it. Omit only when nothing
        described here is ever activated.)
@@ -114,9 +119,10 @@ lane.
        when more than one repository is actually involved.
 ```
 
-**Partial mode:** beat 1 (outcome), the gap, beat 7 (acceptance); the hard
-constraint with its source (Step 2) only when a real external boundary exists;
-a live-measurement table when measurements exist.
+**Partial mode:** beat 1 (outcome), beat 7 (acceptance); the gap only when the
+issue is fixing an actual defect; the hard constraint with its source (Step 2)
+only when a real external boundary exists; rollback for a live-mutation
+operational issue; a live-measurement table when measurements exist.
 **Minimal mode:** title, acceptance, rollback, a linked evidence source (the
 release notes or changelog entry backing the bump).
 
@@ -137,12 +143,13 @@ it to Partial or Minimal rather than padding.
 ## Step 5 — Verify the draft
 
 - [ ] Mode matches the Step 1 table; no beat is padded.
-- [ ] Every must / cannot / so / required is sourced, written as a choice, or
-      marked Unknown with an exit taken (Step 2).
+- [ ] Every must / cannot / so / therefore / required is sourced, written as a
+      choice, or marked Unknown with an exit taken (Step 2).
 - [ ] Acceptance is falsifiable — someone could run it and fail it.
 - [ ] Every cross-reference resolves (open the linked issue/PR before citing).
-- [ ] No secret values; no paths or names from another project if the issue will
-      be read outside it.
+- [ ] No secret values; no unrelated project paths, machine names, or personal
+      identifiers leaked in from a source example. A legitimate
+      cross-repository issue/PR link that beat 8 calls for is not leakage.
 
 ## Reference and examples
 

@@ -33,10 +33,10 @@ effect. Execution is owned by [the executor issue].
 
 ## What the research established
 
-| Component | Shipped capability | Boundary for this issue | Required or chosen |
+| Component | Shipped capability | Boundary for this issue | This issue's dependency: required or chosen |
 |---|---|---|---|
-| Session-capture tool | agent capture; SQLite→central sync; read-only API | session evidence corpus, not the active reviewer | Required — the sync pipeline ships today (release linked) |
-| Agent runtime | HMAC webhooks, cron, zero-token gates | execution substrate; still needs a dedicated profile | Chosen — a poll-based runner was not evaluated |
+| Session-capture tool | agent capture; SQLite→central sync; read-only API | session evidence corpus, not the active reviewer | Chosen — the reviewer reads its sync output; polling the source database directly was not evaluated |
+| Agent runtime | HMAC webhooks, cron, zero-token gates | execution substrate; still needs a dedicated profile | Required — webhook signature validation is the only supported trust boundary (docs linked) |
 | Git host | PR/issue webhooks, commit statuses, reopen API | closing keywords do not prove acceptance; failed webhooks not redelivered | Required — the reopen API is the only supported un-close path (docs linked) |
 
 ## Activation gate

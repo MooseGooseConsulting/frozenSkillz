@@ -48,7 +48,7 @@ tree but not yet reconciled is **Planned**, not Current.
 
 - Worker VMs carry a single boot disk in the cluster manifest — required: the machine-provisioning provider's storage schema exposes one boot-volume field and no additional-volume field (provider docs, pinned version linked in `docs/components/substrate.md`).
 - Talos machine config is the only path to node OS state — required: Talos has no shell and no package manager; there is nothing else to edit.
-- All hosts present the same CPU model to guests — required: live migration across the heterogeneous hosts fails otherwise (incident 2026-05, `docs/decisions/0002`).
+- All hosts present the same CPU model to guests — required: live migration across the heterogeneous hosts fails otherwise (incident 2026-05, `docs/decisions/0004-uniform-cpu-baseline.md`).
 
 **Conventions** (chosen; alternative named):
 
@@ -69,6 +69,7 @@ tree but not yet reconciled is **Planned**, not Current.
 | `docs/decisions/0001-talos-over-kubeadm.md` | accepted | Talos for immutable, declarative nodes |
 | `docs/decisions/0002-gitops-reconciler.md` | accepted | Reconcile the repo in-cluster rather than push from CI |
 | `docs/decisions/0003-in-cluster-s3.md` | proposed | Object store choice for backups and app blobs |
+| `docs/decisions/0004-uniform-cpu-baseline.md` | accepted | Mask guests to a common CPU baseline after the 2026-05 live-migration failure |
 
 ## Open Architecture Questions
 

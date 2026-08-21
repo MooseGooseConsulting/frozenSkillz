@@ -74,7 +74,7 @@ and routed, never filled in (`references/requirements-vs-conventions.md`).
 |---|---|
 | Create a new authority doc that does not exist | `references/write-workflow.md` + the relevant doc guide |
 | Review or critique an existing authority doc | `references/review-checklist.md` + the relevant doc guide |
-| Reconcile multiple docs against each other | `references/authority-flow.md` |
+| Reconcile multiple docs against each other | `references/authority-flow.md` (+ `references/requirements-vs-conventions.md` when the docs disagree about a "must") |
 | Migrate instructions into the AGENTS.md pattern | `references/agents-md-guide.md` + `references/write-workflow.md` |
 | Handle current work / finished work / leftover PROGRESS | `references/current-work-and-lifecycle.md` (+ `references/progress-md-guide.md` only if migrating legacy PROGRESS away) |
 | Keep requirements and conventions apart — source every "must", name every alternative, audit a doc for laundered conventions | `references/requirements-vs-conventions.md` |

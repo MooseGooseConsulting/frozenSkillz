@@ -2,6 +2,13 @@
 
 This file is only an entrypoint. Repository policy and procedures live in the documents below; load only the sources relevant to the task.
 
+## Agent Instruction Placement
+
+- When the user asks to change the instructions or behavior of a named or
+  currently active skill, edit that skill's existing `SKILL.md`. Do not use the
+  root `README.md` as a substitute; change it only when the user explicitly asks
+  for repository README documentation.
+
 | Task | Source |
 |---|---|
 | Understand the repository and package layout | `README.md` |

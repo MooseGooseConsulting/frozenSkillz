@@ -14,6 +14,15 @@ provider reference reached by the route.
   user's current terminology.
 - Prefer indexed search and summaries for localization. Use exact search only when given a stable
   anchor such as a session ID, file, PR, error, command, or quotation.
+- Prefer structured or indexed conversation bodies over interactive browser retrieval. If the
+  conversation body is already available through KCap, AgentsView, an existing provider export, or
+  another structured source, read and analyze it there; do not open the same conversations one by
+  one in a browser merely to re-read their contents.
+- Browser retrieval is a fallback for authenticated provider history or export that cannot be
+  obtained through the active structured/indexed route. Browser mutation is a separate downstream
+  concern: if a broader workflow needs to rename, archive, or otherwise change provider state,
+  finish retrieval and semantic analysis first, then delegate only the required mutation and
+  post-mutation verification to the browser operator.
 - A provider route is not a one-shot query. An empty or weak result is evidence that the query
   failed, not evidence that the conversation is absent.
 - Do not infer the history provider from the ambient working directory. Current repository context
@@ -96,9 +105,9 @@ Need information from previous conversations
          │                 ├─ project/app/time clues found
          │                 │  ├─ same conversation is indexed
          │                 │  │  └─ retry KCap or AgentsView with those clues
-         │                 │  └─ provider history or export is the source
+         │                 │  └─ provider history or export is the only available body source
          │                 │     └─ return URL/title/time/account clues to the coordinator
-         │                 │        so it can dispatch chrome_pilot for retrieval
+         │                 │        so it can dispatch chrome_pilot for bounded retrieval
          │                 └─ nothing useful → record the coverage gap
          │
          ├─ Known subject, but unknown conversation
@@ -124,11 +133,11 @@ Need information from previous conversations
          │
          ├─ Browser application, page, title, or approximate time is the clue
          │  └─ use Pieces to localize the activity → references/pieces.md
-         │     ├─ conversation is indexed
-         │     │  └─ translate project/time/app clues into KCap or AgentsView search
-         │     └─ authenticated provider page, history, or export is required
+         │     ├─ conversation is indexed or otherwise structurally retrievable
+         │     │  └─ retrieve/read it through that route; do not re-read it in Chrome
+         │     └─ authenticated provider page, history, or export is the only available body source
          │        └─ return the clues to the coordinator; it dispatches chrome_pilot
-         │           to retrieve the bounded conversation or export
+         │           for the bounded conversation or export only
          │
          └─ Almost no usable context
             └─ AgentsView broad semantic search → references/agentsview.md

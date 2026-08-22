@@ -1,6 +1,6 @@
 {
   "skill": "codex-thread-organizer",
-  "notes": "Codex-app routing cases. Positives cover every conversation the Codex app's sidebar exposes, body-derived titles, same-repository relevance, and scheduled organization. A ChatGPT-history request triggers whether or not the user names the sidebar: the skill inventories those conversations and reports them as `not title-mutable` rather than staying silent and letting an agent improvise. Negatives protect other clients (Claude Code, Cursor, Gemini, browser tabs), generic Git cleanup, and ordinary conversation summaries. The held_out split is the final untouched test set, matching the repository's active-skill eval convention.",
+  "notes": "Codex-app and ChatGPT-web routing cases. Positives cover body-derived titles, related-work reasoning, Codex lifecycle organization, and ChatGPT evidence worksheets with Project proposals. ChatGPT-web requests trigger a dedicated browser-backed adapter; a title-only Codex-sidebar row is not substituted for a ChatGPT body. Negatives protect other clients (Claude Code, Cursor, Gemini), generic Git cleanup, browser-tab organization, and ordinary conversation summaries. The held_out split is the final untouched test set, matching the repository's active-skill eval convention.",
   "train": [
     {
       "query": "Review and rename my recent Codex tasks from the full conversation bodies",
@@ -37,6 +37,10 @@
     {
       "query": "Add emoji names to my Claude Code sessions",
       "should_trigger": false
+    },
+    {
+      "query": "Read 30 recent chats on ChatGPT, group the related work, and give me evidence-backed emoji titles and existing Project moves for approval",
+      "should_trigger": true
     }
   ],
   "validation": [
@@ -63,6 +67,10 @@
     {
       "query": "Archive old Gmail threads",
       "should_trigger": false
+    },
+    {
+      "query": "Propose better names for my ChatGPT web chats after reading their bodies; use our emoji taxonomy but do not add completion status markers",
+      "should_trigger": true
     }
   ],
   "held_out": [

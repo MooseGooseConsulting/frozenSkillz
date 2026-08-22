@@ -21,7 +21,7 @@
     {
       "name": "codex-thread-organizer",
       "source": "./plugins/codex-thread-organizer",
-      "description": "Codex-only task-history organization with body-derived titles, cross-task completion review, and periodic maintenance workflows.",
+      "description": "Codex-only package for Codex task and ChatGPT web conversation organization with body-derived titles, relationships, Projects, and semantic emoji.",
       "version": "2.7.1",
       "category": "productivity"
     },

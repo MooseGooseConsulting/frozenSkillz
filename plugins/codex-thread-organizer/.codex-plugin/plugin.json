@@ -1,24 +1,33 @@
 {
   "name": "codex-thread-organizer",
   "version": "2.7.1",
-  "description": "Organize Codex task history with body-derived titles, cross-task completion review, and periodic maintenance workflows.",
+  "description": "Organize Codex tasks and ChatGPT web conversations with body-derived titles, relationships, Projects, and semantic emoji.",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
   },
   "repository": "https://github.com/Coldaine/frozenSkillz",
   "license": "MIT",
-  "keywords": ["codex", "tasks", "history", "organization"],
+  "keywords": [
+    "codex",
+    "chatgpt",
+    "tasks",
+    "history",
+    "organization"
+  ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Codex Thread Organizer",
-    "shortDescription": "Organize Codex task history",
-    "longDescription": "Read related Codex task bodies, identify current and continued work, apply sparse sidebar titles, and surface important unfinished tasks.",
+    "displayName": "Conversation Organizer",
+    "shortDescription": "Organize Codex and ChatGPT conversations",
+    "longDescription": "Read Codex or ChatGPT conversation bodies and group related work. Codex applies native lifecycle-aware titles directly; ChatGPT presents title and Project proposals for row-specific approval.",
     "developerName": "Coldaine",
     "category": "Productivity",
-    "capabilities": ["Read", "Write"],
+    "capabilities": [
+      "Read",
+      "Write"
+    ],
     "defaultPrompt": [
-      "Read my recent related Codex tasks, rename them with clear status-aware titles, and show me the important unfinished current owners."
+      "For Codex: title tasks from bodies. For ChatGPT: summarize, group, and propose emoji titles and Projects for my approval."
     ]
   }
 }

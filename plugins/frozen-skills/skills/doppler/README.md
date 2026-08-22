@@ -35,9 +35,9 @@ reference material rather than prescribed lanes.
 
 - The **no-print and names-only rules** force the cheap, safe first move
   (`--only-names`, boolean env checks) instead of value dumps.
-- The **default-`masked` guidance** in Adding Secrets anchors the least
-  restrictive normal state; the Operating Rules guard on `restricted` is the
-  hard constraint behind it.
+- The **default-`masked` clause** of the Operating Rules visibility guard
+  anchors the least restrictive normal state; the `restricted`-is-opt-in
+  constraint is the hard rule behind it.
 - The **gated trigger** in the frontmatter keeps loading high-signal so the
   hygiene rules are present when a real secret operation happens, instead of
   being skimmed during speculative hygiene passes.

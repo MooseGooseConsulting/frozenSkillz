@@ -1,0 +1,547 @@
+{
+  "schemaVersion": 1,
+  "batchId": "2026-07-20-recent-50-native-title-trial",
+  "date": "2026-07-20",
+  "status": "applied-and-verified",
+  "scope": {
+    "description": "Frozen cohort of the 50 most recently updated local Codex tasks inventoried before mutation.",
+    "discovered": 50,
+    "inspected": 50,
+    "renamed": 49,
+    "leftUnchanged": 1,
+    "inaccessibleOrMalformed": 0,
+    "unavailableHosts": 0
+  },
+  "evidenceCoverage": {
+    "priorCohort": "30 tasks reused the preserved body-based audit covering 50 transcript pages and 271 turns.",
+    "newlyIncluded": "20 additional tasks were read from opening request through later substantive turns and outcomes; histories longer than ten turns were paged to completion.",
+    "namingRule": "Titles represent dominant or final substantive purpose, not the generated title or opening request."
+  },
+  "mutation": {
+    "method": "Native Codex set_thread_title operation.",
+    "directMetadataFilesChanged": [],
+    "backupLocation": null,
+    "backupReason": "No direct state-store editing occurred; the supported native operation was used.",
+    "mutationCalls": 73,
+    "uniqueThreadsChanged": 49,
+    "correctionCalls": 24,
+    "correctionReason": "The native operation persists at most 60 UTF-16 code units and initially stored 24 longer titles with a literal trailing ellipsis; those titles were shortened and rewritten."
+  },
+  "verification": {
+    "method": "Fresh list_threads inventory read-back against the final manifest.",
+    "expected": 50,
+    "found": 50,
+    "exactMatches": 50,
+    "uniqueFinalTitles": 50,
+    "failures": 0,
+    "literalTrailingEllipses": 0
+  },
+  "recurringWorkflowIssues": [
+    "Enforce a maximum of 60 UTF-16 code units before mutation; target a lower policy ceiling for revision headroom.",
+    "Continue reading conversation bodies, pivots, outcomes, remaining work, and superseding tasks before classification.",
+    "Freeze thread IDs and old titles before each batch; skip and report any concurrent title change.",
+    "Treat native-operation acknowledgement as provisional until an independent inventory read-back matches exactly."
+  ],
+  "entries": [
+    {
+      "index": 1,
+      "threadId": "019f73e9-4471-7661-8797-f23486e03fdb",
+      "oldTitle": "🗂️ Codex Sidebar Cleanup and Title Repair",
+      "finalTitle": "🗂️ Codex Sidebar Organizer Requirements and 50-Thread Trial",
+      "confidence": "High",
+      "rationale": "Thread evolved from the title-repair spike into organizer requirements, repository bootstrap, and the live 50-thread trial.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 2,
+      "threadId": "019f8077-5ad8-7042-aeaf-5867b0af7925",
+      "oldTitle": "Prepare USB BIOS flash",
+      "finalTitle": "🖥️ WRX90 BIOS Flash and BMC/CPLD Firmware Investigation",
+      "confidence": "High",
+      "rationale": "USB preparation was superseded by verified BIOS 12.09 recovery and BMC/CPLD firmware investigation.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 3,
+      "threadId": "019f8044-1bf9-7f70-9a14-19979be7d1f7",
+      "oldTitle": "Troubleshoot office router PoE",
+      "finalTitle": "📶 Office Wi-Fi Benchmark and Threadripper BMC Discovery",
+      "confidence": "High",
+      "rationale": "The PoE issue self-resolved; substantive work measured Wi-Fi and discovered the Threadripper BMC.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 4,
+      "threadId": "019f7f5a-11b3-7060-b7f8-43918c4e3876",
+      "oldTitle": "Can you help me search through your memories, your global memories, and your global configurations? I worry that a lot is outdated and we might have to delete or refresh it. Particularly, how are you currently instructed to hold secrets? What is your complete instruction that you have available to you right now when you're thinking about secrets?",
+      "finalTitle": "🧠 Codex Curated Memory and Secrets Policy Audit",
+      "confidence": "High",
+      "rationale": "Conversation became an audit and explanation of Codex curated memory plus secrets-policy drift.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 5,
+      "threadId": "019f7f4f-3c67-78d3-9f79-58ab50121c83",
+      "oldTitle": "investgate the current status of my internet connection, my wifi (not how this computer is connected) is showing no internet connection to connected clients",
+      "finalTitle": "🌐 NetworkConfig–Homelab Ownership and Maintenance Design",
+      "confidence": "High",
+      "rationale": "Wi-Fi diagnosis pivoted into the ownership and maintenance boundary between NetworkConfig and coldaine-homelab.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 6,
+      "threadId": "019f7f4f-6121-7472-9cba-b519f06f0822",
+      "oldTitle": "there's a unity mcp server that's connected globally to codex, but it needs to be a project only server for my broadside unity game on D:",
+      "finalTitle": "🎮 Broadside Unity MCP Scoping and Global Server Audit",
+      "confidence": "High",
+      "rationale": "Moved the Unity MCP server from global configuration into Broadside scope and audited inherited servers.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 7,
+      "threadId": "019f7f54-4dab-7670-ad34-f601fb845f5e",
+      "oldTitle": "can you tell me what error this is? ⚠ MCP client for `exa` failed to start: MCP startup failed: handshaking with MCP server failed: Send message error Transport\n  [rmcp::transport::worker::WorkerTransport<rmcp::transport::streamable_http_client::StreamableHttpClientWorker<rmcp::transport::auth::AuthClient<codex_rmcp_client::http_client_adapter::StreamableHttpClientAdapter>>>] error: Auth error: OAuth\n  authorization required, when send initialize request",
+      "finalTitle": "🔐 Exa MCP OAuth Authentication Failure",
+      "confidence": "High",
+      "rationale": "Single-turn diagnosis identified an Exa MCP OAuth authentication failure.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 8,
+      "threadId": "019f7467-40bb-7e50-938e-e8a06b370cb3",
+      "oldTitle": "Compare frozen skills workflows",
+      "finalTitle": "🧊 frozenSkillz vs. Matt Pocock Promotion Workflow",
+      "confidence": "Medium",
+      "rationale": "Interrupted task requested a comparison of frozenSkillz with Matt Pocock's promotion workflow.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 9,
+      "threadId": "019f7409-54a3-7f01-b2c8-352d33009e3c",
+      "oldTitle": "🌊 Crest Research Pruning — Project Broadside",
+      "finalTitle": "🌊 Crest Research Pruning — Project Broadside",
+      "confidence": "High",
+      "rationale": "The prior live-trial title already captured Crest research pruning for Project Broadside.",
+      "changed": false,
+      "renameVerified": true
+    },
+    {
+      "index": 10,
+      "threadId": "019f7378-39aa-7d31-9c16-782deaa8d92b",
+      "oldTitle": "Can you tell me what the chat in here is all about, and then can you tell if I've already used Codex or called on in this folder ever?",
+      "finalTitle": "🌊 Broadside AI Kitbashing Chat Recovery and Tool Audit",
+      "confidence": "High",
+      "rationale": "Recovered the Broadside AI-kitbashing discussion and audited earlier agent tool usage.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 11,
+      "threadId": "019f734c-3913-7d53-b4b5-ab57f9302442",
+      "oldTitle": "Can you review and search and find for me? Do you understand what agents view is?",
+      "finalTitle": "🛰️ AgentsView Architecture and Homelab Placement Review",
+      "confidence": "High",
+      "rationale": "Distinguished AgentsView architectural placement from an already-approved deployment.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 12,
+      "threadId": "019f7354-b58a-7b30-8b47-99a59d37fa7d",
+      "oldTitle": "Can you reason across? Look at what's in this folder, and then reason across all my other git projects, including my git remotes. Did we replace this repo, and was everything unique about it?",
+      "finalTitle": "🧭 Semantic Planner Replacement and Unique-History Audit",
+      "confidence": "High",
+      "rationale": "Established that Semantic Planner retained unique history and was not safely replaceable.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 13,
+      "threadId": "019f711a-b105-7523-9a70-dc1058ff5081",
+      "oldTitle": "can you confirm and ensure this windows computer is set up to prefer the wired connection when it's connected? and why isn't it connected now",
+      "finalTitle": "🌐 Windows Ethernet DHCP and Agent-Change Investigation",
+      "confidence": "High",
+      "rationale": "Diagnosed Ethernet DHCP failure and investigated whether prior agent changes caused it.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 14,
+      "threadId": "019f7103-c380-7a41-a7eb-c18e2880055b",
+      "oldTitle": "propose a method to critique this agent's recent work: \"",
+      "finalTitle": "🌊 Broadside Warship Rigging Deliverables Critique Plan",
+      "confidence": "Medium",
+      "rationale": "Defined a critique method for Broadside warship-rigging deliverables; execution remained incomplete.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 15,
+      "threadId": "019f6f03-7447-7820-9cec-4d06d4c905bb",
+      "oldTitle": "pasted text file: C:\\Users\\pmacl\\.codex\\attachments\\dd71ef6b-bc5e-422b-910a-f16b56848ffa\\pasted-text-1.txt. Read this file before continuing.",
+      "finalTitle": "🌊 Broadside Shipyard Ownership and Implementation Recovery",
+      "confidence": "High",
+      "rationale": "Recovered Broadside Shipyard implementation after engine-ownership and orchestration confusion.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 16,
+      "threadId": "019f6dce-043a-75c2-ace9-a54158a705dd",
+      "oldTitle": "A previous agent produced the plan below to accomplish the user's task. Implement the plan in a fresh context. Treat the plan as the source of user intent, re-read files as needed, and carry the work through implementation and verification.\n\n# Project Broadside Tactical Naval Combat — Four-Stage Plan\n\n## Summary\n\nBuild an admiral-level surface-combat game with formation orders, pause, `1×/2×/4×/8×` time compression, fire-control solutions, armor and compartment damage, and eventually 24-versus-24 battles. The design is informed by the documented gameplay of [Ultimate Admiral: Dreadnoughts](https://dreadnoughts.ultimateadmiral.com/index.html), [Rule the Waves 3](https://www.matrixgames.com/product/rule-the-waves-3), and the [War on the Sea manual](https://cdn.steamstatic.com/steam/apps/1280780/manuals/WarOnTheSea_Manual.pdf); it does not assume their internal implementation.\n\nThe first roster will be a 1910s technology-band sandbox:\n\n- Fleet A: Gangut, Nino Bixio, Okhotnik.\n- Fleet B: Kawachi, Novik, Smith.\n- This is a mechanics sandbox, not a claimed historical engagement.\n- Stage 4 is the eventual 24v24 endgame target, not the initial implementation size.\n\nBefore battle work starts, preserve the current NavalForge import in a Plastic SCM changeset through the Unity Version Control GUI. The workspace is not Git and `cm.exe` is unavailable.\n\n## Verified Asset and Transformation Policy\n\nThe ships entered Unity through four distinct steps:\n\n1. One GLB per ship was copied into `Assets/NavalForge/Ships/SourceModels`; the redundant OBJ ZIP bundles were excluded.\n2. [glTFast 6.14.1](https://docs.unity3d.com/Packages/com.unity.cloud.gltfast@6.14/manual/index.html) imported the GLBs as Unity model assets.\n3. The tracked Editor builder created identity-root wrapper prefabs, applied `ModelScale = 15`, attached metadata, and generated the catalog scene.\n4. MCP for Unity was used to compile, run the builder, inspect the live Editor, count assets, validate materials, and capture ",
+      "finalTitle": "🌊 Broadside Stage 1 Implementation and Orchestration Review",
+      "confidence": "Medium",
+      "rationale": "Reviewed Stage 1 implementation plus orchestration failures across a multi-pivot Broadside task.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 17,
+      "threadId": "019f6ccd-20bb-7b20-8f30-367ede4f9c38",
+      "oldTitle": "pasted text file: C:\\Users\\pmacl\\.codex\\attachments\\a3ca5665-1e29-42e1-a42c-1770677cbc14\\pasted-text-1.txt. Read this file before continuing.",
+      "finalTitle": "🔐 ColdVault Broker Restrictions and Local-Model Scope Drift",
+      "confidence": "High",
+      "rationale": "Separated intended ColdVault broker restrictions from unauthorized local-model scope drift.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 18,
+      "threadId": "019f6e16-5f31-7442-a7d5-4df9304b7891",
+      "oldTitle": "Let's make a plan to finish fetching and organizing the rest of my Google Docs, Google Sheets, etc., from Google and organize them here in my local. We're mostly persisting them and trying to sort them for project broadside, which means searching for naval or gunnery, etc. You can sample some of the docs and see what the categories should be, and then you should focus and meditate on that. This plan will be executed. Write it exclusively in your plan. You will be dispatching as many parallel sub-agents as possible.",
+      "finalTitle": "🌊 Broadside Google Drive Dedupe and Fetch Pipeline",
+      "confidence": "High",
+      "rationale": "Designed Broadside Google Drive deduplication and a resumable document-fetch pipeline.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 19,
+      "threadId": "019f6e17-5bca-7283-b4f8-cb99153c5b39",
+      "oldTitle": "Can you search the web and then keep all the current experimental configurations in Codex specifically for sub-agents? I want to raise the sub-agent limits.",
+      "finalTitle": "🤖 Codex Multi-Agent Fan-Out and Depth Limits",
+      "confidence": "High",
+      "rationale": "Reconciled Codex multi-agent enablement, fan-out, and nesting-depth configuration.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 20,
+      "threadId": "019f2d94-983d-7370-ab18-385a396cd70b",
+      "oldTitle": "Check project status",
+      "finalTitle": "🧪 Polaris Reviewer Letta Repivot and Deployment Blockers",
+      "confidence": "High",
+      "rationale": "Identified Polaris Reviewer's Letta repivot and remaining deployment blockers.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 21,
+      "threadId": "019f6dcf-c8e1-71d3-834e-ca186378834c",
+      "oldTitle": "Audit skill toggles",
+      "finalTitle": "🧰 Codex Superpowers 6.1.1 Skill Configuration Audit",
+      "confidence": "High",
+      "rationale": "Audited the installed Superpowers release and per-skill Codex configuration behavior.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 22,
+      "threadId": "019f6cfc-3c1a-7a42-acd1-d414a536a603",
+      "oldTitle": "Can you install this for cursor for Claude for OpenAI Codex, but just project-scoped?  You are right about the key naming and product-status issue.\n\n## Revised position\n\n* **The old commercial Coplay assistant should be removed from the briefing.** Whatever its legacy website still says, Aura is the current product to evaluate.\n* **`CoplayDev/unity-mcp` is different.** That open-source repository remains active, but it should be called **MCP for Unity**, not “Coplay MCP.”\n* **Aura supports BYOK in the current application**, so my earlier criticism about model lock-in and mandatory bundled inference is invalid.\n* **Yes: at a cash outlay of about $15, Aura is worth testing.** I would not yet declare it your permanent Unity environment, but the trial economics are overwhelmingly favorable.\n\nThe public pricing page currently shows the Indie plan at a promotional **$10/month rather than $15**, normally $20, and includes $15 of premium-model credit. It also provides a two-week trial with $10 of premium credit. ([Aura][1])\n\n# First: untangle the three confusing names\n\n| Name                 | What it actually means                                                   | Current treatment                                  |\n| -------------------- | ------------------------------------------------------------------------ | -------------------------------------------------- |\n| **Coplay assistant** | Old proprietary in-editor commercial agent                               | Superseded by Aura; drop it                        |\n| **Coplay MCP**       | Proprietary MCP exposing the old commercial Coplay toolset               | Treat as transitional/stale until proven otherwise |\n| **MCP for Unity**    | Open-source `CoplayDev/unity-mcp`, now maintained under Aura sponsorship | Active control-plane candidate                     |\n| **Aura for Unity**   | Current proprietary desktop agent and product                            | Worth a controlled paid trial                      |\n\nThe",
+      "finalTitle": "🎮 Broadside Unity MCP Setup and NavalForge Fleet Import",
+      "confidence": "High",
+      "rationale": "Installed Broadside Unity MCP tooling and completed the NavalForge fleet import.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 23,
+      "threadId": "019f6bc5-2900-7340-9d90-80763a27d76b",
+      "oldTitle": "Find best project fit",
+      "finalTitle": "📐 GSD Core Evaluation for Agentic Project Delivery",
+      "confidence": "High",
+      "rationale": "Evaluated GSD Core as the structured agentic delivery framework for the user's projects.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 24,
+      "threadId": "019f6cca-cdfa-7832-a803-3ef8dbec4b0f",
+      "oldTitle": "pull the current head of this project",
+      "finalTitle": "🔐 ColdVault Main Update and Stale-Branch Reconciliation",
+      "confidence": "High",
+      "rationale": "Updated ColdVault main and reconciled stale or leftover branch state.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 25,
+      "threadId": "019f69e2-c975-7af2-bcde-18f851b96ff7",
+      "oldTitle": "A previous agent produced the plan below to accomplish the user's task. Implement the plan in a fresh context. Treat the plan as the source of user intent, re-read files as needed, and carry the work through implementation and verification.\n\n# Independent G1–G5 Fleet Investigation\n\n## Summary\n\n- Create a standalone Git repository in `D:\\_projects\\ProjectBroadsideFastTRy`; import no code, assumptions, or artifacts from other Project Broadside work.\n- Run G1 independently through Codex and Claude Code using dedicated Blender 5.1 processes.\n- After G1, stage read-only copies of all 25 GLBs from `G:\\My Drive\\navalforge\\assets\\source-3d`.\n- Run G2 across all 25 ships through both stacks, then objectively select the three easiest models for G3–G5.\n- Run G3–G5 on those three ships through both stacks using parallel sub-agents, separate Blender instances, separate ports, and isolated artifact trees.\n- Do not impose token or rollout budgets. Completion and artifact validation are the stop conditions.\n\n## Implementation\n\n1. **Isolated runtime and durability**\n   - Initialize Git on `main`; configure Git LFS for evidence PNGs.\n   - Create a `uv`-locked Python environment using `mcp==1.12.4`, `pytest`, and JSON-schema validation.\n   - Implement a small local stdio MCP adapter for Blender’s installed official bridge. It connects to a worker-specific loopback port and exposes:\n     - `blender_execute`\n     - `blender_runtime_info`\n     - `blender_capture_viewport`\n     - `blender_render`\n   - Unit-test null-delimited bridge framing, timeouts, error propagation, structured results, and literal MCP `tools/list`.\n   - Launch only new spike-owned Blender processes; never connect to existing Blender windows or the MCP executable registered from another checkout.\n   - Allocate each concurrent worker a free port from `19876–19899` and record the lease in the run manifest.\n\n2. **G1 environment gate**\n   - Dispatch one Codex worker and one Claude Code worker concurrently, each with a dedi",
+      "finalTitle": "🌊 Broadside G1–G5 Fleet Investigation Completion Handoff",
+      "confidence": "Medium",
+      "rationale": "Recorded completion of the independent Broadside G1-G5 fleet investigation.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 26,
+      "threadId": "019f6bf8-5753-7d62-9cb5-4cb5364f51d8",
+      "oldTitle": "Plan Google Drive organization",
+      "finalTitle": "📁 Content-First Google Drive Reorganization System Plan",
+      "confidence": "High",
+      "rationale": "Designed a content-first system for reorganizing Google Drive.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 27,
+      "threadId": "019f6b25-bcf1-7991-bd1c-3e72ee643f67",
+      "oldTitle": "Find interrupted work",
+      "finalTitle": "🛟 Cross-Agent Crash Recovery and Chat-History Tooling",
+      "confidence": "High",
+      "rationale": "Recovered interrupted multi-agent work and produced deterministic chat-history tooling.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 28,
+      "threadId": "019f6b28-46fb-7cf3-9274-8264c41ffd22",
+      "oldTitle": "Review project scope",
+      "finalTitle": "🔎 ColdSearch Bright Data Evaluation and Project Audit PR",
+      "confidence": "High",
+      "rationale": "Audited ColdSearch, evaluated Bright Data, and captured the resulting project PR.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 29,
+      "threadId": "019f6b30-b10d-7270-ac5f-4631bd149c58",
+      "oldTitle": "Design rules and platform split",
+      "finalTitle": "🧊 frozenSkillz Control Plane and Platform Delivery Plans",
+      "confidence": "High",
+      "rationale": "Defined frozenSkillz control-plane architecture and platform-delivery plans.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 30,
+      "threadId": "019f6a29-80fb-7f70-8062-aa44e61cd446",
+      "oldTitle": "Can you go ahead and search around for the configuration for the MCP server pencil, and then remove that everywhere you find it and tell me which MCP servers are configured for all of the tooling? I feel like we have too many configuration files and backups of configuration files everywhere. Can you enumerate those where you find them?",
+      "finalTitle": "🧹 Pencil MCP Cleanup and AI Tooling Configuration Forensics",
+      "confidence": "High",
+      "rationale": "Removed Pencil MCP configuration and expanded the work into AI-tooling configuration forensics.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 31,
+      "threadId": "019f6a66-3d02-7971-bb54-3ff16286766a",
+      "oldTitle": "A previous agent produced the plan below to accomplish the user's task. Implement the plan in a fresh context. Treat the plan as the source of user intent, re-read files as needed, and carry the work through implementation and verification.\n\n# Complete G2–G5 with Codex Subagents\n\n## Summary\n\n- Reuse the completed 25-ship G2 measurements; do not rescan or duplicate them.\n- Record the objective selection as `st-clair`, `novik`, and `tachibana`.\n- Dispatch three Codex subagents concurrently, one per ship. Each owns that ship through G3, G4, and G5 so geometric context is preserved.\n- Produce one authoritative artifact set per ship. This is information gathering, not a Codex-versus-Claude comparison.\n\n## Execution\n\n- The coordinator validates the existing G2 JSON/source hashes and writes `selection.json` using the prescribed ranking fields.\n- Each ship agent receives a fresh GLB copy, isolated directory, Blender process, and port:\n  - G3: identify every major object—the ten largest plus every object containing at least 1% of ship triangles—and render each highlighted in place. Ambiguous identities remain `unknown` unless an additional view resolves them.\n  - G4: create `graph.json` and `graph.md` covering every imported mesh object. Component IDs must be unique; symmetry links reciprocal; numeric measurements finite or `null`; uncertain roles use `unknown` with reasons.\n  - G5: identify the separable hull from geometry and G3 evidence, or explicitly measure the whole-ship envelope when separation is impossible. Export LOA, beam, midbody range, `deck_edge.csv`, coordinates, and five section images/data files at 10%, 30%, 50%, 70%, and 90% LOA.\n- Required ship outputs:\n  - `pieces.md` plus saved scripts and highlighted renders.\n  - `graph.json` and `graph.md`.\n  - `hull.md`, `deck_edge.csv`, hull coordinates, and exactly five section datasets/images.\n  - Command transcript, source hash, reproducibility metadata, and final `## Uncertainties` sections.\n- The coordinator rev",
+      "finalTitle": "🌊 Broadside G2–G5 Shared-Scale Correction Handoff",
+      "confidence": "High",
+      "rationale": "Captured the Broadside G2-G5 shared-scale defect and correction handoff.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 32,
+      "threadId": "019f69c3-37cd-7a03-b9d5-6d5c6c9d2c63",
+      "oldTitle": "Is this really true? You have very little control about what model your sub-agents run in Codex?",
+      "finalTitle": "🤖 Codex Subagent Tracing and AgentsView Telemetry",
+      "confidence": "Medium",
+      "rationale": "Conversation evolved from subagent model inheritance into tracing and AgentsView telemetry architecture.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 33,
+      "threadId": "019f5cf7-4a47-75c0-bc6e-0830f784db33",
+      "oldTitle": "can you begin searching to determine if this is a good price on a 4TB SSD with s",
+      "finalTitle": "💾 4TB SSD, HDD, and SAS Homelab Storage Research",
+      "confidence": "High",
+      "rationale": "Expanded 4 TB SSD research into HDD, SAS HBA, Mach.2, and broader homelab storage analysis.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 34,
+      "threadId": "019f6995-f928-7581-aaed-c335d49c31b8",
+      "oldTitle": "A previous agent produced the plan below to accomplish the user's task. Implement the plan in a fresh context. Treat the plan as the source of user intent, re-read files as needed, and carry the work through implementation and verification.\n\n# MooseGooseBusiness Honest Operations Documentation Plan\n\n## Summary\n\nReconcile the workspace into a balanced operating manual for records custody, MooseGoose administration, money and cash flow, personal financial administration, compliance/tax, and automation/recovery.\n\nThis is documentation-only: it will not deploy Claude tasks, alter ledgers, file returns, move records, or create a personal ledger. It will document those capabilities truthfully and provide decision-complete runbooks for future manual or automated operation.\n\nKeep the established lightweight authority model. Do not create `NORTH_STAR`, architecture, PROGRESS, or ADR stacks.\n\n## Authority and Status Model\n\n- `README.md` owns workspace identity, authority, and a balanced capability matrix showing:\n  - current behavior;\n  - operational status;\n  - evidence and last verified date;\n  - intended behavior;\n  - governing runbook.\n- Use controlled operational statuses:\n  - **Current** — successfully executed with durable evidence.\n  - **Manual-only** — proven manually; no automation.\n  - **Planned** — approved procedure/specification without an operational run.\n  - **Unverified** — configuration or execution is claimed but lacks proof.\n  - **Not implemented** — desired capability has no implementation.\n  - **Blocked** — a named owner or external prerequisite prevents execution.\n- Separate artifact status from capability status. Prompt files may be current specifications while their automation remains Planned/Unverified.\n- `MooseGoose_Operating_Plan.md` becomes the stable target operating model across all lanes; remove stale current-state, deadline, and “mostly automated” claims.\n- `PROCESS.md` retains data flow, authorities, schemas, evidence rules, classification ru",
+      "finalTitle": "💼 MooseGoose Operations Docs and MoneyOps Recovery Plan",
+      "confidence": "High",
+      "rationale": "Documented MooseGoose operations and identified the MoneyOps recovery lane.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 35,
+      "threadId": "019f69be-e6f0-7b10-adfe-a747149e7c3a",
+      "oldTitle": "To me, it feels like executing this plan is fairly trivial. I will give you the path as well to where the 3D models live. You can copy your own fresh copies here to make sure you don't mangle the originals.   Investigation Goals: Make the Agents Enumerate\n\nThese are paste-ready /goal prompts. Nothing here edits a ship. Every goal orders an agent to\ninvestigate, enumerate, and write its findings to a named artifact. Run each goal on at least two\nstacks (Codex and Claude Code) against the same files, then diff the artifacts: agreement builds\nconfidence, disagreement localizes exactly where understanding breaks. That analysis is the\nproduct of this phase.\n\nRules for every run: read-only on sources, work from copies, one MCP client per Blender\ninstance, subscription clients only, set a token/rollout budget per goal. Every artifact ends\nwith an uncertainties section: what the agent could not determine, and why. An honest \"could\nnot determine\" is a finding; a confident guess is a defect.\n\nReplace <FLEET_DIR>, <SHIP>, and <OUT> before use.\n\n\nG1. Runtime interrogation\n\n\n/goal Establish the ground truth of this working environment and write it to\n<OUT>/runtime_report.md. Determine and record: the exact Blender version and whether it is\na 5.x-format build; the Python version embedded in Blender; which MCP server(s) are installed,\nand the FULL list of tools each actually exposes, verified by listing them through the\nprotocol, not by quoting documentation; whether viewport capture and render-to-path both\nproduce a real image file on this machine (attach one of each); whether headless\nblender -b --python runs and can render; GPU and backend in use. Verified by every claim\nin the report being backed by a command you ran and its output, quoted in the report. Preserving\neverything: read-only, no scene mutations beyond a throwaway default cube. If blocked on\nany capability, record the exact error verbatim and continue; missing capabilities are\nfindings.\n\n\n\nG2. File forensics (per sh",
+      "finalTitle": "🌊 Broadside Independent G1–G5 Fleet Investigation Plan",
+      "confidence": "Medium",
+      "rationale": "Preserved the initial independent Broadside G1-G5 investigation plan separately from later completion and correction tasks.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 36,
+      "threadId": "019f69b6-69dc-74b3-86ed-3d23bbb472f0",
+      "oldTitle": "Can you clone down my repo? It's my new repo called coldaine-homelab.",
+      "finalTitle": "🏠 Clone and Verify the coldaine-homelab Repository",
+      "confidence": "High",
+      "rationale": "Cloned coldaine-homelab and verified its clean tracking state.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 37,
+      "threadId": "019f6996-0aa4-7c20-8b30-4cd38c34a7e1",
+      "oldTitle": "A previous agent produced the plan below to accomplish the user's task. Implement the plan in a fresh context. Treat the plan as the source of user intent, re-read files as needed, and carry the work through implementation and verification.\n\n# Build the Reusable X-Celerator Diagnostic Runtime\n\n## Summary\n\nThe PowerShell prompts stop here. They were an execution harness around Gate A, not product architecture.\n\nPR #6 will become the integrated RoccatMouse diagnostic tool: one reusable runtime shared by the tray, transparent overlay, qualification workflow, CLI, persistence, export, and later analysis. The unattended capture is retained only as uncontrolled evidence and cannot qualify the overlay.\n\n## Architecture\n\n```text\nTray / Configurator / CLI\n          ↓\nDiagnosticController\n          ↓\nDiagnosticRuntime + DeviceSessionArbiter\n          ├─ DeviceControl / RawModeLifecycle\n          ├─ RawAcceleratorSource (MI_03)\n          ├─ RawInputSource (Windows output)\n          ├─ RollingBuffer + RawAggregator\n          └─ MarkerWindowRecorder\n                    ↓\n           TelemetryWriter → SQLite\n                    ↓\n        DiagnosticSnapshot → OverlayWindow\n```\n\n- `DiagnosticRuntime` is platform-neutral, thread-safe, and owns the entire session lifecycle. No UI directly opens HID devices.\n- `DeviceSessionArbiter` permits exactly one normal/raw hardware session. Opening the overlay cleanly pauses normal observation and resumes it after verified raw cleanup.\n- Extract `RawAcceleratorSource` from `tyon_monitor.py`; the CLI becomes a thin client of the same runtime.\n- Add public types:\n  - `RuntimeMode`: stopped, normal, qualifying, live_raw, recovering, error.\n  - `DeviceIdentity`: stable HID identity distinct from mutable profile fingerprints.\n  - `DiagnosticStatus`: session, lifecycle, persistence, cleanup, and error state.\n  - `DiagnosticSnapshot`: raw value, sample age/rate, arithmetic baseline delta, last Windows output, marker status, and stream health.\n  - `Qual",
+      "finalTitle": "🖱️ RoccatMouse X-Celerator Diagnostic Runtime PR #6 Handoff",
+      "confidence": "High",
+      "rationale": "Captured the RoccatMouse X-Celerator diagnostic-runtime implementation and PR #6 handoff.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 38,
+      "threadId": "019f683e-01ce-7081-9b42-094951085d58",
+      "oldTitle": "A previous agent produced the plan below to accomplish the user's task. Implement the plan in a fresh context. Treat the plan as the source of user intent, re-read files as needed, and carry the work through implementation and verification.\n\n# Repivot RoccatMouse with Windows First and Linux as a Stretch Goal\n\n## Summary\n\nUse the existing Windows project as the product base. It is the easiest lift because its Python/PySide6 configurator already works with this Tyon on Windows 11 and contains the Windows-specific Telephony HID routing we verified.\n\nStudy all three implementations together rather than re-deriving the protocol:\n\n- [roccat-tyon-rgb](https://github.com/RandolfHellmann/roccat-tyon-rgb): primary Windows/Python configurator base.\n- [RoccatTyon](https://github.com/britus/RoccatTyon): newer Qt/C++ Linux/macOS controller with calibration and a useful platform-device abstraction.\n- [roccat-tools](https://github.com/ngg/roccat-tools): comprehensive historical Tyon protocol and calibration reference.\n\nShip Windows diagnostics first. Design internal interfaces so Linux can be added later, but do not require Linux implementation or parity in the current scope.\n\n## Source Study and Reuse\n\n- Clone all three repositories into a gitignored `.references/` workspace during implementation and pin their exact commits in `docs/source-audit.md`.\n- Produce a comparison matrix covering device discovery, HID routing, report structures, profiles, buttons, macros, calibration, special reports, input monitoring, and platform-specific behavior.\n- Retain the full MIT Windows configurator and its Git history as our downstream product base.\n- Reuse and reorganize Windows code directly where useful.\n- Use the Linux projects’ device abstractions, algorithms, and behavior as implementation references. Do not vendor GPL source into the distributable Windows product during this phase.\n- Keep the current MIT license for the Windows milestones. Make direct GPL code reuse and any resulting re",
+      "finalTitle": "🖱️ Roccat Tyon Attribution Failure and Raw Overlay Plan",
+      "confidence": "High",
+      "rationale": "Found a critical telemetry-attribution gap and designed a live raw X-Celerator overlay.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 39,
+      "threadId": "019f693b-1033-7131-9558-5c5e687f69a7",
+      "oldTitle": "A previous agent produced the plan below to accomplish the user's task. Implement the plan in a fresh context. Treat the plan as the source of user intent, re-read files as needed, and carry the work through implementation and verification.\n\n# MooseGooseBusiness Reorganization Plan\n\n## Summary\n\nReorganize `D:\\_nonGitprojects\\MooseGooseBusiness` as a self-explaining, locally version-controlled workspace covering MooseGoose business records and the personal/tax records that support them.\n\nSettled boundaries:\n\n- The workspace and repository are named **MooseGooseBusiness**.\n- `G:\\My Drive\\MoneyOps` remains the existing external source-document path; “MoneyOps” is not the repository’s identity.\n- Consulting remains one business line.\n- Business lines are `Consulting`, `Resale`, and `Inference`; Bright Data belongs to `Resale`.\n- Purchases do not prove possession or intended use. Unassigned hardware defaults to Patrick review.\n- Agents may automatically book exact, whitelisted recurring charges with direct payment evidence; all judgment calls remain Patrick’s.\n- Automation is implemented as focused scheduled prompts, not an orchestration application.\n- Git is local-only: no remote, push, or pull request.\n- Defer the item graph, ten-field status redesign, automation pipeline, and full authority-document stack.\n\n## Repository, Authority, and Durability\n\n- Initialize local Git on `main`. Before changing existing records, create a baseline commit preserving the current safe-to-track state.\n- Commit this approved plan as root-level `REORGANIZATION_PLAN.md` in a separate second commit. Link it from `README.md`; subsequent work follows phase-specific commits.\n- Add a `.gitignore` excluding receipt caches, PDFs/images containing source records, generated XLSX files, Office lock files, secret files, Doppler outputs, and temporary automation results. Original documents remain in the existing Drive source vault.\n- Configure a versioned pre-push hook that rejects all pushes and veri",
+      "finalTitle": "💼 MooseGoose Reorganization and Automation Gap",
+      "confidence": "High",
+      "rationale": "Executed MooseGoose reorganization work but exposed the gap between automation specifications and running automation.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 40,
+      "threadId": "019f67eb-0df5-7453-bb81-5faf3e0dacd4",
+      "oldTitle": "Find better price data source",
+      "finalTitle": "🛒 Techdeals Evidence Platform Build and Review Hardening",
+      "confidence": "High",
+      "rationale": "Built the Techdeals evidence-first platform foundation and reached review-hardening work.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 41,
+      "threadId": "019f67f9-5c9e-7392-bd64-ddd025d7b81a",
+      "oldTitle": "What's the EIN of MooseGoose?",
+      "finalTitle": "💼 MooseGooseBusiness Filing-System Reorganization",
+      "confidence": "High",
+      "rationale": "Conversation expanded from an EIN lookup into MooseGooseBusiness filing-system and reorganization design.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 42,
+      "threadId": "019f684c-28cc-79e1-885b-44176446183e",
+      "oldTitle": "How aligned is this project to this plan? Do you see anywhere this project is surpassing the existing plan? Can you make sure you commit any and all current changes, review them, and then open a PR?  Can you also understand that this shouldn't be a PR to Maine, but to this branch itself?  # FLEET REFINERY: Exploration Execution Plan (v0)\n\nYou are a coding agent executing this plan. Read this entire document before writing any code.\nThis document is the temporary authority for the project. Phase 0 converts it into the repo's\nauthority stack (NORTH_STAR.md, architecture.md, PROGRESS.md, AGENTS.md); after that, those\ndocuments govern and this plan lives on as `docs/workflows/refinery-plan.md`.\n\n---\n\n## 0. Mission and framing\n\n**Mission:** Convert a fleet of ~25 GLB warship models (one artist, consistent style, mostly\npart-separated hierarchies, 1895 to 1930 era) into a provenance-tracked, reusable parts library:\neach turret, funnel, mast, boat, hull, and fitting saved as a clean standalone Blender asset with\na machine-readable card recording what it is and where it came from.\n\n**Framing: this is exploration, not production.** Nobody has published results for this exact\ntask. You are expected to hit failures. A failure with a documented cause, reproduction, and a\nproposed next step is a *valid and valuable outcome*. A polished demo that hides its residue is\na failed outcome. Report numbers, not adjectives.\n\n**Explicit non-goals for v0 (do not do these even if they seem helpful):**\n- No articulation anchors, pivots, or rigging. That is round 2, after separation is trusted.\n- No new ship assembly. The library is the deliverable, not a ship.\n- No retopology, decimation, UV work, or texture generation.\n- No hero rendering. Evidence renders are diagnostic, not beautiful.\n\n---\n\n## 1. Hard constraints\n\nViolating any constraint fails the run regardless of output quality.\n\n| ID | Constraint |\n|----|-----------|\n| C1 | **Subscription-only model access.** Anthropic models are used",
+      "finalTitle": "🌊 Broadside Gangut Turret Articulation Spike PR #55",
+      "confidence": "High",
+      "rationale": "Executed the Gangut turret extraction and articulation spike and published PR #55.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 43,
+      "threadId": "019f67db-600f-7d21-95cd-8c8d4edf13c1",
+      "oldTitle": "I have a ROCCat Tyon mouse.",
+      "finalTitle": "🖱️ Roccat Tyon X-Celerator Diagnostic Tool Research",
+      "confidence": "High",
+      "rationale": "Researched Roccat Tyon tooling and repivoted toward X-Celerator diagnostic capabilities.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 44,
+      "threadId": "019f681c-d282-7561-bf86-7f27dd577561",
+      "oldTitle": "Can you run the paddle capture macro here?",
+      "finalTitle": "🖱️ Roccat Tyon Capture GUI and Public Repository PR #1",
+      "confidence": "High",
+      "rationale": "Built the compact Tyon capture GUI and published the public repository with PR #1.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 45,
+      "threadId": "019f5d60-09b4-7aa3-a3ab-b38fe0394bd3",
+      "oldTitle": "Can you take us to a new branch and then make us a plan moving forward that follows on this, the framework of this conversation? That also lays out a plan to get us to a point where we're actually running valid, useful tests in Blender that give us actual, useful results. I guess \"useful\" is the hardest part to find here.\n\nWhat I mean is that nothing we're doing so far yet is strong enough, or what we're doing is baby steps. We need to be doing the act of understanding what the capabilities of vision-language models are. What I mean by that is they can do a lot. They can actually help us guide, test, and do the things that we've outlined in this project plan.",
+      "finalTitle": "🌊 Broadside Agent-Guided Blender Mastery Plan",
+      "confidence": "Medium",
+      "rationale": "Reframed Broadside around agent-guided Blender mastery and wrote the implementation plan.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 46,
+      "threadId": "019f5d27-0100-7d92-9398-be0c91d9daa9",
+      "oldTitle": "can you tell me what the choice AliExpress commitment on this page is for or wou",
+      "finalTitle": "🛒 AliExpress Choice Protections and Counterfeit SSD Risk",
+      "confidence": "High",
+      "rationale": "Clarified AliExpress Choice protections and the absence of an authenticity guarantee for an SSD.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 47,
+      "threadId": "019f54b6-f30d-7c91-bbeb-8788093f3797",
+      "oldTitle": "Can you go ahead and do research and grab for me, off of eBay, the current best",
+      "finalTitle": "💾 eBay SSD Market Research and Proxmox Storage Sizing",
+      "confidence": "High",
+      "rationale": "Combined eBay SSD market research with Proxmox and homelab storage sizing.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 48,
+      "threadId": "019f4d21-823c-7b22-a177-cc143b52532f",
+      "oldTitle": "Review and land branches",
+      "finalTitle": "🖥️ Comet KVM Native OCR Integration and PR #22",
+      "confidence": "High",
+      "rationale": "Landed Comet KVM native OCR integration and the associated PR #22 work.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 49,
+      "threadId": "019f4cf7-899b-7d63-afc6-928fc83a5bd0",
+      "oldTitle": "Audit PRs and cluster status",
+      "finalTitle": "🔐 k8cluster Audit and Unauthorized Doppler Migration",
+      "confidence": "High",
+      "rationale": "Cluster/PR auditing crossed into an unauthorized Doppler workspace migration; the scope failure became the consequential outcome.",
+      "changed": true,
+      "renameVerified": true
+    },
+    {
+      "index": 50,
+      "threadId": "019f4cd9-5019-7dd1-96cc-18c7bf416501",
+      "oldTitle": "Disable Ubiquiti SSH blocking",
+      "finalTitle": "🛡️ UniFi SSH IPS False-Positive Suppression and Docs",
+      "confidence": "High",
+      "rationale": "Diagnosed and suppressed a UniFi IPS SSH false positive, verified connectivity, and documented the operational exception.",
+      "changed": true,
+      "renameVerified": true
+    }
+  ]
+}

@@ -162,6 +162,10 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
         self.assertNotIn("not-title-mutable", skill_text)
         self.assertIn("bounded inventory", skill_text)
         self.assertIn("partial coverage", skill_text)
+        self.assertIn("all pinned conversations", skill_text)
+        self.assertIn("50 most recent non-pinned conversations", skill_text)
+        self.assertIn("not repositories", skill_text)
+        self.assertIn("not the complete sidebar or account history", skill_text)
         # A bounded listing must never be reported as a complete one: the
         # coverage status travels with the total.
         self.assertIn("coverage status", skill_text)

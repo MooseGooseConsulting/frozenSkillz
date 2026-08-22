@@ -18,9 +18,26 @@ Organize the conversations the Codex app exposes from their actual conversation 
 - Packaging is Codex-only: the source lives in frozenSkillz's dedicated Codex package and is not auto-installed with every skill.
 - A periodic Codex automation is the mechanism for recurring organization; the skill is not a background daemon.
 
+## What the native 50-item limit means
+
+The native `list_threads` operation's `limit` applies to **non-pinned
+conversations**, not repositories. With `limit: 50`, it returns all pinned
+conversations in full **plus up to 50 most recent non-pinned conversations**,
+in recency order. Either set can contain Codex or ChatGPT conversations.
+
+- Thus, an inventory can contain more than 50 entries: for example, eight pins
+  plus a full 50-entry non-pinned page is a 58-conversation inventory.
+- “50” never means 50 repositories, 50 Codex tasks, or all ChatGPT history.
+- A returned ChatGPT conversation should be read by its returned ID, but a
+  stale or unavailable individual ID is an explicit per-entry coverage gap. The
+  native title operation may still reject a readable ChatGPT conversation; that
+  is a title-capability distinction, not a visibility distinction.
+- Unless pagination or a load-more capability is available and exhausted, this
+  is a bounded, partial view—not the complete sidebar or account history.
+
 ## Workflow
 
-1. **Inventory every accessible sidebar conversation.** Use the native list operation before filtering by kind. Record task ID, kind, host ID, current title, update time, working directory, project ID, and summary or preview. Never exclude ChatGPT conversations, pinned conversations, or another returned kind merely because it is not a Codex task. If the operation has a page, cursor, or load-more control, exhaust it. If its maximum result count prevents that, record a `bounded inventory` with `partial coverage`, state the exact limit, and never describe the result as “all chats.”
+1. **Inventory every accessible sidebar conversation.** Use the native list operation before filtering by kind. Record task ID, kind, host ID, current title, update time, working directory, project ID, and summary or preview. Never exclude ChatGPT conversations, pinned conversations, or another returned kind merely because it is not a Codex task. Apply the native-limit semantics above: `limit: 50` means 50 most recent non-pinned conversations plus all pinned conversations, not repositories. If the operation has a page, cursor, or load-more control, exhaust it. If its maximum result count prevents that, record a `bounded inventory` with `partial coverage`, state the exact limit and pinned count, and never describe the result as “all chats.”
 2. **Classify title capability.** For each inventoried conversation, determine whether the native title operation supports its kind. Mark supported targets `title-mutable`; mark unsupported targets `not title-mutable` with the exact failed operation or missing capability. A request to organize or rename “all chats” scopes every accessible conversation; it does not authorize silently shrinking that scope.
 3. **Form tentative workstream clusters.** Use repository identity, project, branch, pull request, issue, artifact, and semantic goal. A working directory is a routing clue, not proof that tasks belong together.
 4. **Read the actual conversation bodies.** For every task being classified or renamed, identify the opening request, later changes of scope, delivered outcome, concrete required action, user acceptance or dispute, and references to successor tasks or durable artifacts.

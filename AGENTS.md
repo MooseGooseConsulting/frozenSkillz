@@ -2,6 +2,21 @@
 
 This file is only an entrypoint. Repository policy and procedures live in the documents below; load only the sources relevant to the task.
 
+## Agent Instruction Placement
+
+- When the user asks to change the instructions or behavior of a named or
+  currently active skill, edit that skill's existing `SKILL.md`. Do not use the
+  root `README.md` as a substitute; change it only when the user explicitly asks
+  for repository README documentation.
+
+## Skill Intent Records
+
+When creating or materially revising a skill, read
+`_incubator/frozen-skills/skills/skill-authoring/SKILL.md`. It owns the
+repository's agent-facing skill-authoring guidance, including how to create or
+update the adjacent human-only intent `README.md`. Keep this root file as a
+router instead of duplicating that guide here.
+
 | Task | Source |
 |---|---|
 | Understand the repository and package layout | `README.md` |

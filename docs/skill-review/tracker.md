@@ -18,6 +18,7 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `pdm-cli-operations` | active | Live-qualified 2026-07-20; 2026-08-10 removed mandatory Doppler handoff for trusted launchers with opaque authentication. |
 | `codex-thread-organizer` | active | Codex-only dedicated package; direct-rename contract (invocation = authorization; proposal gate removed 2026-07-31). Scope is the whole Codex-app sidebar: every conversation kind is inventoried and classified `title-mutable` / `not title-mutable`, and only the mutable ones are renamed. |
 | `skill-injector` | registered, dormant/untested | Qualify end-to-end or de-register; internal rename from skill-classifier unfinished. |
+| `skill-authoring` | gated | New 2026-08-22. Repo-specific thin router for creating or materially revising skills; routes README work to a human-intent guide covering intended response, activation context, opinionated workflow lanes versus neutral reference lanes, causal instruction design, and optional failure-mode rationale. Complete the owner grilling session and forward-test a new skill before promotion. |
 | `plugin-authoring-guide` | gated | Rework; re-verify against current Claude Code docs. |
 | `mcp-deployment-guide` | gated | Re-verify config paths + `mcp/` templates at repo root. |
 | `agent-config-megaref` | gated | Light update; reconcile against `D:\_projects\llm-archiver` (canonical for per-tool config paths). |

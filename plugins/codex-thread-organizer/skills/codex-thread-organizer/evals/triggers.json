@@ -1,6 +1,6 @@
 {
   "skill": "codex-thread-organizer",
-  "notes": "Codex-app routing cases. Positives cover every conversation the Codex app's sidebar exposes, body-derived titles, same-repository relevance, and scheduled organization. A ChatGPT-history request triggers whether or not the user names the sidebar: the skill inventories those conversations and reports them as `not title-mutable` rather than staying silent and letting an agent improvise. Negatives protect other clients (Claude Code, Cursor, Gemini, browser tabs), generic Git cleanup, and ordinary conversation summaries. The held_out split is the final untouched test set, matching the repository's active-skill eval convention.",
+  "notes": "Unified conversation-organization routing cases. Positives cover Codex sidebar work, ChatGPT web history/Projects, body-derived titles, relationship clustering, and scheduled Codex maintenance. ChatGPT mutation requires a proposal and approval; a browser extension or unrelated client session naming does not. Negatives protect generic Git cleanup, ordinary summaries, Gmail, and other client-specific session labels. The held_out split remains untouched until validation.",
   "train": [
     {
       "query": "Review and rename my recent Codex tasks from the full conversation bodies",
@@ -35,6 +35,10 @@
       "should_trigger": true
     },
     {
+      "query": "Read 30 ChatGPT chats, group them into Projects, and propose clear emoji titles before changing anything",
+      "should_trigger": true
+    },
+    {
       "query": "Add emoji names to my Claude Code sessions",
       "should_trigger": false
     }
@@ -63,6 +67,10 @@
     {
       "query": "Archive old Gmail threads",
       "should_trigger": false
+    },
+    {
+      "query": "Move my ChatGPT conversations into Projects without reading their bodies",
+      "should_trigger": false
     }
   ],
   "held_out": [
@@ -77,6 +85,10 @@
     {
       "query": "Build a browser extension that renames chat tabs",
       "should_trigger": false
+    },
+    {
+      "query": "Compare ChatGPT conversations for continuations, duplicates, and corrections, then propose Project moves",
+      "should_trigger": true
     }
   ]
 }

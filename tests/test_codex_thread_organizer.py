@@ -11,8 +11,11 @@ SKILL_NAME = "codex-thread-organizer"
 SHARED_PLUGIN_ROOT = ROOT / "plugins" / "frozen-skills"
 ORGANIZER_PLUGIN_ROOT = ROOT / "plugins" / "codex-thread-organizer"
 SKILL_ROOT = ORGANIZER_PLUGIN_ROOT / "skills" / SKILL_NAME
-TITLE_GRAMMAR = SKILL_ROOT / "references" / "title-grammar.md"
-CROSS_TASK_REVIEW = SKILL_ROOT / "references" / "cross-task-review.md"
+CONVERSATION_ANALYSIS = SKILL_ROOT / "references" / "conversation-analysis.md"
+EMOJI_TAXONOMY = SKILL_ROOT / "references" / "semantic-emoji-taxonomy.md"
+TITLE_RULES = SKILL_ROOT / "references" / "title-rules.md"
+CODEX_ADAPTER = SKILL_ROOT / "references" / "codex-sidebar-adapter.md"
+CHATGPT_ADAPTER = SKILL_ROOT / "references" / "chatgpt-web-adapter.md"
 PERIODIC_AUTOMATION = SKILL_ROOT / "references" / "periodic-automation.md"
 TRIGGER_CASES = SKILL_ROOT / "evals" / "triggers.json"
 OPENAI_METADATA = SKILL_ROOT / "agents" / "openai.yaml"
@@ -25,37 +28,45 @@ SYNC_SPEC.loader.exec_module(sync_module)
 
 
 class CodexThreadOrganizerPackagingTests(unittest.TestCase):
-    def test_completion_and_cross_task_ownership_contract(self):
+    def test_shared_semantics_and_adapter_boundaries(self):
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
-        grammar_text = TITLE_GRAMMAR.read_text(encoding="utf-8")
-        review_text = CROSS_TASK_REVIEW.read_text(encoding="utf-8")
+        analysis_text = CONVERSATION_ANALYSIS.read_text(encoding="utf-8")
+        taxonomy_text = EMOJI_TAXONOMY.read_text(encoding="utf-8")
+        title_text = TITLE_RULES.read_text(encoding="utf-8")
+        codex_text = CODEX_ADAPTER.read_text(encoding="utf-8")
+        chatgpt_text = CHATGPT_ADAPTER.read_text(encoding="utf-8")
         automation_text = PERIODIC_AUTOMATION.read_text(encoding="utf-8")
         openai_text = OPENAI_METADATA.read_text(encoding="utf-8")
         readme_text = (ROOT / "README.md").read_text(encoding="utf-8")
         trigger_data = json.loads(TRIGGER_CASES.read_text(encoding="utf-8"))
 
-        for marker in ("🔴", "🟡", "✅", "⏸️", "🚧", "📌", "↪️", "🗄️"):
-            self.assertIn(marker, grammar_text)
+        for marker in ("\U0001F534", "\U0001F7E1", "\u2705", "\u23F8\uFE0F", "\U0001F6A7", "\U0001F4CC", "\u21AA\uFE0F", "\U0001F5C4\uFE0F"):
+            self.assertIn(marker, codex_text)
 
         for classification in (
-            "done",
-            "active-remaining",
-            "continued-elsewhere",
-            "parked-unclear",
+            "continues",
+            "supersedes",
+            "duplicates",
+            "corrects",
+            "related",
+            "independent",
         ):
-            self.assertIn(classification, review_text.lower())
+            self.assertIn(classification, analysis_text.lower())
 
-        combined = "\n".join((skill_text, grammar_text, review_text, automation_text))
+        combined = "\n".join((skill_text, analysis_text, taxonomy_text, title_text, codex_text, chatgpt_text, automation_text))
         combined_lower = combined.lower()
-        self.assertIn("latest relevant user request", combined_lower)
-        self.assertIn("broader project", combined_lower)
+        self.assertIn("source id", analysis_text.lower())
+        self.assertIn("detailed subject summary", analysis_text.lower())
+        self.assertIn("project", analysis_text.lower())
         self.assertIn("subagent", combined_lower)
-        self.assertIn("use sparingly", grammar_text.lower())
-        self.assertIn("lifecycle marker last", grammar_text.lower())
-        self.assertIn("attention, then retention, then relationship", grammar_text.lower())
+        self.assertIn("wait for explicit approval", chatgpt_text.lower())
+        self.assertIn("do not infer codex completion state", chatgpt_text.lower())
+        self.assertIn("60", title_text)
+        self.assertIn("unicode emoji v18.0 beta preview", taxonomy_text.lower())
+        self.assertIn("chrome proof", taxonomy_text.lower())
         self.assertIn("rename", openai_text.lower())
-        self.assertIn("renames codex tasks", readme_text.lower())
-        self.assertIn("applied markers", review_text.lower())
+        self.assertIn("chatgpt-web adapter", readme_text.lower())
+        self.assertIn("proposal-first", chatgpt_text.lower())
 
         for classification in (
             "done",
@@ -87,7 +98,6 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
             self.assertNotIn(obsolete, openai_text.lower())
 
         self.assertNotIn("proposes sparse semantic titles", readme_text.lower())
-        self.assertNotIn("proposed markers", review_text.lower())
 
     def test_skill_is_packaged_for_codex_only(self):
         skill_text = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
@@ -101,7 +111,7 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
         self.assertIn("Packaging is Codex-only", skill_text)
         self.assertIn("$codex-thread-organizer", openai_metadata)
         self.assertIn(
-            "| `codex-thread-organizer` | active | Codex-only dedicated package;",
+            "| `codex-thread-organizer` | active | Codex-only dedicated package with shared conversation semantics",
             tracker_text,
         )
 
@@ -156,23 +166,24 @@ class CodexThreadOrganizerPackagingTests(unittest.TestCase):
             (SKILL_ROOT / "evals" / "triggers.json").read_text(encoding="utf-8")
         )
 
-        self.assertIn("every accessible sidebar conversation", skill_text)
-        self.assertIn("title-mutable", skill_text)
-        self.assertIn("not title-mutable", skill_text)
-        self.assertNotIn("not-title-mutable", skill_text)
-        self.assertIn("bounded inventory", skill_text)
-        self.assertIn("partial coverage", skill_text)
+        adapter_text = CODEX_ADAPTER.read_text(encoding="utf-8")
+        chatgpt_text = CHATGPT_ADAPTER.read_text(encoding="utf-8")
+        self.assertIn("title-mutable", adapter_text)
+        self.assertIn("not title-mutable", adapter_text)
+        self.assertNotIn("not-title-mutable", adapter_text)
+        self.assertIn("bounded", adapter_text)
+        self.assertIn("partial coverage", adapter_text)
         # A bounded listing must never be reported as a complete one: the
         # coverage status travels with the total.
-        self.assertIn("coverage status", skill_text)
-        self.assertNotIn("full inventory total", skill_text)
-        self.assertNotIn("Do not apply it to ChatGPT", skill_text)
+        self.assertIn("coverage", adapter_text)
+        self.assertNotIn("full inventory total", adapter_text)
         self.assertNotIn("do not use for ChatGPT", skill_text.lower())
+        self.assertIn("approval", chatgpt_text.lower())
 
         # The 60 UTF-16 ceiling keeps its provenance; it is the only evidence
         # for the number, and it is verified for Codex targets specifically.
-        self.assertIn("60 UTF-16 code units", skill_text)
-        self.assertIn("literal trailing ellipsis", skill_text)
+        self.assertIn("60 UTF-16", adapter_text)
+        self.assertIn("conservative ChatGPT target", TITLE_RULES.read_text(encoding="utf-8"))
 
         chatgpt_queries = {
             item["query"]: item["should_trigger"]

@@ -16,7 +16,7 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `external-skill-intake` | active | None. |
 | `omc-reference` | active | None. |
 | `pdm-cli-operations` | active | Live-qualified 2026-07-20; 2026-08-10 removed mandatory Doppler handoff for trusted launchers with opaque authentication. |
-| `codex-thread-organizer` | active | Codex-only dedicated package; direct-rename contract (invocation = authorization; proposal gate removed 2026-07-31). Scope is the whole Codex-app sidebar: every conversation kind is inventoried and classified `title-mutable` / `not title-mutable`, and only the mutable ones are renamed. |
+| `codex-thread-organizer` | active | Codex-only dedicated package with shared conversation semantics and separate Codex-sidebar/ChatGPT-web adapters. Codex invocation authorizes its native direct-rename contract; ChatGPT is proposal-first and requires explicit approval before browser title or Project mutation. |
 | `skill-injector` | registered, dormant/untested | Qualify end-to-end or de-register; internal rename from skill-classifier unfinished. |
 | `plugin-authoring-guide` | gated | Rework; re-verify against current Claude Code docs. |
 | `mcp-deployment-guide` | gated | Re-verify config paths + `mcp/` templates at repo root. |

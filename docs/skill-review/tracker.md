@@ -125,6 +125,17 @@ Scouts:
   Windows-portable via `python3` → `py -3`. Recommendation if ever adopted: check that
   a spawn prompt *contains* the required contract sections rather than that it is long.
 
+- Agent session forensics — prompts for reasoning over agents (captured 2026-08-18,
+  landed 2026-08-21 via [#112](https://github.com/Coldaine/frozenSkillz/pull/112)) at
+  `_incubator/scout/2026-08-18-agent-session-forensics/`. Verbatim capture of
+  practitioner research (Squawk, Slagent, Agent Flow, `cass`, the 413K-trajectory
+  study) on forensically analyzing agent-session transcripts: separate mechanical
+  extraction (repeated-command/file-touch/edit-oscillation stats, correction-centered
+  windows) from causal interpretation (RULE MISSING vs RULE PRESENT BUT NOT APPLIED),
+  plus an 11-bucket intervention taxonomy. Raw seed material for the `skill-analysis`
+  lane; not yet a promotion candidate — no code, no distillation into a manifest or
+  case memo yet.
+
 ## Fleet effectiveness review
 
 **Process status (2026-08-10): exploratory, not a proven recurring evaluator.** The July work ran

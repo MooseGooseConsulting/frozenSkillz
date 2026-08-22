@@ -29,6 +29,7 @@ Use Doppler as a secrets injection layer. Prefer CLI-driven environment injectio
 ## Operating Rules
 
 - Do not print secret values into transcripts unless the user explicitly asks for the value.
+- Never set secret visibility to `restricted` unless the user explicitly asks; keep the default `masked` visibility.
 - Prefer storing application and workstation secrets in Doppler. CI and production systems should store only the scoped `DOPPLER_TOKEN` or platform-required bootstrap credential.
 - Document secret names, projects/configs, and injection commands; do not document secret values or one-off local token state.
 - Prefer names-only or boolean checks: `doppler secrets --only-names`, `test -n "$VAR"`, or PowerShell `if ($env:VAR)`.

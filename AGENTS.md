@@ -11,22 +11,11 @@ This file is only an entrypoint. Repository policy and procedures live in the do
 
 ## Skill Intent Records
 
-When creating or materially revising a skill, create or update that skill's
-`README.md` with its human-maintainer **response-shaping rationale**. Explain:
-
-- the model decision or response the skill's instruction design is meant to
-  evoke;
-- why its particular wording, ordering, boundaries, evidence gates, and routed
-  resources are needed to evoke that response; and
-- the tempting default behavior or demonstrated failure mode each design choice
-  is meant to prevent.
-
-Do not merely restate the skill's business purpose. This README is deliberately
-**not** agent instruction: do not route to it from `SKILL.md`, and do not put
-required runtime behavior there. `SKILL.md` is the agent-facing entrypoint
-(often a thin router); the adjacent README lets a future maintainer understand
-why the instruction design should produce the intended response before changing
-it.
+When creating or materially revising a skill, read
+`_incubator/frozen-skills/skills/skill-authoring/SKILL.md`. It owns the
+repository's agent-facing skill-authoring guidance, including how to create or
+update the adjacent human-only intent `README.md`. Keep this root file as a
+router instead of duplicating that guide here.
 
 | Task | Source |
 |---|---|

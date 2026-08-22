@@ -9,6 +9,16 @@ This file is only an entrypoint. Repository policy and procedures live in the do
   root `README.md` as a substitute; change it only when the user explicitly asks
   for repository README documentation.
 
+## Skill Intent Records
+
+When creating or materially revising a skill, create or update that skill's
+`README.md` with the human-maintainer justification: the intended outcome, the
+problem it addresses, its non-goals, and the reason its scope or design matters.
+This README is deliberately **not** agent instruction: do not route to it from
+`SKILL.md`, and do not put required runtime behavior there. `SKILL.md` is the
+agent-facing instruction entrypoint (often a thin router); the adjacent README
+preserves the human answer to “why does this skill exist?”
+
 | Task | Source |
 |---|---|
 | Understand the repository and package layout | `README.md` |

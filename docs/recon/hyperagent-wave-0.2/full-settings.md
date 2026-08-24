@@ -24,6 +24,13 @@ URL observed: `https://hyperagent.com/settings/agent-defaults#delegation`
 - `Connect apps` link to `/settings/integrations`
 - Text: “Agent can discover and prompt for new connections”
 
+Fresh model-settings captures also show:
+
+- Model & compute: GPT 5.6 Luna with a Medium reasoning combobox.
+- Subagents: DeepSeek V4 Flash.
+- Autonomy: Auto selected, Ask first alternative, and five timeout buttons.
+- Capabilities: expanded named research/browser capabilities, with the remaining categories below the visible fold.
+
 ## Home thread delegation
 
 - Scope combobox options: Do not delegate; Delegate to all my agents; Delegate to select agents.
@@ -41,3 +48,8 @@ Screenshots:
 - `screenshots/full-model-settings.png`
 - `screenshots/delegation-settings.png`
 - `screenshots/autonomy-capabilities.png`
+- `screenshots/model-settings-full-current.png`
+- `screenshots/model-settings-subagents.png`
+- `screenshots/model-settings-autonomy.png`
+- `screenshots/model-settings-capabilities.png`
+- `screenshots/model-settings-full-reasoning-open.png`

@@ -76,6 +76,12 @@ The model submenu displayed:
 - Extra high — Deeper reasoning
 - Max — Maximum capacity
 
+## Fresh model-dependent capture
+
+The current GPT 5.6 Luna parent menu showed `Model GPT 5.6 Luna`, `Reasoning effort Medium`, `Tools 12`, and `Integrations Any`.
+
+I then selected Gemini 3.7 Flash only in the unsent draft. Its parent menu showed `Model Gemini 3.7 Flash`, `Tools 12`, `Integrations Any`, and `Save as default`, with no `Reasoning effort` entry. GPT 5.6 Luna was then restored; no default was saved.
+
 ## Tools submenu (12 badge; 18 named buttons observed)
 
 - Research: Search, Find Similar, Exa Answer, Exa Research, Exa Websets, Thread Search
@@ -98,4 +104,15 @@ The model submenu displayed:
 
 The probe selected several models in an unsent draft and immediately inspected the resulting menu/settings branches. This did not invoke a model, send a thread, or save a default. Tool and integration controls were not toggled.
 
-Screenshot: `screenshots/model-catalog-latest.png`
+Screenshots:
+
+- `screenshots/model-settings-parent.png` — current model/effort/tools/integrations parent menu
+- `screenshots/model-settings-catalog.png` — latest model catalog
+- `screenshots/model-settings-anthropic.png` — Anthropic catalog
+- `screenshots/model-settings-openai.png` — OpenAI catalog
+- `screenshots/model-settings-other-providers.png` — other-provider catalog
+- `screenshots/model-settings-open-weights.png` — open-weights catalog
+- `screenshots/reasoning-effort-levels.png` — five reasoning levels
+- `screenshots/model-settings-gemini-no-reasoning.png` — Gemini branch without reasoning control
+- `screenshots/model-settings-restored-luna.png` — restored GPT 5.6 Luna branch
+- `screenshots/model-catalog-latest.png` — earlier catalog capture

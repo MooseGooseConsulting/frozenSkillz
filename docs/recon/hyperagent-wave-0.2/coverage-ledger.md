@@ -30,6 +30,20 @@ Status: read-only probe in progress; findings saved incrementally
 - `screenshots/full-model-settings.png` — full settings dialog screenshot
 - `screenshots/delegation-settings.png` — agent defaults/delegation screenshot
 - `screenshots/autonomy-capabilities.png` — autonomy and capability surface screenshot
+- `screenshots/model-settings-parent.png` — current model/effort/tools/integrations parent menu
+- `screenshots/model-settings-catalog.png` — latest model catalog
+- `screenshots/model-settings-anthropic.png` — Anthropic model catalog
+- `screenshots/model-settings-openai.png` — OpenAI model catalog
+- `screenshots/model-settings-other-providers.png` — other-provider catalog
+- `screenshots/model-settings-open-weights.png` — open-weights catalog
+- `screenshots/reasoning-effort-levels.png` — five reasoning levels
+- `screenshots/model-settings-gemini-no-reasoning.png` — Gemini branch without reasoning control
+- `screenshots/model-settings-full-current.png` — full current model settings
+- `screenshots/model-settings-subagents.png` — subagent model settings
+- `screenshots/model-settings-autonomy.png` — autonomy and timeout settings
+- `screenshots/model-settings-capabilities.png` — capability settings
+- `screenshots/model-settings-full-reasoning-open.png` — full-settings reasoning options
+- `screenshots/model-settings-restored-luna.png` — restored GPT 5.6 Luna branch
 - `screenshots/landing-more-options.png` — More… quick-action menu
 - `screenshots/composer-add-context.png` — Add files or context root menu
 - `screenshots/use-an-agent-picker.png` — Use an agent picker

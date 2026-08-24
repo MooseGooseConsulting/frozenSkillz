@@ -24,7 +24,6 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `setup-rules` | gated | Remove the uncertain "claude rules list" line; verify install flow. |
 | `gh-common-workflows` | gated | Strip NORTH_STAR/Codex-specific assumptions. |
 | `stacked-pr-workflow` | gated | Run the 7 PowerShell helpers or cut it. |
-| `skill-manager` | gated | Verify `skills.sh` registry assumptions or cut it. |
 | `session-skill-inferencer` | gated | Produced junk auto-skills in May; fix generation quality or cut. |
 | `unifi-udm-access` | gated | New 2026-08-13. Surface routing verified live against UniFi Network 10.6.94 / UniFi OS 5.1.27; `scripts/udmssh.py` run end-to-end (reads succeed, exit codes propagate). Before promotion: re-verify the endpoint inventory on a second console and a different Network version, since the Legacy API carries no version contract; confirm the write guidance (`rest/*` PUT replaces the whole object) against an actual round-trip rather than inference. |
 | `write-best-in-class-issue` | gated | New 2026-08-15. Mode-scoped issue-authoring skill (Full / Partial / Minimal) distilled from real design/proposal/epic/bug/bump issues, de-personalized to stay repo-independent; main `SKILL.md` routes to a `reference.md` teardown and `examples.md` (Full / Partial / over-ceremonized / Minimal / must-that-was-a-choice). Router validated 2026-08-15 against 10 real issues across all three modes: refined the Minimal/Partial boundary to "mutates a live running system" (not "is it a bump") and made Full-mode beats 2/5/6 conditional. Same day, added Step 2 (requirement or convention: every "must" is sourced, written as a choice, or marked Unknown with a legal exit) and widened beat 4 to a status table (shipped/proposed + required/chosen), from one real agent-authored plan that carried a README convention forward as a requirement; Step 5 now verifies the drafted issue rather than the skill file. Before promotion: run one more Partial-mode pass on a live-mutation bump to confirm the boundary fix; confirm the anti-ceremony guard prevents over-application to operational tasks (the retired `issue-pr-review` failure mode); and run Step 2 against a set of real agent-authored issues/plans that carry "must" statements — at least one where the must was a convention — to see whether the classification is applied and whether it changes the draft. |
@@ -62,69 +61,6 @@ incubator copies are removed in the same change; git history is the only archive
 same day — it is a key skill. Revived from a recovered copy with the timeline script
 extended to all harnesses (see Personal lane row). Also removed the empty
 `~/.codex/skills/codex-primary-runtime/` dir (live only, never tracked here).
-
-## Intake queue
-
-- `obra/superpowers` `v6.1.1` (`d884ae04edebef577e82ff7c4e143debd0bbec99`) — scout,
-  forensic review in progress at `_incubator/scout/2026-07-23-obra-superpowers/`.
-  Pinned 172-file source and 14-skill doctree. `brainstorming` reviewed B- with moderate
-  confidence. `dispatching-parallel-agents` revised to B- after an AgentsView audit found
-  direct successful and failed Codex uses; confidence is strong for observed Codex
-  behavior and moderate cross-harness. Remaining 12 skills are intentionally ungraded
-  pending one-at-a-time review. **2026-07-31: the live pack was removed from the codex
-  plugin cache**, so this pinned snapshot is now the only source; the scout's purpose
-  shifts from adopt-review to salvage-mining for the rebuild lanes in
-  [#71](https://github.com/Coldaine/frozenSkillz/issues/71). Leftover
-  `[marketplaces.superpowers-dev]` + `superpowers:*` blocks in `~/.codex/config.toml`
-  may re-sync the pack — cleanup tracked in #71.
-
-Kubernetes adopt shortlist (premise corrected 2026-07-23 — coldaine-homelab
-reconciles via Flux, not Helmfile; re-scored in
-[coldaine-homelab#92](https://github.com/Coldaine/coldaine-homelab/issues/92),
-closed 2026-07-25). Every external repo below goes through
-`external-skill-intake` before anything is mined or adapted:
-
-- `fluxcd/agent-skills` — adopt-pinned.
-- `gitops-cluster-debug` — fork, not adopt raw (hard-requires
-  `flux-operator-mcp`/`FluxInstance`; homelab runs plain `flux bootstrap`).
-- `kstack` — vendor selectively (ask-before-every-mutation default and 15-minute
-  cache don't fit a convergence loop).
-- LukasNiessen/kubernetes-skill — take the core workflow (prove-before-mutate).
-- Author a thin `k8s-platform-operator` glue skill, seeded from the
-  [ionos cluster-api-provider-proxmox AGENTS.md](https://github.com/ionos-cloud/cluster-api-provider-proxmox/blob/main/AGENTS.md);
-  implement authored-vs-applied against Flux Kustomizations/HelmReleases, not Helmfile.
-
-Parked regardless of reconciler: whole Aidas dump; kubectl-MCP packs;
-clouddrove/Jeffallan/sickn33/wshobson mutate cookbooks; Omni-as-CAPMOX;
-kagent apply-after-generate (revisit after CAPI/CAPMOX/Flux is stable).
-
-Scouts:
-
-- danilo-aguiar-br/context7-cli — scout · **adopt-as-external-tool** (2026-07-31,
-  owner-requested). Snapshot at `_incubator/scout/2026-07-31-context7-cli/` pinned to
-  v0.5.2 / `e2f1935`. Rust CLI for the Context7 REST API with multi-key rotation
-  (`CONTEXT7_API_KEYS=a,b,c` → shuffle + exponential backoff) — directly fixes the
-  quota-blocking that sank `context7-mcp`. Security read clean: sole endpoint
-  `context7.com/api`, zero process execution, no build.rs, zeroize'd keys, crates.io
-  package matches repo. Young/unvetted (0 stars, single-day upload) → binary built from
-  the reviewed snapshot, version pinned, re-review any update. Consumed by the
-  `context7-mcp` full rewrite in
-  [#71](https://github.com/Coldaine/frozenSkillz/issues/71); key rotation is ToS-gray
-  (multiplies free-tier quota) — owner's call, recorded in the scout's `analysis.md`.
-
-- Rylaa/fable5-opus5-orchestrator — scout · adapt-concept-only (2026-07-31).
-  Snapshot at `_incubator/scout/2026-07-31-rylaa-fable5-opus5-orchestrator/`;
-  tmux layer discarded. Live eval under its `evals/runs/` required before any
-  Component A pattern lands in `plugins/` or `docs/`.
-  First live eval landed 2026-07-31 (`evals/runs/2026-07-31-spawn-prompt-richness.md`).
-  Concluded **no promotion**, and the gate above **stays closed**: it ran two arms
-  instead of three and its comparative measurement is unusable, because the candidate
-  arm was instrumented with the guard's own metrics log, which records nothing at or
-  below the 1500-char threshold it was supposed to be measuring across. What it does
-  establish, from the uncensored control arm: default spawn prompts run 1298–1378
-  chars — *below* the gate — so the guard is near-inert as shipped; and it is
-  Windows-portable via `python3` → `py -3`. Recommendation if ever adopted: check that
-  a spawn prompt *contains* the required contract sections rather than that it is long.
 
 ## Fleet effectiveness review
 

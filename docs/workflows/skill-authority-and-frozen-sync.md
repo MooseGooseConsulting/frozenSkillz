@@ -82,12 +82,12 @@ Three different things consume material from this repository. Only the first is 
 | Shape | Example | How it consumes | Modeled as |
 |---|---|---|---|
 | Client | Claude, Codex, Cursor, Gemini | Discovers skills from a client-specific root; needs that client's packaging format and plugin manifest | The `--consumer` axis |
-| Runtime | Hermes | Reads bare `SKILL.md` directories from a path; no packaging format, no manifest | A consumer-less deployment, restricted to `shared` skills |
+| Runtime | Bare-SKILL service runtime | Reads bare `SKILL.md` directories from a path; no packaging format, no manifest | A consumer-less deployment, restricted to `shared` skills |
 | Service | Letta | Consumes no skills at all | Nothing — deliberately outside the sync lane |
 
 **Clients.** The four-consumer enum is the set this repository has decided to package for. It is not the set of skill-running clients on the operator's machines: `~/.kilo/skills` currently holds four live skills that frozenSkillz does not manage and that carry no `.frozen-skills-sync.json`. Adding a fifth consumer is an explicit decision — new manifests, marketplace entries, and a qualified destination — not something that happens by discovering an unmanaged skill root.
 
-**Runtimes.** A runtime has a filesystem path and nothing else. See [`docs/deployments/hermes.md`](../deployments/hermes.md) for the worked example.
+**Runtimes.** A runtime has a filesystem path and nothing else. Runtime-specific operations belong in the owning service repository rather than this repository's skill documentation.
 
 **Services.** The former Letta Session Reviewer was decommissioned on 2026-08-03. Its
 historical materials remain under `tools/session-review/`, but no cloud agent or local
@@ -96,7 +96,7 @@ distribution lane unless an explicit deployment contract is added.
 
 ## Deployment Subsets
 
-`--consumer` selects a client *format*, not a skill subset: a destination synchronized for a consumer always receives that consumer's entire shared-plus-restricted set. A destination that must receive only part of it — a standing runtime like Hermes, for example — is described by a named deployment.
+`--consumer` selects a client *format*, not a skill subset: a destination synchronized for a consumer always receives that consumer's entire shared-plus-restricted set. A destination that must receive only part of it is described by a named deployment.
 
 Deployments live in the optional `deployments` object of `plugins/distribution.json`, so the distribution stays the single source of truth. There is no separate registry directory.
 
@@ -114,25 +114,11 @@ There are two kinds, distinguished by whether the deployment declares a `consume
 }
 ```
 
-**Runtime deployment.** The destination is not a Claude/Codex/Cursor/Gemini client at all — a service that reads bare `SKILL.md` directories, for example. It omits `consumer` entirely and may select **only shared skills**, because it has no client packaging format to render a consumer-restricted package into:
-
-```json
-"deployments": {
-  "hermes-ops": {
-    "description": "Reviewed shared skills exposed to the standing Hermes operations runtime. Hermes is a bare-SKILL.md service runtime, not a client: it reads skill directories from a read-only bind mount, so it declares no consumer.",
-    "skills": ["doppler", "pdm-cli-operations"]
-  }
-}
-```
+**Runtime deployment.** A destination that is not a Claude/Codex/Cursor/Gemini client may read bare `SKILL.md` directories. It omits `consumer` and may select **only shared skills**, because it has no client packaging format for a consumer-restricted package.
 
 Do not give a non-client runtime a placeholder consumer. A consumer that is inert today because every selected skill happens to be shared becomes a false statement the moment a restricted skill is added, and the omission is what makes the shared-only constraint enforceable.
 
 Every listed skill must already be active in the aligned manifests for that deployment's scope — its consumer's set, or `shared` when it declares none. A deployment cannot select a skill the distribution does not carry, and a runtime deployment that names a consumer-restricted package is rejected by name.
-
-```powershell
-python scripts/sync_frozen_skills.py --check --deployment hermes-ops --destination /srv/hermes/skill-sets/hermes-ops --prune
-python scripts/sync_frozen_skills.py --apply --deployment hermes-ops --destination /srv/hermes/skill-sets/hermes-ops --prune
-```
 
 Rules specific to deployment mode:
 

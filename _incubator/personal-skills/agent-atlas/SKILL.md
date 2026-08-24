@@ -26,7 +26,13 @@ sensitive: locations and field names are useful; secret values are not.
 ## References
 
 - [Workstation map](references/workstation-agent-config-map.md) — client/harness classification,
-  launch/config roots, and shared skill surfaces.
+  launch/config roots, shared skill surfaces, and dated installed-tool inventory.
+- [Where information lives](references/where-information-lives.md) — read when the question is
+  which live file, policy repository, skill-review repository, learnings store, or secret store
+  contains a fact. This is a location map, not a precedence or editing workflow.
+- [Coverage and known gaps](references/coverage-gaps.md) — read when asked whether a harness
+  reference is complete, what remains unknown, or which installation/configuration/hooks/skills/MCP/
+  provider questions have not been verified.
 - [Claude Code and OMC](references/claude-omc.md)
 - [Codex](references/codex.md)
 - [Cursor](references/cursor.md)

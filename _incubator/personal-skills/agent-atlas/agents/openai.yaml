@@ -1,0 +1,6 @@
+interface:
+  display_name: "Agent Atlas"
+  short_description: "Facts about local agent clients and harnesses"
+  default_prompt: "Use $agent-atlas to identify the configuration, transcript, provider/model, or diagnostic surface for a named agent harness."
+policy:
+  allow_implicit_invocation: true

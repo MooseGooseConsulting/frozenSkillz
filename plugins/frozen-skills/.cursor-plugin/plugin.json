@@ -1,18 +1,13 @@
 {
   "name": "frozen-skills",
-  "description": "Installs reviewed agent GitHub identity, delegation-contract, Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
-  "version": "2.7.1",
+  "description": "Installs reviewed delegation-contract, Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
+  "version": "2.7.2",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
   },
   "license": "MIT",
   "skills": [
-    {
-      "name": "agent-github-identity",
-      "path": "skills/agent-github-identity",
-      "description": "Give each AI agent its own GitHub App bot identity so its commits, pull requests, reviews, and comments attribute to that agent, not to a shared account or the operator. Use when wiring an agent's GitHub write path or before any agent GitHub write. Not for human or CI credentials."
-    },
     {
       "name": "delegation-contract",
       "path": "skills/delegation-contract",

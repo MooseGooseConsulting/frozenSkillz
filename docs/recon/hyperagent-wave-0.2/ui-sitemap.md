@@ -5,10 +5,10 @@ Wave 0.2 probe; read-only traversal captured in screenshots and companion notes.
 ## Confirmed starting surface
 
 - Chrome authenticated session
-  - Current most-recent tab: ChatGPT conversation `Prompting failure analysis`
-  - HyperAgent tab was not present in the first open-tab listing
+  - Initial most-recent tab was a ChatGPT conversation (`Prompting failure analysis`); it was safely claimed and navigated to HyperAgent for the probe
+  - Current handoff tab is authenticated HyperAgent `/threads/new`
 
-## Pending
+## Confirmed landing and thread settings
 
 - HyperAgent authenticated landing / new thread (`/threads/new`)
   - Sidebar: New thread, Search, Inbox, Agents (expand), New agent, Recent threads, Teams, Skills, Memories, Learning, Projects, Library, Marketplace
@@ -55,3 +55,16 @@ Wave 0.2 probe; read-only traversal captured in screenshots and companion notes.
 - Model: agent model Opus 5; subagent Default (Sonnet 4.6); switches Extended thinking / Fast mode / Budget limit per query
 - Tools & Integrations: 18 active tools; Add Integrations opens the full catalog
 - Invocations and Knowledge were not expanded
+
+## Sidebar control plane
+
+- Search → global palette over threads, agents, projects, messages, documents, and tables
+- Inbox → approval/denial items
+- Agents → Command Center, visible agents, View all
+- Teams → Join a team / Create team / existing teams
+- Skills → Your / Team / Shared with you, create/discover, search, filters, grid/list
+- Memories → add/search/filter/list/grid, personal-memory count
+- Learning → Improvements / Rubrics
+- Projects → new and existing projects plus linked threads
+- Library → search, type/visibility/source filters
+- Marketplace → searchable agent/skill cards

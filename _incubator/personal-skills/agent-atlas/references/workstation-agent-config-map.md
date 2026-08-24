@@ -38,6 +38,18 @@ client that owns configuration and transcripts.
 | Frozen active skills | `D:\_projects\frozenSkillz\plugins\frozen-skills\skills` | Reviewed repository source, not a live client root. |
 | Frozen gated skills | `D:\_projects\frozenSkillz\_incubator\personal-skills` | Review material; not installed by the active synchronizer. |
 
+## Dated inventory observations
+
+These are snapshots, not current-version claims:
+
+| Checked | Observation |
+|---|---|
+| 2026-07-07 | Codex `0.142.5`; OpenCode `1.17.12`; Kilo `7.3.54`; GitHub Copilot CLI `1.0.50`; Goose `1.38.0`. Cursor/`cursor-agent` and Gemini were present, but the recovered snapshot did not record a reliable version for both. |
+| 2026-07-07 | `.qwen` existed but `qwen` was not found on `PATH`; the earlier 2026-06-08 survey found no local Qwen chats. |
+| 2026-08-24 | Kilo was `7.4.23`, and `kilo debug paths` identified `C:\Users\pmacl\.config\kilo` as its config root. |
+| 2026-08-24 | `C:\Users\pmacl\.continue\skills` existed with `gws-gmail`, `gws-gmail-read`, `gws-gmail-send`, and `gws-shared`; whether Continue itself is active remains unknown. |
+
 For raw stores and field availability, read
 [Raw transcripts and field availability](transcripts-and-fields.md). If the request is to find a prior
-conversation rather than explain a harness, use `chat-history`.
+conversation rather than explain a harness, use `chat-history`. For the repository/policy/learnings
+location map, see [Where agent-tool information lives](where-information-lives.md).

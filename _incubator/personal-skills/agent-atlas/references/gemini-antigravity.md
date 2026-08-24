@@ -16,7 +16,7 @@ workstation. Google is the provider; a Gemini model identifier is separate from 
 
 | Surface | Path | Notes |
 |---|---|---|
-| Main settings | `C:\Users\pmacl\.gemini\settings.json` | Snapshot keys included model, security, tools, MCP, skills, IDE, agents, and context. |
+| Main settings | `C:\Users\pmacl\.gemini\settings.json` | Snapshot top-level keys included `model`, `general`, `security`, `ui`, `tools`, `experimental`, `mcpServers`, `skills`, `ide`, `agents`, and `context`. |
 | Global context | `C:\Users\pmacl\.gemini\GEMINI.md` | Global instruction/context surface. |
 | Skills/extensions | `C:\Users\pmacl\.gemini\skills\`, `extensions\` | |
 | Antigravity | `antigravity\`, `antigravity-cli\`, `antigravity-ide\`, `antigravity-browser-profile\` below the shared root | Antigravity does not use an independent top-level root in this snapshot. |

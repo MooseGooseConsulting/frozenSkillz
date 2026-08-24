@@ -11,6 +11,8 @@ establish a reliable raw model/provider field; that is unknown rather than proof
 - CLI snapshot: `copilot` -> `C:\Users\pmacl\AppData\Roaming\npm\copilot.ps1`, version
   `GitHub Copilot CLI 1.0.50`.
 - Related CLI: `gh` -> `C:\Program Files\GitHub CLI\gh.exe`.
+- The recovered snapshot described authentication as shared through the GitHub account/CLI rather
+  than a separately documented Copilot key file; verify the active auth flow with `gh auth status`.
 - Config root: `C:\Users\pmacl\.copilot`.
 
 ## Surfaces

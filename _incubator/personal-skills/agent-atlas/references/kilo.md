@@ -14,6 +14,11 @@ provider, or model. Provider and model selection are separate configuration/sess
 - The older `C:\Users\pmacl\.kilo` and `C:\Users\pmacl\.kilocode` roots are not the config root
   reported by current Kilo.
 
+In the 2026-07-07 snapshot, both older roots existed with `skills\` directories and identical
+`package.json` files depending on `@kilocode/plugin@7.2.20`. That historical duplication explains
+the older canonical-root question, but it does not establish that Kilo `7.4.23` reads either root.
+Whether their skill directories are still discovered or are vestigial remains unknown.
+
 ## Config surface
 
 Names-only inspection of `kilo.json` found top-level configuration for schema, model/provider,

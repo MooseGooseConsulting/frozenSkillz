@@ -11,6 +11,9 @@ Goose is the client/harness. Its configured provider and model are separate sett
 - Config root candidate: `C:\Users\pmacl\.config\goose`.
 - No `config.yaml` existed at the expected default path in the recovered snapshot.
 
+The current Windows configuration file and the behavior of `goose configure` remain unverified.
+Inspect the live root and current CLI help before assuming a Linux-default path.
+
 ## Diagnostics
 
 ```powershell

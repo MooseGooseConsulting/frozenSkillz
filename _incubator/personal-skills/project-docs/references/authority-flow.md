@@ -67,6 +67,10 @@ inventory. The default pairs below apply only when the default topology does.
    Otherwise, open NORTH_STAR, architecture, AGENTS, and CLAUDE (if present).
    Skim active plans/Issues as needed.
 4. Note agree / disagree / asymmetric gap against the selected topology.
+   Before ruling on a contested "must", classify it: a requirement carries its
+   source, a convention names its alternative, and a "must" whose only support is
+   another doc's precedent is not authority to reconcile *toward*
+   (`requirements-vs-conventions.md`).
 5. Classify: **conflict**, **gap**, **alignment-only-needed**, or
    **topology ambiguity**.
 
@@ -110,6 +114,10 @@ If the canonical doc is stale, the user decides. The skill does not silently rew
 - **Legacy leak** — AGENTS still routes to PROGRESS or `docs/history/`.
 - **Doctrine leak** — AGENTS inlines goals; delete the inline.
 - **CLAUDE regression** — stub grew prose; reduce to one-line → AGENTS.
+- **Laundered convention crossing docs** — architecture records a choice as fact
+  and AGENTS, a plan, or a component doc cites it as a constraint. Reconciling
+  the wording is not the fix; source it or name its alternative at the origin
+  (`requirements-vs-conventions.md`).
 - **False-default gap** — a repository declares a different authority stack;
   record the declared topology instead of requiring NORTH_STAR, architecture,
   or AGENTS.

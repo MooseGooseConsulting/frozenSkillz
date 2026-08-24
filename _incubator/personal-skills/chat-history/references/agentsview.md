@@ -72,6 +72,20 @@ Use semantic or hybrid search for unknown wording when the index supports it. Tr
 similarity only as candidate ordering. Confirm a consequential interpretation in the retrieved
 messages.
 
+## Retry set
+
+Before treating an AgentsView search as exhausted, retry with materially different shapes:
+
+1. the natural-language question, then `--fts` for tokenized wording and `--regex` for a known
+   variant or error pattern;
+2. `--semantic` or `--hybrid` when the index supports it;
+3. a relaxed scope over `--project`, `--since`, and `--include-children`; and
+4. `session list --project <project> --include-children` to pull the surrounding population when
+   the task is a swarm or comparison.
+
+Record each query and its result in the localization artifact before declaring the route
+exhausted.
+
 ## Deterministic and heuristic session intelligence
 
 `agentsview health [session-id]` and `session get/list` expose health grades, outcomes, and

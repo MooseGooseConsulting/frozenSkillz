@@ -42,6 +42,20 @@ tree but not yet reconciled is **Planned**, not Current.
 | `platform/` | Current | Shared cluster services | `docs/components/platform.md` |
 | `apps/` | Current | Workloads | `docs/components/apps.md` |
 
+## Constraints and Conventions
+
+**Constraints** (required; source named):
+
+- Worker VMs carry a single boot disk in the cluster manifest — required: the machine-provisioning provider's storage schema exposes one boot-volume field and no additional-volume field (provider docs, pinned version linked in `docs/components/substrate.md`).
+- Talos machine config is the only path to node OS state — required: Talos has no shell and no package manager; there is nothing else to edit.
+- All hosts present the same CPU model to guests — required: live migration across the heterogeneous hosts fails otherwise (incident 2026-05, `docs/decisions/0004-uniform-cpu-baseline.md`).
+
+**Conventions** (chosen; alternative named):
+
+- Nodes that need a data disk get it from a per-host VM template with the disk baked in — chosen; alternative: clone boot-only and attach the disk after clone with one host command; not evaluated when the storage nodes were built (owner asked 2026-08-15; no recorded reason). *This is a choice a later node class may make differently.*
+- One control plane, not three — chosen; alternative: an HA control plane; because this is a homelab and the recovery procedure in `docs/workflows/` is rehearsed.
+- Secrets never live in the repo, even encrypted — chosen; alternative: sealed/encrypted secrets in-tree; because the out-of-cluster store already exists for other systems.
+
 ## Architectural Invariants
 
 - **Manifests only in implementation directories.** `tofu/`, `talos/`, `platform/`, and `apps/` hold IaC and manifests, never prose docs. Prevents the tree from accreting stale READMEs that drift from the manifests. Documentation lives in the doc homes; a one-line pointer is the only allowed doc file in an implementation directory.
@@ -55,6 +69,7 @@ tree but not yet reconciled is **Planned**, not Current.
 | `docs/decisions/0001-talos-over-kubeadm.md` | accepted | Talos for immutable, declarative nodes |
 | `docs/decisions/0002-gitops-reconciler.md` | accepted | Reconcile the repo in-cluster rather than push from CI |
 | `docs/decisions/0003-in-cluster-s3.md` | proposed | Object store choice for backups and app blobs |
+| `docs/decisions/0004-uniform-cpu-baseline.md` | accepted | Mask guests to a common CPU baseline after the 2026-05 live-migration failure |
 
 ## Open Architecture Questions
 

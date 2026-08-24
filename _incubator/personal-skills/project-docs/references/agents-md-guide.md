@@ -161,6 +161,15 @@ Good: “Do not create PROGRESS.md or docs/history/.”
 Good: “Promote lasting facts, then delete temporary plans.”  
 Bad: “Be thoughtful.”
 
+One rule earns a slot in every AGENTS.md, because it protects against every doc that has
+not been audited yet and every doc outside the stack:
+
+> A "must" whose only source is precedent is a convention. Before planning around any
+> constraint, find its source, a counterexample, or ask — never generate a reason for it.
+
+Place it beside the boundary-crossing stop rule; it is the same kind of line. The
+authoring side of the same rule is `requirements-vs-conventions.md`.
+
 ---
 
 ## Compatibility

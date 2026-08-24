@@ -22,10 +22,13 @@ Do not open a template. Ask open-ended questions.
 | Default doc when no declared stack exists | Questions |
 |---|---|
 | NORTH_STAR.md | "What is this thing?" / "Why are you building it?" / "What will people assume this is that it isn't?" / "Where is this going?" / "Hard tradeoffs so far?" |
-| architecture.md | "What technical approach and why?" / "What is Current vs Planned vs still open?" / "Major components?" / "Choices that would invalidate the project if reversed?" |
+| architecture.md | "What technical approach and why?" / "What is Current vs Planned vs still open?" / "Major components?" / "Choices that would invalidate the project if reversed?" / "Which of these could you change tomorrow without asking anyone — and which would break something or violate someone's rule (whose)?" / for each "must": "What breaks if we don't?" / for each choice: "What else did you consider?" |
 | AGENTS.md | "What does an agent need on first entry?" / "What commands actually work?" / "Hard rules on every PR?" / "Where does current work live (Issues vs plans)?" |
 
-Listen for the owner's phrasing. Do not invent constraints they did not state.
+Listen for the owner's phrasing. Do not invent constraints they did not state — and do not
+invent *sources* for constraints they did state. If the owner says "must" and cannot say why,
+record it as the owner's rule with the reason unknown; do not backfill one
+(`requirements-vs-conventions.md`).
 
 Exit when you can describe the doc without them correcting you.
 
@@ -46,6 +49,9 @@ Rules:
 - Use the owner's phrasing.
 - Mark unknowns `[OPEN]`.
 - Do not invent constraints.
+- Classify every modal sentence as you write it: a requirement carries its source, a
+  convention names its alternative, an unknown is marked and routed. Never fuse a fact to
+  a choice with "so." Templates and the test are in `requirements-vs-conventions.md`.
 
 </draft>
 
@@ -58,6 +64,11 @@ Rules:
 - `[OPEN]` — not decided
 
 High-authority elements (pillars, invariants, hard rules) must be `[OWNER]` or deleted / asked.
+
+Provenance says *who said it*; modality says *what kind of statement it is*. A requirement
+needs both: `[OWNER]` is its source only when the owner is the imposing authority. A
+technical requirement's source is the API, schema, hardware fact, policy, or incident —
+cite that, not the person who relayed it.
 
 </provenance>
 
@@ -104,7 +115,8 @@ Do not create PROGRESS.md.
 ## Revising an Existing Doc
 
 1. Inventory the declared authority stack and the requested document's role.
-2. Run `review-checklist.md`.
+2. Run `review-checklist.md`, including the modality audit pass
+   (`requirements-vs-conventions.md`).
 3. Fix only what needs changing.
 4. Update `last_confirmed` if used.
 5. Run `authority-flow.md`.

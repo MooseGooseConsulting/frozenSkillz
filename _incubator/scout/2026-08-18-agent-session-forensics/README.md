@@ -1,6 +1,6 @@
 # Scout: Agent Session Forensics — Prompts for Reasoning Over Agents
 
-- **Source:** Research notes, synthesized from practitioner discussions (r/ClaudeCode, r/ClaudeAI, Hacker News, GitHub issues), captured 2026-08-18 in `NEWINGESTHTHIS/Promps for reasinng over agents.txt`.
+- **Source:** Research notes, synthesized from practitioner discussions (r/ClaudeCode, r/ClaudeAI, Hacker News, GitHub issues), captured 2026-08-18 in `NEWINGESTHTHIS/Promps for reasinng over agents.txt` (filename verbatim from the capture location, including its typos — not an error in this repo).
 - **References cited in notes:** Squawk (behavioral anti-pattern detector), Slagent (self-learning coding agent tool), Agent Flow (Claude Code action visualizer), `cass`/coding_agent_session_search (unified session search across 11+ providers), 413K-trajectory empirical analysis (Hanchen Li), OpenClaw loop-detection issue, Claude Code cross-session learning issue #51735.
 - **License:** Original synthesis — no upstream license to track.
 - **Why captured:** The notes articulate a practitioner-grounded forensic analysis methodology for AI agent sessions that is directly relevant to the `skill-analysis` and session-review lanes in this repo. Key insight: **separate mechanical extraction from causal interpretation**, and treat user corrections as labeled failure events.

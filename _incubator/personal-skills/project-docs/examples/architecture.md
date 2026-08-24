@@ -88,13 +88,26 @@ The skill performs:
 | `references/progress-md-guide.md` | Current | Legacy PROGRESS migrate-away only | references/ |
 | Guardian runtime | Deferred | Future repo/PR drift detection system | — |
 
+## Constraints and Conventions
+
+**Constraints** (required; source named):
+
+- `CLAUDE.md` exists at the repo root even though it holds no doctrine — required: Claude Code auto-loads `CLAUDE.md`, not `AGENTS.md`, so the pointer is the only way that tool reaches the router.
+- `AGENTS.md` is the cross-tool entrypoint name — required: the AGENTS.md convention adopted by Codex, Cursor, Jules, and Factory; renaming it makes those tools miss it.
+
+**Conventions** (chosen; alternative named):
+
+- `AGENTS.md` is capped at 60 lines — chosen; alternative: no cap; because a long router gets eager-read and defeats lazy loading.
+- Current work lives in Issues and/or `docs/plans/`, not `PROGRESS.md` — chosen; alternative: a rolling `PROGRESS.md`; because it became a burial ground for durable decisions (see the retirement note in the project-docs skill).
+- Status labels are exactly four (Current / Planned / Candidate / Deferred) — chosen; alternative: free-form status; because a closed set is greppable and cannot be padded with "Stretch" or "Maybe."
+
 ## Architectural Invariants
 
-- `AGENTS.md` must remain a router, not a giant documentation index.
-- `architecture.md` may include target architecture, but forward-looking claims must be labeled.
-- Do not create `PROGRESS.md` or roll finished work into `docs/history/`.
-- Durable architecture decisions belong in ADRs, not buried in plans or scratch notes.
-- The skill must not pretend to be the Guardian runtime.
+- `AGENTS.md` must remain a router, not a giant documentation index. Prevents every agent from eager-loading the whole doc set on entry.
+- `architecture.md` may include target architecture, but forward-looking claims must be labeled. Prevents an agent from treating a Planned component as available.
+- Do not create `PROGRESS.md` or roll finished work into `docs/history/`. Prevents durable decisions from being buried in a diary nobody reads back.
+- Durable architecture decisions belong in ADRs, not buried in plans or scratch notes. Prevents the rationale from being lost when the plan is deleted.
+- The skill must not pretend to be the Guardian runtime. Prevents an authoring tool from acquiring blocking power it was never given.
 
 ## ADR Index
 

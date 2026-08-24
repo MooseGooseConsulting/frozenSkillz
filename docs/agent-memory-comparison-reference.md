@@ -181,9 +181,10 @@ not a verified internal product architecture.
 
 ### Claude Code
 
-**Documented:** Claude Code stores auto memory per Git repository, with all
-worktrees and subdirectories of that repository sharing the same memory
-directory. The first 200 lines or 25 KB of `MEMORY.md`, whichever comes first,
+**Documented:** Claude Code derives the auto memory directory from the Git
+repository, with all worktrees and subdirectories of that repository sharing
+the same memory directory. Outside a Git repository, the project root is used
+instead. The first 200 lines or 25 KB of `MEMORY.md`, whichever comes first,
 load at the beginning of a session. Topic files do not load automatically;
 Claude reads them on demand. Claude may also write or reorganize the memory
 files during a session.

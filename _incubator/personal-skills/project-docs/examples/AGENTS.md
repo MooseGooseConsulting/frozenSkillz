@@ -16,5 +16,7 @@ Route by task:
 - Ending substantial work        → promote lasting facts into living homes; delete finished plans/scratch
 
 If a task crosses a goal, anti-goal, pillar, or invariant: stop and surface it.
+A "must" whose only source is precedent is a convention. Before planning around any
+constraint, find its source, a counterexample, or ask — never generate a reason for it.
 
 Commands: install `…` · test `…` · lint `…` · branch from main, PR to main

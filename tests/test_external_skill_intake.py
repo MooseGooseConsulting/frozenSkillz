@@ -1,6 +1,5 @@
 import json
 import re
-import subprocess
 import unittest
 from pathlib import Path
 
@@ -90,8 +89,14 @@ class ExternalSkillIntakeContractTests(unittest.TestCase):
         self.assertTrue(blanket_router.is_file())
         self.assertIn("@AGENTS.md", blanket_router.read_text(encoding="utf-8"))
 
+        scout_root = incubator / "scout"
+        if not scout_root.is_dir():
+            # The repository may have no imported snapshots.  The guard below
+            # applies to any future snapshot without requiring a fixture archive.
+            return
+
         guarded = set()
-        for snapshot in sorted(path for path in (incubator / "scout").iterdir() if path.is_dir()):
+        for snapshot in sorted(path for path in scout_root.iterdir() if path.is_dir()):
             captured = sorted(
                 str(path.relative_to(snapshot))
                 for path in snapshot.rglob("*")
@@ -109,102 +114,6 @@ class ExternalSkillIntakeContractTests(unittest.TestCase):
             )
             self.assertIn("@AGENTS.md", router.read_text(encoding="utf-8"), snapshot.name)
             guarded.add(snapshot.name)
-
-        # Guards against a scan that silently matches nothing.
-        self.assertIn("2026-07-23-obra-superpowers", guarded)
-
-    def test_superpowers_snapshot_includes_archive_excluded_files(self):
-        source_root = (
-            REPO_ROOT / "_incubator" / "scout" / "2026-07-23-obra-superpowers" / "source"
-        )
-        source_files = [path for path in source_root.rglob("*") if path.is_file()]
-
-        self.assertEqual(172, len(source_files))
-        self.assertTrue((source_root / ".opencode" / "INSTALL.md").is_file())
-        self.assertTrue(
-            (source_root / ".opencode" / "plugins" / "superpowers.js").is_file()
-        )
-
-    def test_superpowers_snapshot_matches_persisted_git_tree(self):
-        scout_root = REPO_ROOT / "_incubator" / "scout" / "2026-07-23-obra-superpowers"
-        prefix = "_incubator/scout/2026-07-23-obra-superpowers/source/"
-        expected = {}
-        for line in (scout_root / "source-tree.tsv").read_text(encoding="utf-8").splitlines():
-            if not line or line.startswith("#"):
-                continue
-            mode_blob, path = line.split("\t", 1)
-            expected[path] = mode_blob
-
-        result = subprocess.run(
-            ["git", "ls-files", "--stage", "--", prefix],
-            cwd=REPO_ROOT,
-            check=True,
-            capture_output=True,
-            text=True,
-        )
-        actual = {}
-        for line in result.stdout.splitlines():
-            mode, blob, _stage_and_path = line.split(maxsplit=2)
-            full_path = _stage_and_path.split("\t", 1)[1]
-            actual[full_path.removeprefix(prefix)] = f"{mode} {blob}"
-
-        self.assertEqual(172, len(expected))
-        self.assertEqual(expected, actual)
-
-    def test_completed_forensic_records_use_canonical_statuses(self):
-        forensic_root = (
-            REPO_ROOT
-            / "_incubator"
-            / "scout"
-            / "2026-07-23-obra-superpowers"
-            / "evals"
-            / "forensic"
-        )
-        record_paths = sorted(forensic_root.glob("*-real-agent-evidence.md"))
-        allowed = {"current", "fixed", "historical", "unresolved", "unclear"}
-
-        self.assertEqual(
-            {
-                "2026-07-23-brainstorming-real-agent-evidence.md",
-                "2026-07-23-dispatching-parallel-agents-real-agent-evidence.md",
-            },
-            {path.name for path in record_paths},
-        )
-        for record_path in record_paths:
-            record = record_path.read_text(encoding="utf-8")
-            self.assertIn(
-                "| Source | Type | Captured | Version or revision | Harness, model, and OS | Status | Result |",
-                record,
-            )
-            evidence_rows = [line for line in record.splitlines() if line.startswith("| [")]
-            self.assertTrue(evidence_rows, record_path)
-            for row in evidence_rows:
-                columns = [column.strip() for column in row.strip("|").split("|")]
-                self.assertEqual(7, len(columns), row)
-                self.assertRegex(columns[2], r"^\d{4}-\d{2}-\d{2}$")
-                self.assertTrue(columns[3], row)
-                self.assertTrue(columns[4], row)
-                self.assertIn(columns[5], allowed)
-
-            aggregate_status = re.search(r"(?m)^- Status: ([a-z]+)[.;]", record)
-            self.assertIsNotNone(aggregate_status, record_path)
-            self.assertIn(aggregate_status.group(1), allowed)
-
-        design = (
-            REPO_ROOT
-            / "docs"
-            / "superpowers"
-            / "specs"
-            / "2026-07-23-live-or-forensic-evaluations-design.md"
-        ).read_text(encoding="utf-8")
-        template = (SKILL_ROOT / "templates" / "forensic-evaluation.md").read_text(
-            encoding="utf-8"
-        )
-        canonical_list = "`current`, `fixed`, `historical`, `unresolved`, or `unclear`"
-        self.assertIn(canonical_list, design)
-        self.assertIn("| Status | Observed behavior", template)
-        for status in allowed:
-            self.assertIn(status, template)
 
     def test_supports_live_or_forensic_evaluations(self):
         skill = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")

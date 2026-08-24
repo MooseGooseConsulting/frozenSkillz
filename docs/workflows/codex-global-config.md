@@ -118,4 +118,3 @@ fork, so coordinator instructions must provide a complete brief and use no full-
 - [Codex AGENTS.md](https://developers.openai.com/codex/guides/agents-md/): global instruction discovery and precedence.
 - [Oh My OpenAgent](https://github.com/code-yeongyu/oh-my-openagent): harness-specific adapters behind a shared installation/runtime architecture.
 - [Oh My ClaudeCode reference](https://github.com/Yeachan-Heo/oh-my-claudecode/blob/main/docs/REFERENCE.md): native-surface installation plus doctor checks and owned-file cleanup.
-- [Superpowers](https://github.com/obra/superpowers): harness-native installation and update delivery.

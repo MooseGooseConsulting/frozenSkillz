@@ -4,10 +4,6 @@
   "version": "2.7.2",
   "shared": [
     {
-      "name": "delegation-contract",
-      "path": "frozen-skills/skills/delegation-contract"
-    },
-    {
       "name": "doppler",
       "path": "frozen-skills/skills/doppler"
     },

@@ -84,7 +84,6 @@ The Codex marketplace separately exposes the valid `codex-thread-organizer` plug
 
 `frozen-skills` currently registers these shared skills:
 
-- `delegation-contract`: brief and receive work across agent boundaries with explicit context, authority, output, and single-writer coordination rules.
 - `doppler`: Doppler CLI and secret-injection workflow guidance that avoids exposing secret values.
 - `external-skill-intake`: sandbox, inventory, score, evaluate, and package external skill/plugin/agent repos before any promotion.
 - `omc-reference`: maintain Oh My ClaudeCode as a separate Claude Code plugin from Codex without importing OMC workflow rules into ordinary Codex work.

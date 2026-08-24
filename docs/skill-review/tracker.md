@@ -51,7 +51,6 @@ de-personalized.
 | `google-stitch-ui-designer` | Confirm provenance. |
 | `context7-mcp` | Complete rewrite (owner 2026-07-31) — the MCP is useful, the skill isn't. Supersedes the narrow-trigger fix; 27/39 fires never called the MCP. |
 | `patrickspowerfulpresentations` | Incubating; stays personal. |
-| `audio-producer` | Incubating; stays personal. Broadside examples are worked evidence — keep. |
 | `explore` | Already deleted from the live root (noticed 2026-07-31; not in quarantine — 155 codex sessions had read it, owner unaware it existed). The explorer-subagent lane in [#71](https://github.com/Coldaine/frozenSkillz/issues/71) is its replacement. |
 
 Deleted forever 2026-07-31 (owner order): `review-claudemd`, `claude-md-enhancer`,
@@ -88,19 +87,6 @@ grade or causal conclusion. AgentsView `health_score` remains only a historical 
 Machine-local evidence: the verdicts below are the durable record, the corpus is
 not rerunnable from this repository):
 
-- **Superpowers pack is the codex-ceremony driver.** Codex is the heaviest skill user
-  (60% of sessions read SKILL.md via shell — untagged, so earlier counts missed it); top
-  reads are `~/.codex/plugins/cache/` superpowers: `using-superpowers` (622 sessions),
-  `verification-before-completion` (306 — the "Iron Law" register). Lever applied
-  2026-07-30: operational-mode override in `~/.codex/AGENTS.md`, PR self-review loop
-  scoped to substantial changes. **Escalated 2026-07-31: owner removed the whole pack
-  from the codex cache.** Capabilities that died with it (delegation, planning,
-  debugging, git-worktree lanes) get rebuilt without the ceremony register —
-  [#71](https://github.com/Coldaine/frozenSkillz/issues/71). Owner nuance, same day:
-  the pack's *auto-fire bootstrap* (`using-superpowers`) was the one part worth
-  keeping — it is why codex out-fires every other harness on skills — so #71 carries a
-  skill-activation-bootstrap lane (owner previously ran a hook for the same job); only
-  the ceremony payload dies unreplaced.
 - `doppler`, `project-docs`, `chat-history` (trigger narrowed to forensic-only
   2026-07-30), `parallel-web-search`, `canvas`, `create-hook` earn their keep.
 - `git-master`: an `oh-my-openagent` built-in, opencode-only — not Codex. Dead since

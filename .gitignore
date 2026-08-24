@@ -11,9 +11,5 @@ tools/session-review/state.json
 tools/session-review/grades/
 tools/session-review/proposals.md
 
-# The pinned Superpowers source includes upstream OpenCode integration files.
-!_incubator/scout/2026-07-23-obra-superpowers/source/.opencode/
-!_incubator/scout/2026-07-23-obra-superpowers/source/.opencode/**
-
 # Orchestration ledgers — local only
 .workflow/

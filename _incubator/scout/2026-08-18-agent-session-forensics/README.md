@@ -9,8 +9,8 @@
   2. **Correction-centered windows** — look 10–20 events backward from each user correction.
   3. **Behavioral clustering** — same-command+same-result (loop), same-command+changed-result (iteration), different-command+same-failure (hypothesis search), different-command+new-evidence (healthy investigation).
   4. **Causal analysis** — RULE MISSING vs RULE PRESENT BUT NOT APPLIED; source-of-truth collisions; instruction-encounter-to-violation gap.
-  5. **Intervention classification** — 10 change-type buckets (nothing, code/repo, canonical command, source-of-truth, search/retrieval, instruction, skill, delegation, hook, model/harness). Not defaulting to "add another AGENTS.md rule."
+  5. **Intervention classification** — 11 change-type buckets (nothing, code/repo, canonical command, source-of-truth, search/retrieval, instruction, skill, delegation, hook, model/harness, other). Not defaulting to "add another AGENTS.md rule."
   6. **Cross-corpus aggregation** — normalize events first, compute mechanical patterns, sample representative traces, then do qualitative causal review.
-- **What to take for skill-analysis lane:** The SESSION MECHANICS structured-extraction template; the 8-item repo-analyzer checklist; the corpus-level aggregate-first workflow; the 10-bucket intervention taxonomy.
+- **What to take for skill-analysis lane:** The SESSION MECHANICS structured-extraction template; the 8-item repo-analyzer checklist; the corpus-level aggregate-first workflow; the 11-bucket intervention taxonomy.
 - **What to strip:** The vendor "evaluation framework" framing; the "write another CLAUDE.md rule" reflex.
 - **Status:** Raw seed material for the skill-analysis lane; not yet a promotion candidate.

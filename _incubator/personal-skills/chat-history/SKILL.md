@@ -26,7 +26,7 @@ provider reference reached by the route.
   question, stable exact anchors, and a relaxed scope over project, date, machine, agent, child,
   continuation, or session chain. Use materially different query shapes rather than repeating the
   same wording. If the user says the source should be in KCap, treat that as a retrieval warning:
-  keep KCap active, run the retry set, and verify coverage before calling it absent.
+ keep KCap active, run the retry set, and verify coverage before calling it absent.
 - Do not begin by grepping or parsing raw transcript trees.
 - Narrow progressively by project, repository, session, agent, machine, date, continuation, PR, or
   file.
@@ -108,7 +108,7 @@ Need information from previous conversations
          │  │     ├─ useful candidates → write candidate map
          │  │     └─ weak/empty → run the bounded KCap retry set, then use AgentsView with
          │  │        progressively relaxed scope → references/agentsview.md
-         │  └─ no explicit KCap anchor
+          │  └─ no explicit KCap anchor
          │     └─ AgentsView broad semantic search first → references/agentsview.md
          │        └─ Pieces when the conversation may be browser-based
          │           → references/pieces.md
@@ -161,7 +161,7 @@ Localization briefs and candidate maps returned
 ├─ No candidates
 │  └─ follow up with the same localization agent for a second pass
 │     ├─ require a materially different framing in the active provider first
-│     ├─ use the active provider's documented retry set (kurrent-capacitor.md or agentsview.md)
+ │     ├─ use the active provider's documented retry set (kurrent-capacitor.md or agentsview.md)
 │     ├─ only change provider after the active provider's retry set is recorded as exhausted
 │     ├─ relax unreliable project/date filters
 │     ├─ include child, continuation, automated, local, and fleet sessions as relevant

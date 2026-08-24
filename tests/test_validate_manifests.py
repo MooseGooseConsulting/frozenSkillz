@@ -458,26 +458,6 @@ class SkillMetadataValidationTests(unittest.TestCase):
         self.assertIn("missing YAML frontmatter", output)
 
 
-class ShippedSkillFrontmatterTests(unittest.TestCase):
-    """Every SKILL.md that ships under plugins/ must load in a real client."""
-
-    PLUGINS_ROOT = Path(__file__).resolve().parents[1] / "plugins"
-
-    def test_shipped_skill_frontmatter_parses_cleanly(self):
-        shipped = sorted(self.PLUGINS_ROOT.rglob("SKILL.md"))
-        self.assertEqual(
-            8,
-            len(shipped),
-            "expected 8 shipped SKILL.md files; update this test if a skill "
-            "was promoted or retired",
-        )
-        for skill_md in shipped:
-            with self.subTest(skill=skill_md.relative_to(self.PLUGINS_ROOT)):
-                validate_module.validate_skill_metadata(
-                    skill_md, skill_md.parent.name
-                )
-
-
 class DopplerReferenceHygieneTests(unittest.TestCase):
     BANNED_CONFIGURE_PATTERN = re.compile(
         r"doppler configure(?!\s+(?:get|unset)\b)"

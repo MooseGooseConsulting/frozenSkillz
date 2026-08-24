@@ -1,6 +1,6 @@
 # HyperAgent UI sitemap
 
-Initial probe only; traversal is paused by the user.
+Wave 0.2 probe; read-only traversal captured in screenshots and companion notes.
 
 ## Confirmed starting surface
 
@@ -15,7 +15,7 @@ Initial probe only; traversal is paused by the user.
   - Composer controls: Add files or context, Thread settings/model control, Use an agent, Execute, microphone, Send message
     - Thread settings → Model → Latest models
     - Thread settings → Model → All models → Anthropic / OpenAI / Other providers / Open weights
-    - Thread settings → Reasoning effort → Low / Medium / High / Extra high / Max
+    - Thread settings → Reasoning effort → Low / Medium / High / Extra high / Max (model-dependent; absent on sampled Gemini/Kimi/GLM Fast/Haiku)
     - Thread settings → Tools → Research / Browser / Data / Interactive / Media tool buttons
     - Thread settings → Integrations → Airtable / Gmail / Google Calendar / Google Drive / Slack / GitHub / More connected integrations
     - Thread settings → Open full settings
@@ -35,14 +35,23 @@ Initial probe only; traversal is paused by the user.
       - Ask for approval switch
       - delegation depth limit 1
   - Quick actions: Design a website, Source candidates, Research a topic, Generate images, More...
+    - More… → Video / Audio / Slides / Map / Doc
+  - Add files or context
+    - Upload files…
+    - Skills / Memories / Assets
+    - Output as… → Image / Video / Audio / Webpage / Slides / Table / Map / Doc
+    - Integrations → Gmail / Calendar / Drive / Slack / GitHub / Sheets / Docs / Tasks / Cloudflare / Firecrawl / Context7 / Notion / Bright Data / Add other
+    - Add to a project → existing projects / Create new project…
+  - Use an agent
+    - Search / six user agents / one team agent / Create from scratch
+  - Execute
+    - Plan first / Execute
   - Recent threads list with View all
   - Connect your integrations link
 
-## Not yet opened
+## Create-agent flow reached from Use an agent → Create from scratch
 
-- Composer `+` / Add files or context menu
-- Thread settings/model picker (catalog inspected; model selection intentionally not activated)
-- Use an agent picker
-- Execute menu
-- More... quick-action menu
-- Agents expand/new-agent surfaces
+- `/agents/new`: Identity → Model → Tools & Integrations → Invocations → Knowledge
+- Model: agent model Opus 5; subagent Default (Sonnet 4.6); switches Extended thinking / Fast mode / Budget limit per query
+- Tools & Integrations: 18 active tools; Add Integrations opens the full catalog
+- Invocations and Knowledge were not expanded

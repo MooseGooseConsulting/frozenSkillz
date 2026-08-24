@@ -3,6 +3,10 @@ __pycache__/
 .skills_cache.json
 node_modules/
 
+# The pinned Obra Superpowers source includes upstream OpenCode integration files.
+!_incubator/scout/2026-07-23-obra-superpowers/source/.opencode/
+!_incubator/scout/2026-07-23-obra-superpowers/source/.opencode/**
+
 # Local agent/tooling state — never committed
 .omc/
 .opencode/

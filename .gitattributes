@@ -1,3 +1,6 @@
 # Auto-generated .gitattributes for cross-platform line ending consistency
 # Default: LF for all text files
 * text=auto eol=lf
+
+# Preserve the retained external Obra snapshot verbatim; do not lint upstream whitespace.
+_incubator/scout/2026-07-23-obra-superpowers/source/** -whitespace

@@ -58,7 +58,9 @@ When the inventory contains several independent project clusters, assign one clu
 - relationship: `continues`, `supersedes`, `duplicates`, `corrects`, or `independent`;
 - archive-candidate judgment and reason.
 
-The main agent compares the cluster results, resolves overlaps, constructs titles, applies the renames, and reads them back.
+The main agent compares the cluster results, resolves overlaps, constructs
+semantic type-title proposals, and writes them with direct task links to the
+Notion report. It does not rename a task.
 
 ## Age and Archive Candidates
 
@@ -68,4 +70,7 @@ Age helps order the review. It does not prove abandonment, completion, or irrele
 
 ## Review Output
 
-For each task retain: task and host IDs, workstream basis, state, confidence, latest request, outcome, remaining action, related task IDs, applied markers, archive-candidate reason, and resulting title. End with the important unfinished current owners and every parked uncertainty.
+For each task retain: direct task link, task and host IDs, workstream basis,
+state, confidence, latest request, outcome, remaining action, related task IDs,
+archive-candidate reason, semantic emoji rationale, and proposed title. End
+with the important unfinished current owners and every parked uncertainty.

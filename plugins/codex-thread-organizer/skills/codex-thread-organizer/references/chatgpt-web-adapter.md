@@ -1,136 +1,103 @@
-# ChatGPT web adapter
+# ChatGPT web proposal adapter
 
-Use this adapter only for authenticated conversations at `chatgpt.com`. This
-is a browser-backed organization pass, not a title-only sidebar cleanup.
+Use this adapter only for the explicitly selected **ChatGPT web proposal**
+route in Codex Desktop. It is a browser-backed evidence pass that writes a
+linked Notion proposal report. It never changes ChatGPT.
+
+Browser retrieval is performed by the configured `chrome_pilot` worker. The
+analysis role is reserved for an explicitly configured **Codex 5.3 Spark**
+subagent; do not silently replace that requested profile with another model. If
+that profile is unavailable, record the route as blocked before producing
+organization conclusions.
 
 ## Declare the review scope first
 
 Never default to a full-history body review. A history with thousands of chats
-must be organized in explicit, repeatable cohorts, not one impossible pass.
+is organized through explicit, repeatable cohorts, not one impossible pass.
 
 A body-review cohort contains at most 30 conversations. For a larger request,
-partition the work by a user-requested recent range, named Project, date range,
-or explicit candidate set, and record the next deferred cohort. Do not relabel
-all of history as one bounded cohort.
+partition by a user-requested recent range, named Project, date range, or
+explicit candidate set, and record the next deferred cohort. Do not relabel all
+history as one bounded cohort.
 
-Before opening bodies, state:
+Before opening bodies, record:
 
 | Scope field | Required record |
 | --- | --- |
-| Requested coverage | The user's requested set, such as recent 30, a named Project, an identified topic, or an explicit chat list |
-| Inventory coverage | Which history range/rows were inspected to select candidates, and what remains uninspected |
-| Body-review cohort | At most 30 conversations whose bodies will actually be opened and classified |
-| Deferred set | Conversations deliberately left for a later cohort, why, and the next cohort to review |
+| Requested coverage | Requested set: recent 30, named Project, date range, topic, or explicit chat list |
+| Inventory coverage | History rows inspected to select candidates, plus what remains uninspected |
+| Body-review cohort | At most 30 conversations opened and classified from their bodies |
+| Deferred set | Conversations left for a later cohort, why, and the next cohort |
 
 History titles, previews, dates, and existing Project labels may select a
-candidate cohort, but they are `inventory-only` hints. They establish no topic,
-relationship, disposition, or mutation. Do not call a requested all-history
-organization complete unless every accessible chat has actually been body
-reviewed; otherwise report the completed cohort and deferred coverage.
+candidate cohort, but are `inventory-only` hints. They establish no topic,
+relationship, disposition, or proposal. Do not call an all-history request
+complete until every accessible chat was body-reviewed; otherwise report the
+completed cohort and deferred coverage.
 
-## Gather the actual conversations
+## Gather the corpus
 
-Use the ChatGPT history container, including its lazy-loaded history, for the
-declared inventory coverage. Initial visible rows are not the whole history.
-Open every conversation in the body-review cohort and make the shared chat card
-from its body. If an independent cluster is delegated, the subagent returns
-detailed cards, not proposed titles alone. The main agent checks cited bodies
-before claiming a relationship across clusters.
+Use ChatGPT's history container, including lazy-loaded history, for the
+declared inventory coverage. Open every chat in the body-review cohort and make
+the shared chat card from its body, including its direct `chatgpt.com` link. An
+independently analyzed cluster returns detailed cards and source links, not
+titles alone. The coordinating agent verifies cited bodies before claiming a
+relationship across clusters.
 
-If a cohort conversation cannot be opened, record its identifier/title as
-unavailable and exclude it from rename and Project-move proposals. State
-partial cohort coverage plainly; do not silently shrink the requested set.
+If a cohort chat cannot be opened, record its link/identity as unavailable and
+exclude it from title or Project proposals. State partial cohort coverage; do
+not silently shrink the requested set.
 
 When Codex work is in scope, open the actual Codex task bodies for the declared
 bridge cohort and read [cross-surface bridge](cross-surface-bridge.md). Do not
-bridge from a matching ChatGPT or Codex title, sidebar preview, or Project label.
+bridge from matching ChatGPT/Codex titles, previews, or Project labels.
 
-## Initial triage: decide the home before proposing a move
+## Initial triage: decide the proposed home
 
-A ChatGPT Project is one possible home, not the default destination. For each
-body-reviewed chat, assign one disposition from its body evidence:
+A ChatGPT Project is one possible home, not a default. For each body-reviewed
+chat, select a disposition supported by body evidence:
 
-| Disposition | Meaning | Initial proposal |
+| Disposition | Meaning | Project proposal |
 | --- | --- | --- |
-| `project-home` | Durable work that belongs with an existing, coherent ChatGPT Project | Propose that existing Project and a specific title |
-| `canonical-reference` | The best known answer, decision, artifact, or source **among successfully body-reviewed chats in this declared cohort** for a question likely to recur | Retain it as the cohort's named reference; move it only if a Project genuinely fits |
-| `standalone-reference` | A useful answer worth finding again, but not part of a durable Project | Improve its title; do not force a Project move |
-| `new-project-candidate` | A durable, coherent workstream with no existing Project fit | Propose a new Project only when the new-Project evidence rule is met |
-| `archive-candidate` | Trivial, one-off, or already-resolved material that should no longer crowd active history | Flag for separate user approval; do not archive automatically |
-| `duplicate-or-superseded` | An older or parallel chat whose useful result is represented by another identified chat | Link it to the representative chat; propose no move unless its destination is clear |
-| `needs-human-choice` | The body is meaningful but does not establish a confident home or retention decision | Keep unchanged and state the exact ambiguity |
+| `project-home` | Durable work with an existing coherent ChatGPT Project | Propose moving to that existing Project |
+| `canonical-reference` | Best known answer, decision, artifact, or source among body-reviewed chats in this cohort for a recurring question | Retain it as a named reference; move only when a Project genuinely fits |
+| `standalone-reference` | Useful answer that is not durable Project work | Improve its title; do not force a Project |
+| `new-project-candidate` | Coherent durable workstream with no existing Project fit | Propose a new Project only when the new-Project evidence rule is met |
+| `archive-candidate` | Trivial, one-off, or resolved material | Flag as a possible later archive; do not archive |
+| `duplicate-or-superseded` | Useful result is represented by another identified chat | Link its representative; propose no Project change unless the destination is clear |
+| `needs-human-choice` | The body does not establish a confident home or retention decision | Keep unchanged and state the ambiguity |
 
-Use `project-home` only when the work has a durable shared outcome and a real
-existing Project fits it. A single useful answer is often a
-`standalone-reference`; a short question with no lasting value is often an
-`archive-candidate`. Do not create a catch-all Project for one-off questions.
+Use `project-home` only for a durable shared outcome with a real existing
+Project fit. A new Project requires an explicit ongoing user project or a
+coherent workstream with at least two body-reviewed chats and no existing fit.
+A `project-merge-candidate` identifies source Projects, target Project, and the
+exact reviewed chats that would move. It is a proposal; it does not claim a UI
+operation would merge Projects.
 
-A new Project is a `new-project-candidate`, not a default: propose it only for
-an explicit ongoing user project or a coherent workstream with at least two
-body-reviewed chats and no existing Project fit. A `project-merge-candidate`
-identifies its source Projects, target Project, and the exact reviewed chats
-that would move; it does not claim that a ChatGPT move automatically merges
-Projects.
+## Write the ChatGPT proposal report
 
-`move-existing` may serve `project-home`, or a `canonical-reference` or
-`duplicate-or-superseded` chat when body evidence establishes a specific
-existing Project as its useful home. It remains optional for those latter
-dispositions; retaining a standalone reference is valid.
+Group the cards into workstreams, compare their body evidence, and identify at
+most one `canonical-reference` among successfully body-reviewed chats in the
+declared cohort per concrete question or decision. Its title names what it lets
+the user find again, not merely its original question.
 
-## Produce a proposal before mutation
+Create the Notion report with the scope declaration first, then an evidence
+worksheet with exactly one row per body-reviewed chat:
 
-Group the body-reviewed cards into workstreams, compare relationships, and
-identify at most one `canonical-reference` **among successfully body-reviewed
-chats in the declared cohort** per concrete question or decision unless the
-evidence shows distinct answers. Carry the cohort scope and any unavailable
-chat coverage gap with that label. A `canonical-reference` title must name what
-it lets the user find again, not merely the chat's original question.
-
-Show the scope declaration before the evidence worksheet. The worksheet has one
-row per body-reviewed conversation, never one row per inventory-only candidate:
-
-| Conversation | Current title / Project | Detailed body summary | Workstream, relationship, and evidence | Codex bridge | Disposition and retrieval reason | Proposed title and emoji meaning | Project action |
+| Conversation link | Current title / Project | Detailed body summary | Workstream, relationship, and evidence | Codex bridge link/result | Disposition and retrieval reason | Proposed title and semantic emoji meaning | Project proposal |
 | --- | --- | --- | --- | --- | --- | --- | --- |
 
-`Project action` is exactly one of: `move-existing`, `create-new`,
-`merge-by-approved-moves`, or `none`. A new Project proposal includes its name,
-purpose, and reviewed seed chats. A merge proposal includes the source and
-target Projects, and no action is implied until each move is approved.
+The Project proposal is exactly one of `move-existing`, `create-new`,
+`merge-by-proposed-moves`, or `none`. A new Project includes name, purpose, and
+reviewed seed chats. A merge includes source, target, and exact proposed moves.
+Every cited repository, artifact, Codex task, and ChatGPT chat has a direct
+link.
 
-Then self-grade the proposal. For every actionable row, check that:
+Self-grade every proposed row: it must be body-reviewed, in the declared
+cohort, supported by concrete body evidence, retrievable by title, and use one
+to three semantic emoji with a stated reason. A confirmed bridge may inform a
+proposal; plausible or unresolved bridges remain visible uncertainty. Do not
+turn lifecycle/status markers into ChatGPT title emoji.
 
-1. The conversation was body-reviewed and is in the declared body-review
-   cohort; inventory-only, deferred, and unavailable conversations have no
-   classification or proposed mutation.
-2. The summary, relationship, title, and disposition are supported by body evidence.
-3. The title names a concrete system/artifact and action/outcome, or the
-   specific answer/decision that makes a reference retrievable.
-4. Each emoji has a stated semantic reason, there are one to three at most, and
-   no Codex lifecycle/status marker has been added.
-5. `move-existing` is proposed for `project-home`, or for a
-   `canonical-reference`/`duplicate-or-superseded` chat with a body-evidenced
-   existing Project; `create-new` is supported by one or more
-   `new-project-candidate` chats and meets the new-Project evidence rule; a
-   merge names source, target, and exact moves.
-6. Archive candidates remain proposals, duplicate/superseded chats identify
-   their representative chat, and unavailable chats have no invented proposal.
-7. Each Codex bridge is `confirmed`, `plausible`, `unresolved`, or `no-link`
-   with body evidence; only confirmed bridges inform proposals.
-
-Correct or omit rows that fail these checks. Present the worksheet, the
-self-grade, and the exact actionable subset to the user for approval.
-
-## Apply only approval
-
-After the user approves particular rows, use ChatGPT's own Rename and Move to
-project controls for those rows only. Create a new Project only after separate
-explicit approval and only if the UI exposes that control; otherwise report it
-as unavailable. A Project merge consists only of the individually approved
-moves to its target; do not claim a merge when the UI does not expose one.
-Treat archive as a separate explicitly approved action; this adapter does not
-infer archive approval from an approved rename or Project move. Browser mutation
-belongs to this ChatGPT adapter; it is not a general browser-tab operation.
-Before each action, confirm the selected chat and intended control. If the
-expected control is unavailable, targets the wrong chat, or leaves an ambiguous
-visible outcome, stop that row and report it failed or unverified. Do not
-require a separate post-mutation readback pass unless the user asks for one.
+End the report with `No action executed`: do not use Rename, Move to Project,
+Create Project, Merge, or Archive browser controls under this skill.

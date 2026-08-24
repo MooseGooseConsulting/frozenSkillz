@@ -1,25 +1,21 @@
 {
   "skill": "codex-thread-organizer",
-  "notes": "Codex-app and ChatGPT-web routing cases. Positives cover body-derived titles, related-work reasoning, Codex lifecycle organization, and ChatGPT evidence worksheets with Project proposals. ChatGPT-web requests trigger a dedicated browser-backed adapter; a title-only Codex-sidebar row is not substituted for a ChatGPT body. Negatives protect other clients (Claude Code, Cursor, Gemini), generic Git cleanup, browser-tab organization, and ordinary conversation summaries. The held_out split is the final untouched test set, matching the repository's active-skill eval convention.",
+  "notes": "This is an explicit-route, proposal-only Codex Desktop skill. Positive cases name the skill and select either local Codex title review or ChatGPT web proposal. Generic history organization must not implicitly activate it. Both routes write linked Notion reports and never execute a rename, move, Project creation, merge, or archive.",
   "train": [
     {
-      "query": "Review and rename my recent Codex tasks from the full conversation bodies",
+      "query": "Use $codex-thread-organizer for a local Codex title review; compare my recent task bodies with current repos and write linked Notion title proposals.",
       "should_trigger": true
     },
     {
-      "query": "Compare all Codex conversations for this repo and tell me which older work was superseded",
+      "query": "Use $codex-thread-organizer for the ChatGPT web proposal route: review 30 chats, group the body evidence, and write a linked Notion report.",
       "should_trigger": true
     },
     {
-      "query": "Find the current owner of each unfinished Codex workstream and rename the related tasks",
+      "query": "Use $codex-thread-organizer for a proposal-only local Codex review with semantic type emoji, not status markers.",
       "should_trigger": true
     },
     {
-      "query": "Create a periodic Codex automation that organizes changed tasks using our sparse emoji taxonomy",
-      "should_trigger": true
-    },
-    {
-      "query": "Mark the single most important unfinished Codex task red and concrete follow-up tasks yellow",
+      "query": "Use $codex-thread-organizer for ChatGPT web proposal: assess existing Projects and propose evidence-backed moves or merges without doing them.",
       "should_trigger": true
     },
     {
@@ -27,37 +23,21 @@
       "should_trigger": false
     },
     {
-      "query": "Organize my ChatGPT web conversation history that appears in the Codex sidebar",
-      "should_trigger": true
-    },
-    {
       "query": "Organize my ChatGPT web conversation history",
-      "should_trigger": true
+      "should_trigger": false
     },
     {
       "query": "Add emoji names to my Claude Code sessions",
       "should_trigger": false
-    },
-    {
-      "query": "Read 30 recent chats on ChatGPT, group the related work, and give me evidence-backed emoji titles and existing Project moves for approval",
-      "should_trigger": true
     }
   ],
   "validation": [
     {
-      "query": "Use Codex task history to find duplicates and durable completed references for this repository",
+      "query": "Use $codex-thread-organizer for local Codex title review and dispatch Luna reviewers across independent coding-project clusters.",
       "should_trigger": true
     },
     {
-      "query": "Put a verified completion check mark on the Codex titles whose outcomes were actually checked",
-      "should_trigger": true
-    },
-    {
-      "query": "Recommend which completed or superseded Codex tasks are archive candidates without archiving them yet",
-      "should_trigger": true
-    },
-    {
-      "query": "Read the recent relevant Codex chats for each project and distinguish done, continued elsewhere, and parked work",
+      "query": "Use $codex-thread-organizer for ChatGPT web proposal; bridge it to Codex tasks only from body evidence and include source links in Notion.",
       "should_trigger": true
     },
     {
@@ -67,19 +47,11 @@
     {
       "query": "Archive old Gmail threads",
       "should_trigger": false
-    },
-    {
-      "query": "Propose better names for my ChatGPT web chats after reading their bodies; use our emoji taxonomy but do not add completion status markers",
-      "should_trigger": true
     }
   ],
   "held_out": [
     {
-      "query": "Audit the Codex tasks for this project family; age alone must not mean obsolete",
-      "should_trigger": true
-    },
-    {
-      "query": "Make waiting, blocked, canonical, and superseded Codex tasks visually distinct in the sidebar",
+      "query": "Use $codex-thread-organizer in Codex Desktop for a proposal-only ChatGPT-web cohort and Notion report.",
       "should_trigger": true
     },
     {

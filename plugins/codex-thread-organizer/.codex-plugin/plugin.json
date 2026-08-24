@@ -1,7 +1,7 @@
 {
   "name": "codex-thread-organizer",
-  "version": "2.7.1",
-  "description": "Organize Codex tasks and ChatGPT web conversations with body-derived titles, relationships, Projects, and semantic emoji.",
+  "version": "2.7.2",
+  "description": "Create linked, proposal-only Notion reports for Codex task and ChatGPT web organization.",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
@@ -17,9 +17,9 @@
   ],
   "skills": "./skills/",
   "interface": {
-    "displayName": "Conversation Organizer",
-    "shortDescription": "Organize Codex and ChatGPT conversations",
-    "longDescription": "Read Codex or ChatGPT conversation bodies and group related work. Codex applies native lifecycle-aware titles directly; ChatGPT presents title and Project proposals for row-specific approval.",
+    "displayName": "Codex Desktop Conversation Organizer",
+    "shortDescription": "Linked conversation organization proposals",
+    "longDescription": "In Codex Desktop, read Codex or ChatGPT conversation bodies, reason across an evidence corpus, and write linked, dated Notion proposals. It never renames chats or changes Projects.",
     "developerName": "Coldaine",
     "category": "Productivity",
     "capabilities": [
@@ -27,7 +27,7 @@
       "Write"
     ],
     "defaultPrompt": [
-      "For Codex: title tasks from bodies. For ChatGPT: summarize, group, and propose emoji titles and Projects for my approval."
+      "Use the explicitly named local Codex or ChatGPT-web route to write a linked Notion proposal report."
     ]
   }
 }

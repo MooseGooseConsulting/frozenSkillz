@@ -9,7 +9,7 @@ FIXTURE = ROOT / "tests" / "fixtures" / "chatgpt-large-history-cohort.json"
 
 
 class CrossSurfaceBridgeContractTests(unittest.TestCase):
-    def test_bridge_requires_actual_bodies_and_cannot_authorize_mutation(self):
+    def test_bridge_requires_actual_bodies_and_cannot_authorize_changes(self):
         router = (SKILL_ROOT / "SKILL.md").read_text(encoding="utf-8")
         shared = (SKILL_ROOT / "references" / "shared-conversation-model.md").read_text(
             encoding="utf-8"
@@ -29,9 +29,9 @@ class CrossSurfaceBridgeContractTests(unittest.TestCase):
         self.assertIn("plausible", bridge)
         self.assertIn("unresolved", bridge)
         self.assertIn("no-link", bridge)
-        self.assertIn("never by itself authority to mutate", router.replace("\n", " "))
+        self.assertIn("never authorizes a change", router.replace("\n", " "))
         self.assertIn("Codex bridge", chatgpt)
-        self.assertIn("only confirmed bridges inform proposals", chatgpt)
+        self.assertIn("A confirmed bridge may inform a", chatgpt)
         self.assertIn("each body-reviewed source in the declared", bridge)
 
     def test_large_history_contract_and_fixture_prevent_unbounded_claims(self):
@@ -50,12 +50,13 @@ class CrossSurfaceBridgeContractTests(unittest.TestCase):
         self.assertIn("next deferred cohort", chatgpt)
         self.assertIn("inventory-only", chatgpt)
         self.assertIn(
-            "canonical-reference` **among successfully body-reviewed", chatgpt
+            "canonical-reference` among successfully body-reviewed",
+            chatgpt.replace("\n", " "),
         )
         self.assertIn("new-project-candidate", chatgpt)
         self.assertIn("project-merge-candidate", chatgpt)
-        self.assertIn("was body-reviewed and is in the declared", chatgpt.replace("\n", " "))
-        self.assertIn("canonical-reference`/`duplicate-or-superseded", chatgpt)
+        self.assertIn("body-reviewed, in the declared cohort", chatgpt.replace("\n", " "))
+        self.assertIn("duplicate-or-superseded", chatgpt)
         self.assertIn("Do not compare unbounded ChatGPT or Codex histories", bridge)
         self.assertIn("Inventory-only titles or previews cannot", bridge.replace("\n", " "))
 
@@ -68,9 +69,9 @@ class CrossSurfaceBridgeContractTests(unittest.TestCase):
         self.assertEqual(requested, set(cohort) | deferred)
         self.assertTrue(set(cohort).isdisjoint(deferred))
         self.assertEqual(by_id["chat-101"]["canonical_scope"], "within this declared cohort")
-        self.assertEqual(by_id["chat-103"]["proposed_mutation"], "none")
+        self.assertEqual(by_id["chat-103"]["proposed_change"], "none")
         self.assertEqual(by_id["chat-104"]["project_action"], "none")
-        self.assertEqual(by_id["chat-104"]["proposed_mutation"], "flag-for-archive-approval")
+        self.assertEqual(by_id["chat-104"]["proposed_change"], "archive-candidate")
         self.assertEqual(by_id["chat-105"]["project_action"], "move-existing")
         self.assertTrue(set(fixture["inventory_only_candidates"]).isdisjoint(cohort))
 

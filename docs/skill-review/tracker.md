@@ -16,7 +16,7 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `external-skill-intake` | active | None. |
 | `omc-reference` | active | None. |
 | `pdm-cli-operations` | active | Live-qualified 2026-07-20; 2026-08-10 removed mandatory Doppler handoff for trusted launchers with opaque authentication. |
-| `codex-thread-organizer` | active | Codex-only dedicated package. Codex sidebar work retains the direct-rename contract (invocation = authorization; proposal gate removed 2026-07-31): every accessible conversation is inventoried and classified `title-mutable` / `not title-mutable`, and only the mutable ones are renamed. Authenticated ChatGPT web work uses declared body-review cohorts and row-specific approval before Rename, Move, new-Project, merge-by-approved-moves, or archive actions. |
+| `codex-thread-organizer` | active | Codex-only, explicit-route Codex Desktop package. Both local Codex and authenticated ChatGPT-web routes are proposal-only: they inventory readable bodies, classify local tasks as `title-mutable` / `not title-mutable`, reason over a linked corpus and live coding-project context, then write dated Notion proposals. Neither route renames, moves, creates, merges, archives, or otherwise changes a chat or Project. |
 | `skill-injector` | registered, dormant/untested | Qualify end-to-end or de-register; internal rename from skill-classifier unfinished. |
 | `plugin-authoring-guide` | gated | Rework; re-verify against current Claude Code docs. |
 | `mcp-deployment-guide` | gated | Re-verify config paths + `mcp/` templates at repo root. |

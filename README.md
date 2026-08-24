@@ -11,7 +11,7 @@ This repository is not a dumping ground for local client caches, raw external re
 | Plugin | Category | Status | Purpose |
 |---|---|---|---|
 | `frozen-skills` | reference | active | Shared package for reviewed cross-consumer skills. |
-| `codex-thread-organizer` | productivity | active, Codex-only | Dedicated Codex package for Codex task and ChatGPT web conversation organization; absent from other consumer catalogs. |
+| `codex-thread-organizer` | productivity | active, Codex-only | Dedicated, explicit-route Codex Desktop package for linked Codex/ChatGPT organization proposals; absent from other consumer catalogs. |
 | `skill-injector` | development | experimental, untested | UserPromptSubmit hook and subagent prompt quality gate for LLM-assisted skill suggestions. Review/test before enabling. |
 
 Historical reference/workflow skills remain gated in `_incubator/` until they pass the quality bar in `docs/skill-review/tracker.md`.
@@ -90,7 +90,12 @@ The Codex marketplace separately exposes the valid `codex-thread-organizer` plug
 - `omc-reference`: maintain Oh My ClaudeCode as a separate Claude Code plugin from Codex without importing OMC workflow rules into ordinary Codex work.
 - `pdm-cli-operations`: inspect and operate Proxmox fleets through the official PDM client or a repository-owned pinned direct PDM adapter, with exact target selection and terminal task proof for mutations.
 
-The dedicated `codex-thread-organizer` package is available to Codex only. It reads related Codex task bodies, renames Codex tasks with sparse semantic titles, identifies the current owner of unfinished work, and supports periodic Codex organization runs. It also organizes authenticated ChatGPT web conversations in explicit body-review cohorts, producing title/Project proposals that require row-specific user approval before browser actions.
+The dedicated `codex-thread-organizer` package is available to Codex only and
+runs in Codex Desktop. It is explicitly routed to either a local Codex title
+review or a ChatGPT-web proposal pass. It reads bodies, reasons across an
+evidence corpus, compares live coding-project context, and writes dated linked
+Notion proposals for semantic type-emoji titles and (for ChatGPT) Project
+organization. It does not rename, move, create, merge, or archive anything.
 
 ## External Skill Intake
 

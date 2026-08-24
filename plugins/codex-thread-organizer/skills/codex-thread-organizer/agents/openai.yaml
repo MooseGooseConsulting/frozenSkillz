@@ -1,6 +1,6 @@
 interface:
-  display_name: "Conversation Organizer"
-  short_description: "Organize Codex tasks and ChatGPT web conversations"
-  default_prompt: "Use $codex-thread-organizer to read conversation bodies and group related work. Apply native lifecycle-aware titles for Codex sidebar tasks. For ChatGPT web chats, include detailed summaries, Project proposals, semantic emoji rationale, and a self-grade before I approve any rename or move."
+  display_name: "Codex Desktop Conversation Organizer"
+  short_description: "Write linked Codex or ChatGPT organization proposals"
+  default_prompt: "Use $codex-thread-organizer in Codex Desktop for the explicitly named local Codex or ChatGPT-web proposal route."
 policy:
-  allow_implicit_invocation: true
+  allow_implicit_invocation: false

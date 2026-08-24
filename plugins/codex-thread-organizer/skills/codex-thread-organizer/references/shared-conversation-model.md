@@ -10,7 +10,7 @@ title. Include:
 
 | Field | Record |
 | --- | --- |
-| Conversation | Stable ID or direct UI identity, current title, and availability |
+| Conversation | Stable ID, **direct source link**, current title, and availability |
 | Detailed summary | Opening request, important corrections or decisions, delivered outcome, concrete systems/artifacts, and unresolved work |
 | Workstream | The durable project or problem this belongs to |
 | Evidence | Specific body details that support the summary and any cross-chat claim |
@@ -18,9 +18,11 @@ title. Include:
 | Cross-surface candidate | A Codex task or ChatGPT chat only when a body-evidenced bridge exists; otherwise `none` |
 
 Do not infer a task or conversation's content, scope, or relationship from its
-visible title, sidebar preview, emoji, age, or Project name. Do not title, move,
-or bridge a conversation whose body is unavailable. Mark it unavailable instead
-of converting a title-only guess into a fact.
+visible title, sidebar preview, emoji, age, or Project name alone. Those fields
+may route corpus review, but the language-model reasoning must compare the
+actual body details across cards. Do not make a title, Project, or bridge
+proposal for a conversation whose body is unavailable. Mark it unavailable
+instead of converting a title-only guess into a fact.
 
 ## Relationships and workstreams
 
@@ -37,8 +39,8 @@ the same Project.
 
 Every relationship other than `independent` needs body evidence from both
 conversations. If independent clusters are large enough to delegate, each
-subagent returns cards with those evidence details; the main agent compares the
-cards before asserting a cross-cluster relationship.
+subagent returns cards with direct links and evidence details; the main agent
+reasons over the combined corpus before asserting a cross-cluster relationship.
 
 ## Title principle
 

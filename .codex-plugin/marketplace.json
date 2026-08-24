@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Marketplace for consumer-scoped frozen-skills packages and experimental skill-injector. Each consumer installs only its own manifest-listed active skills; _incubator content is not installed.",
-    "version": "2.7.1",
+    "version": "2.7.2",
     "repository": "https://github.com/Coldaine/frozenSkillz",
     "license": "MIT"
   },
@@ -15,14 +15,14 @@
       "name": "frozen-skills",
       "source": "./plugins/frozen-skills",
       "description": "Installs reviewed Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
-      "version": "2.7.1",
+      "version": "2.7.2",
       "category": "reference"
     },
     {
       "name": "codex-thread-organizer",
       "source": "./plugins/codex-thread-organizer",
-      "description": "Codex-only package for Codex task and ChatGPT web conversation organization with body-derived titles, relationships, Projects, and semantic emoji.",
-      "version": "2.7.1",
+      "description": "Codex-only, proposal-only package for linked Notion reports about Codex and ChatGPT conversation organization.",
+      "version": "2.7.2",
       "category": "productivity"
     },
     {

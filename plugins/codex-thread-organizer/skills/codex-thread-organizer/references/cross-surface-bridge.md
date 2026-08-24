@@ -38,17 +38,17 @@ from each source, the common work claim, and one result:
 | `unresolved` | The topic may overlap, but the available bodies cannot establish how |
 | `no-link` | No material cross-surface relationship found |
 
-Only `confirmed` bridges may inform a relationship or title proposal. A
-`plausible` or `unresolved` bridge is presented for user judgment and causes no
-rename, Project move, status marker, or lifecycle change. A bridge never
-replaces the adapter-specific approval rules.
+Only `confirmed` bridges may inform a relationship, title, or Project proposal.
+A `plausible` or `unresolved` bridge remains visible uncertainty and causes no
+proposal that depends on the connection. A bridge never authorizes a rename,
+Project move, status marker, lifecycle change, or other action.
 
 ## Use in organization
 
 Add a `Codex bridge` column to a ChatGPT evidence worksheet when Codex work is
-in scope. It identifies the confirmed Codex task or reports the candidate result
-and evidence. The corresponding Codex review records the ChatGPT conversation
-symmetrically.
+in scope. It contains direct links to both sources, the candidate result, and
+the body evidence. The corresponding Codex review records the ChatGPT
+conversation symmetrically.
 
 The desired outcome is retrieval: a user should be able to find the Codex task
 from a ChatGPT discussion, or the ChatGPT answer from a Codex task, even where

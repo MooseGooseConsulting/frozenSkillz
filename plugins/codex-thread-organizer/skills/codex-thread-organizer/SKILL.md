@@ -1,21 +1,30 @@
 ---
 name: codex-thread-organizer
-description: Organize Codex sidebar tasks or ChatGPT web conversations from their bodies. Use for evidence-based titles, related-work grouping, cross-surface bridges, emoji semantics, ChatGPT Project proposals, and approved renames or moves.
+description: In Codex Desktop, produce linked Notion proposals for semantic-emoji chat titles and ChatGPT Project organization. Use only when the user explicitly selects the local Codex or ChatGPT-web route; never execute a chat or Project change.
 ---
 
-# Conversation organizer
+# Codex Desktop conversation organizer
 
-## Boundary
+## Boundary and router
 
-Packaging is Codex-only: this is a dedicated Codex package. It can organize two
-evidence surfaces:
+This is a dedicated Codex package and runs **in Codex Desktop only**. It has
+two deliberately separate, explicit routes:
 
-- Codex sidebar tasks, using Codex's native task controls.
-- Authenticated ChatGPT web history, using the ChatGPT web UI after approval.
+- **Local Codex title review** — review title-mutable Codex sidebar tasks,
+  compare their body-derived work with live coding-project context, and write
+  title-and-semantic-emoji proposals to Notion.
+- **ChatGPT web proposal** — review an explicitly declared ChatGPT web cohort,
+  form body-derived title and Project proposals, and write them to Notion.
 
-Do not infer the contents of a ChatGPT web conversation from a title shown in a
-Codex sidebar. If the requested surface is unavailable, say which surface is
-unavailable and do not substitute an invented inventory.
+Do not infer a route from a title, Project name, or the fact that a ChatGPT
+conversation appears in a Codex sidebar. If the user invokes this skill without
+naming one route, ask them to select one. `allow_implicit_invocation` is off:
+this organizer is not an automatic background cleanup.
+
+Both routes are proposal-only. Do **not** invoke a native Codex title operation
+or a ChatGPT Rename, Move, Create Project, Merge, or Archive control. A report
+is the terminal output of the current workflow, not an approval queue that this
+skill may execute later.
 
 ## Load order
 
@@ -23,21 +32,26 @@ Always read:
 
 1. [Shared conversation model](references/shared-conversation-model.md)
 2. [Semantic emoji taxonomy](references/emoji-taxonomy.md)
+3. [Notion proposal report](references/notion-proposal-report.md)
 
-Then select the needed evidence surface:
+Then select the explicit route:
 
-- For Codex sidebar tasks, read [Codex sidebar adapter](references/codex-sidebar-adapter.md).
+- For local Codex title review, read [Codex sidebar adapter](references/codex-sidebar-adapter.md).
 - For ChatGPT conversations at `chatgpt.com`, read [ChatGPT web adapter](references/chatgpt-web-adapter.md).
-- To relate ChatGPT conversations to Codex tasks, read both adapters and the
+- To relate both routes, read both adapters and the
   [cross-surface bridge](references/cross-surface-bridge.md).
 
-Do not combine the mutation rules from the two adapters. In particular, Codex
-lifecycle markers and the verified Codex title limit do not apply to ChatGPT
-web titles. A cross-surface bridge is evidence for organization, never by
-itself authority to mutate either surface.
+Codex lifecycle classifications and the verified 60 UTF-16 title ceiling apply
+only to a local-Codex proposal. They do not transfer to ChatGPT titles. A
+cross-surface bridge can inform a proposal only; it never authorizes a change.
 
-## Common rule
+## Corpus evidence rule
 
-Read bodies before proposing a title, relationship, Project placement, or
-cross-surface bridge. A title is a compact retrieval label for actual work, not
-a guess from a colored marker, age, sidebar preview, or existing sidebar title.
+Build a corpus of readable conversation bodies and reason over its concrete
+problems, repositories, files, artifacts, decisions, outcomes, and chronology.
+That is how the organizer finds genuine connections across conversations.
+
+Matching labels are not prohibited evidence; they are merely insufficient
+evidence. A shared title, Project name, emoji, preview, age, or topic word
+cannot by itself establish identity, a relationship, or a Project placement.
+Record the body evidence and direct source links that support every proposal.

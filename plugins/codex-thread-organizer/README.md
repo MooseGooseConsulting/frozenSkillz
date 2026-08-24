@@ -1,66 +1,43 @@
 # Codex Thread Organizer
 
-This is a Codex-only package that organizes both Codex sidebar tasks and
-authenticated ChatGPT web conversations. `SKILL.md` is deliberately a thin
-router; this README is human-facing package documentation and is not loaded as
-skill instructions.
+This Codex-only package runs in **Codex Desktop**. It has two explicit,
+proposal-only routes:
 
-## What it changes
+- **Local Codex title review** reads title-mutable Codex task bodies, compares
+  their work with live coding-project context, and proposes concise titles with
+  semantic **type** emoji.
+- **ChatGPT web proposal** reads declared body-review cohorts from authenticated
+  ChatGPT history and proposes titles plus Project creation, move, or merge
+  arrangements.
 
-- Codex keeps its native lifecycle-aware title system, status markers, current
-  owner reasoning, and verified title limit.
-- ChatGPT web gains body-derived summaries, workstream grouping, cross-chat
-  relationships, semantic emoji titles, and existing-Project-first proposals.
-- Large ChatGPT histories are reviewed in declared cohorts of at most 30 chats.
-  Inventory chooses candidates but cannot classify or mutate them; every pass
-  records the next deferred cohort only when the request was partitioned or
-  otherwise incomplete.
-- A canonical reference is canonical only among successfully body-reviewed
-  chats in its declared cohort, never a claim about unread or unreviewed
-  history.
-- A cross-surface bridge compares readable ChatGPT and Codex bodies. It uses
-  shared work and artifacts, not a matching Project name or sidebar title.
-- ChatGPT triage does not force every conversation into a Project: it separates
-  project work, canonical and standalone references, archive candidates,
-  duplicates, and unresolved human choices.
-- New Projects and Project merges are separately evidenced and approved; a merge
-  is an explicit set of approved moves, not an assumed UI feature.
-- ChatGPT changes are proposed with evidence and a self-grade before the user
-  approves individual browser renames or Project moves.
-- ChatGPT does not receive Codex completion or status markers by default.
+Each route creates a dated report in the **Codex Desktop Chat Organization
+Reports** Notion database. The report is point-in-time evidence, not current
+state: it records direct conversation and artifact links, coverage, worker
+roster, body-derived relationships, uncertainty, and proposed changes. It ends
+with `No action executed`.
 
-## Flow
+## Safety boundary
 
-```mermaid
-flowchart TD
-    A["Requested conversation organization"] --> B["SKILL.md router"]
-    B --> C["Always read shared conversation model and emoji taxonomy"]
-    C --> D{"Evidence surface"}
-    D --> E["Codex sidebar adapter"]
-    D --> F["ChatGPT web adapter"]
-    D --> G["Both surfaces plus cross-surface bridge"]
-    E --> H["Bodies, lifecycle/current owner, native Codex title"]
-    F --> I["Declare inventory and 30-chat body-review cohort"]
-    G --> J["Compare declared body cohorts"]
-    I --> K["Detailed chat cards and deferred coverage when incomplete"]
-    J --> K
-    K --> L["Triage: Project, reference, archive candidate, duplicate, or undecided"]
-    L --> M["Cohort-scoped canonical references and relationships"]
-    M --> N["Evidence worksheet and self-grade"]
-    N --> O["User approves selected rows"]
-    O --> P["ChatGPT Rename / Move to project UI"]
-```
+The package is not implicitly invoked and does not select a route from labels
+or matching Project names. It never uses Codex title controls or ChatGPT Rename,
+Move, Create Project, Merge, or Archive controls. Matching names can route a
+corpus review, but the model establishes relationships only from the readable
+body evidence: problems, systems, repositories, files, artifacts, decisions,
+outcomes, and chronology.
 
-## ChatGPT proposal contract
+## Review roles
 
-Each proposed change identifies the scope, current title and Project, a detailed
-body-derived summary, relationship evidence, disposition, proposed title with
-one to three meaningful emoji, and Project action. When Codex work is in scope
-it also carries the body-evidenced bridge result. The self-grade rejects vague
-titles, title-only inference, unsupported cross-chat or cross-surface claims,
-status-marker leakage from Codex, Projects used as a catch-all, and new Projects
-proposed without considering existing ones.
+For multiple local coding-project clusters, the local route dispatches multiple
+`gpt-5.6-luna` reviewers with non-overlapping clusters and reconciles their
+linked body cards against live repository context. The ChatGPT route uses the
+configured `chrome_pilot` worker for browser retrieval and requires an explicitly
+configured **Codex 5.3 Spark** analysis profile; it fails closed if that profile
+is absent rather than silently changing models.
 
-The skill currently reads live browser history. A future archival/sync runtime
-may supply durable bodies, but it is deliberately outside this package and does
-not block the live ChatGPT organization flow.
+## Cohorts and Projects
+
+ChatGPT histories are reviewed in declared cohorts of at most 30 body-opened
+chats. Inventory labels select candidates only; they do not prove a topic or
+relationship. Existing ChatGPT Projects, Codex project metadata, and Git
+repositories remain different identifiers. A body-evidenced relationship may
+be proposed between them, but a shared name never establishes identity.

@@ -31,7 +31,7 @@
       "disposition": "canonical-reference",
       "canonical_scope": "within this declared cohort",
       "project_action": "none",
-      "proposed_mutation": "rename"
+      "proposed_change": "rename-proposal"
     },
     {
       "id": "chat-102",
@@ -39,28 +39,28 @@
       "disposition": "duplicate-or-superseded",
       "representative": "chat-101",
       "project_action": "none",
-      "proposed_mutation": "none"
+      "proposed_change": "none"
     },
     {
       "id": "chat-103",
       "availability": "unavailable",
       "disposition": null,
       "project_action": "none",
-      "proposed_mutation": "none"
+      "proposed_change": "none"
     },
     {
       "id": "chat-104",
       "availability": "body-reviewed",
       "disposition": "archive-candidate",
       "project_action": "none",
-      "proposed_mutation": "flag-for-archive-approval"
+      "proposed_change": "archive-candidate"
     },
     {
       "id": "chat-105",
       "availability": "body-reviewed",
       "disposition": "project-home",
       "project_action": "move-existing",
-      "proposed_mutation": "rename-and-move"
+      "proposed_change": "rename-and-move-proposal"
     }
   ],
   "inventory_only_candidates": ["chat-131", "chat-132"]

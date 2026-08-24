@@ -45,7 +45,7 @@ class SyncCodexGlobalConfigTests(unittest.TestCase):
             'model = "gpt-5.6-luna"\n'
             'model_reasoning_effort = "high"\n'
             'service_tier = "fast"\n'
-            'developer_instructions = "LOCALIZE, then ANALYZE."\n'
+            'developer_instructions = "Analyze bounded history corpora."\n'
         )
         (self.source / "agents/chat-history-researcher.toml").write_text(
             self.chat_history_agent,
@@ -107,6 +107,11 @@ class SyncCodexGlobalConfigTests(unittest.TestCase):
         )
 
         self.assertEqual("chat_history_researcher", profile["name"])
+        self.assertEqual(
+            "Fast optional chat-history worker for bounded research across large "
+            "conversation corpora or long transcripts.",
+            profile["description"],
+        )
         self.assertEqual("gpt-5.6-luna", profile["model"])
         self.assertEqual("high", profile["model_reasoning_effort"])
         self.assertEqual("fast", profile["service_tier"])
@@ -114,21 +119,34 @@ class SyncCodexGlobalConfigTests(unittest.TestCase):
         self.assertNotIn("history-researcher.toml", sync_module.AGENT_FILES)
         instructions = profile["developer_instructions"]
         required_instruction_anchors = (
-            "Every assignment must specify LOCALIZE or ANALYZE mode",
-            "an exact temporary output path",
-            "Load the installed chat-history skill",
-            "only the provider references selected by its router",
-            "LOCALIZE mode:",
-            "ANALYZE mode:",
-            "Write only inside the exact temporary run directory",
-            "Never edit the project, repository, source transcripts, indexes, "
-            "or global configuration",
-            "Do not take interactive browser control",
-            "dispatch chrome_pilot for authenticated retrieval",
+            "optional delegated chat-history researcher for large conversation corpora",
+            "Load and follow the installed chat-history skill",
+            "coordinator's question, bounded scope, and requested deliverable",
+            "Preserve source identifiers and bounded turn, event, or time references",
+            "Distinguish direct records from assistant claims and your own inference",
+            "Never mutate source conversations, transcripts, indexes, the project or "
+            "repository, or global configuration",
         )
         for anchor in required_instruction_anchors:
             with self.subTest(anchor=anchor):
                 self.assertIn(anchor, instructions)
+
+        duplicated_workflow_anchors = (
+            "Every assignment must specify LOCALIZE or ANALYZE mode",
+            "LOCALIZE mode:",
+            "ANALYZE mode:",
+            "Kurrent Capacitor",
+            "AgentsView",
+            "Pieces",
+            "exact temporary run directory",
+            "Route by the requested field",
+            "raw transcripts from the recording harness as authority",
+            "Prefer indexed search",
+            "ambient working directory",
+        )
+        for anchor in duplicated_workflow_anchors:
+            with self.subTest(anchor=anchor):
+                self.assertNotIn(anchor, instructions)
 
     def test_apply_preserves_unmanaged_prompt_content_and_records_state(self):
         target = self.codex_home / "AGENTS.md"

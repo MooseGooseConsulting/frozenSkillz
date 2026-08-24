@@ -1,8 +1,9 @@
 # AgentsView surface
 
-Use AgentsView for broad cross-harness retrieval, project/session inventories, local-versus-fleet
-coverage, message and tool windows, and session telemetry. The CLI defaults to local SQLite; add
-`--pg` for the configured PostgreSQL archive or `--server <url>` for an explicit daemon.
+AgentsView can provide cross-harness retrieval, project/session inventories, local-versus-fleet
+coverage, message and tool windows, usage, and derived session telemetry. Use it when the requested
+field and population are present in the selected AgentsView store. The CLI defaults to local SQLite;
+add `--pg` for the configured PostgreSQL archive or `--server <url>` for an explicit daemon.
 
 On Windows, resolve `agentsview` from `PATH`, then fall back to the standard install and fail clearly
 if neither exists:
@@ -56,8 +57,8 @@ reachable.
 - `get_usage_summary`
 - `query_recall`
 
-Use MCP when available. Search first, inspect the overview, then retrieve the narrow message window.
-Do not load whole transcripts merely because the tool can paginate them. Capability-detect
+MCP can be useful when available. A search, overview, and narrow message window often avoid loading
+an entire transcript. Capability-detect
 `query_recall`; older documentation may list only the first six tools. Search excludes very recent
 active sessions by default to reduce self-reference, and message retrieval omits system content.
 
@@ -68,23 +69,11 @@ active sessions by default to reduce self-reference, and message retrieval omits
 - `--semantic` ranks meaning using the active embedding generation.
 - `--hybrid` combines full-text and semantic rankings.
 
-Use semantic or hybrid search for unknown wording when the index supports it. Treat rank and
-similarity only as candidate ordering. Confirm a consequential interpretation in the retrieved
-messages.
-
-## Retry set
-
-Before treating an AgentsView search as exhausted, retry with materially different shapes:
-
-1. the natural-language question, then `--fts` for tokenized wording and `--regex` for a known
-   variant or error pattern;
-2. `--semantic` or `--hybrid` when the index supports it;
-3. a relaxed scope over `--project`, `--since`, and `--include-children`; and
-4. `session list --project <project> --include-children` to pull the surrounding population when
-   the task is a swarm or comparison.
-
-Record each query and its result in the localization artifact before declaring the route
-exhausted.
+Semantic or hybrid search can help with unknown wording when the index supports it. Treat rank and
+similarity only as candidate ordering. Confirm a consequential interpretation in retrieved messages
+or in the raw harness transcript when the question requires exact payloads or metadata. If a query is
+weak, choose a materially different search mode or relax a filter only when doing so fits the request;
+there is no required retry sequence.
 
 ## Deterministic and heuristic session intelligence
 
@@ -147,8 +136,8 @@ These are part of AgentsView but are not ordinary history retrieval:
 - `prune` deletes matching sessions.
 - daemon, serve, update, skills, and completion commands manage the installation.
 
-Use a write surface only to repair a demonstrated coverage gap or fulfill an explicit maintenance
-request. Never prune from a chat-history lookup.
+Use a write surface only for an explicitly requested or otherwise authorized maintenance action.
+Never prune from a chat-history lookup.
 
 Never use `--reveal` during ordinary retrieval. Search output is otherwise redacted, but tool-call
 and raw-export surfaces can still contain sensitive commands, paths, and results. Treat retrieved

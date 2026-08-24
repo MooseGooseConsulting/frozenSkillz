@@ -13,7 +13,7 @@ none is embedded as prompt text in `config.toml`:
 | Reviewed source | Live Codex surface | Effect |
 |---|---|---|
 | `agents/chrome-pilot.toml` | `~/.codex/agents/chrome-pilot.toml` | Codex discovers the custom agent whose authoritative name is `chrome_pilot`. |
-| `agents/chat-history-researcher.toml` | `~/.codex/agents/chat-history-researcher.toml` | Codex discovers the staged `chat_history_researcher` localization and analysis worker. |
+| `agents/chat-history-researcher.toml` | `~/.codex/agents/chat-history-researcher.toml` | Codex discovers the optional `chat_history_researcher` specialist for bounded large-corpus retrieval and analysis. |
 | `AGENTS.browser-delegation.md` | Managed block in `~/.codex/AGENTS.md` | The primary agent is instructed to delegate browser work to `chrome_pilot`. |
 | No source in this profile | `~/.codex/config.toml` | Unchanged. It owns global Codex settings, not durable natural-language instructions. |
 
@@ -30,7 +30,9 @@ frozenSkillz reviewed sources
 ```
 
 The agent TOML files make workers available. The global Markdown supplies browser activation policy;
-the personal `chat-history` skill owns activation and staged dispatch for `chat_history_researcher`.
+the personal `chat-history` skill decides when a corpus is large enough to justify the optional
+`chat_history_researcher`. The worker follows the skill's source-neutral capability routing and does
+not impose its own provider order, retry policy, stage labels, or artifact format.
 Because that skill remains in the gated personal lane, the global-config synchronizer requires an
 installed `~/.agents/skills/chat-history/SKILL.md` with the `chat-history` identity before it will
 plan or install the dependent agent. A clean machine therefore fails hard instead of receiving a
@@ -103,12 +105,12 @@ type without a full-history fork, and the worker returned the title of the page 
 opened. This confirms the installed profile is runtime-loadable; repeat the bounded
 probe after changing the profile or upgrading Codex.
 
-The same runtime was used on 2026-08-03 to dispatch the exact `chat_history_researcher` type in
-`LOCALIZE` mode without a full-history fork. The worker identified its Luna/high/fast profile,
-loaded the installed `chat-history` skill, reproduced its first core rule, and wrote the assigned
-temporary Markdown artifact. The global-config migration also removed the recorded predecessor
-profile and converged on the renamed file. Named custom-agent selection rejects a full-history fork,
-so coordinator instructions must provide a complete brief and use no full-history fork.
+The predecessor `chat_history_researcher` profile was runtime-loaded on 2026-08-03 with Codex CLI
+0.146.0, and the global-config migration removed its earlier filename. That historical probe does
+not validate the current source-neutral profile. Re-run a bounded large-corpus task after installing
+this revision, and verify that the spawned worker uses the configured Luna/high/fast profile without
+inventing a provider order or mandatory stages. Named custom-agent selection rejects a full-history
+fork, so coordinator instructions must provide a complete brief and use no full-history fork.
 
 ## Design references
 

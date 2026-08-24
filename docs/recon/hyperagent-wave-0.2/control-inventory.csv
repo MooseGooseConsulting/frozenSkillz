@@ -27,3 +27,13 @@ HyperAgent /agents/new,Create-agent step flow,Use an agent -> Create from scratc
 HyperAgent /agents/new,Agent model controls,Create-agent -> Model,Read-only inspection,Yes,Model cost/behavior risk,Potential cost/execution,Observed,Opus 5 agent model; Sonnet 4.6 default subagent; three switches off
 HyperAgent /agents/new,Agent tools,Create-agent -> Tools & Integrations,Read-only inspection,Yes,Tool selection risk,Potential execution/cost,Observed,18 tools active; All/None and Global tables checkbox left unchanged
 HyperAgent /agents/new,Integration catalog,Create-agent -> Tools & Integrations -> Add Integrations,Read-only inspection,Yes,OAuth/connect risk,Potential external access,Observed,Full connector catalog opened; no Connect/Add/Configure activated
+HyperAgent sidebar,Global search,Sidebar -> Search Ctrl+K,Read-only inspection,Yes,None,None,Observed,Searches threads/agents/projects/messages/documents/tables; open/new-tab/copy-link affordances
+HyperAgent sidebar,Inbox approvals,Sidebar -> Inbox,Read-only inspection,Yes,Approval/denial side effect,External agent state,Observed,Two actionable items visible; Approve and Deny untouched
+HyperAgent sidebar,Command Center,Sidebar -> Agents -> Command Center,Read-only inspection,Yes,Approval/denial side effect,External agent state,Observed,Pending 3931, improvement summaries, agent search, dashboard charts
+HyperAgent sidebar,Teams,Sidebar -> Teams,Read-only inspection,Yes,Create/join side effect,External membership state,Observed,Join/Create controls and Patrick's Best Practices team visible
+HyperAgent sidebar,Skills,Sidebar -> Skills,Read-only inspection,Yes,Install/create side effect,Potential tool behavior,Observed,Your/Team/Shared tabs, create/discover, search/filter, grid/list
+HyperAgent sidebar,Memories,Sidebar -> Memories,Read-only inspection,Yes,Memory mutation risk,Personal data state,Observed,73 personal memories; add/search/filter controls untouched
+HyperAgent sidebar,Learning,Sidebar -> Learning -> Improvements/Rubrics,Read-only inspection,Yes,Feedback/eval mutation risk,Agent behavior state,Observed,Improvements counters and rubric search/loading state captured
+HyperAgent sidebar,Projects,Sidebar -> Projects,Read-only inspection,Yes,Create/project mutation risk,Project state,Observed,New Project plus existing projects and linked threads
+HyperAgent sidebar,Library,Sidebar -> Library,Read-only inspection,Yes,None,None,Observed,Search and Newest/Type/Visibility/Source filters; no cards visible
+HyperAgent sidebar,Marketplace,Sidebar -> Marketplace,Read-only inspection,Yes,Connect/publish risk,External agent state,Observed,Searchable agent/skill cards; listings not opened

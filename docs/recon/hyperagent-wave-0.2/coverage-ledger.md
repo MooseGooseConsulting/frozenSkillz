@@ -20,6 +20,7 @@ Status: read-only probe in progress; findings saved incrementally
 | Full settings / agent defaults | Model & compute; Subagents; Autonomy & safety; Capabilities; Home thread delegation | Opened via `Open full settings`; inspected delegation scope, execution modes, timeout buttons, named capabilities, integration scope | No radios, buttons, switches, combobox options, or reset controls changed | Return to landing and continue composer controls |
 | Composer quick-action menus | More…, Add files or context, Use an agent, Execute | All opened; screenshots captured; submenu branches inspected | No upload, output generation, project mutation, agent save, or execution | None for current landing pass |
 | Create-agent flow | Identity → Model → Tools & Integrations → Invocations → Knowledge | Entered without input; model/subagent switches and integration catalog inspected | Create disabled; no identity, model default, tool, integration, invocation, or knowledge mutation | Invocations and Knowledge remain unexpanded |
+| Sidebar control plane | Search, Inbox, Agents/Command Center, Teams, Skills, Memories, Learning, Projects, Library, Marketplace | Opened each safe navigation surface; screenshots and notes captured | Approval/denial, create/join, add/install, marketplace, and memory mutations intentionally untouched | No remaining safe top-level surface required for this pass |
 
 ## Saved evidence
 
@@ -35,8 +36,19 @@ Status: read-only probe in progress; findings saved incrementally
 - `screenshots/create-agent-identity.png` — Create-agent Identity step
 - `screenshots/create-agent-model.png` — Create-agent Model step
 - `screenshots/agent-integration-catalog.png` — create-agent integration catalog
+- `screenshots/sidebar-skills.png` — Skills inventory surface
+- `screenshots/sidebar-projects.png` — Projects surface
+- `screenshots/sidebar-library.png` — Library filters/search surface
+- `screenshots/sidebar-marketplace.png` — Marketplace cards/search surface
+- `screenshots/sidebar-teams.png` — Teams surface
+- `screenshots/sidebar-memories.png` — Memories controls and count
+- `screenshots/sidebar-learning.png` — Improvements/Learning surface
+- `screenshots/sidebar-rubrics.png` — Rubrics loading surface
+- `screenshots/sidebar-inbox.png` — Inbox approval items
+- `screenshots/command-center.png` — Command Center dashboard
+- `screenshots/global-search.png` — Global search palette
 
-Additional notes are in `model-variant-matrix.md`, `composer-options.md`, `agent-create-surface.md`, and `integration-catalog.md`.
+Additional notes are in `model-variant-matrix.md`, `composer-options.md`, `agent-create-surface.md`, `integration-catalog.md`, and `sidebar-surfaces.md`.
 
 ## Stop condition for this pass
 

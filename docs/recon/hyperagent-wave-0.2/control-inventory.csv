@@ -1,0 +1,25 @@
+Surface,Control,Nested path,Read/Write,Safe to automate,Model invocation risk,Cost risk,Observed/tested,Notes
+Chrome session,Claim most-recent user tab,openTabs -> claimTab,Read-only,Yes,None,None,Observed,Tab was ChatGPT conversation rather than HyperAgent
+ChatGPT conversation,Add files and more,composer -> Add files and more,Read-only inspection only,Yes,No if menu only,None,Observed,Not opened during initial bearings
+ChatGPT conversation,Model/effort button,composer -> High,Read-only inspection only,Yes,No if picker only,None,Observed,Not opened during initial bearings
+HyperAgent /threads/new,Add files or context,composer -> Add files or context,Read-only inspection only,Yes,No if menu only,None,Observed,Safe menu inspection pending
+HyperAgent /threads/new,Thread settings/model control,composer -> Thread settings (Opus 5 in DOM),Read-only inspection only,Yes,Picker inspection only,None,Observed,DOM and screenshot show model/effort control; not opened
+HyperAgent /threads/new,Use an agent,composer -> Use an agent,Read-only inspection only,Yes,Picker inspection only,None,Observed,Not opened
+HyperAgent /threads/new,Execute,composer -> Execute,Read-only inspection only,Yes,Unknown until menu inspected,Unknown until menu inspected,Observed,Not activated
+HyperAgent /threads/new,Quick action menu,composer -> More...,Read-only inspection only,Yes,Unknown until menu inspected,Unknown until menu inspected,Observed,Not opened
+HyperAgent /threads/new,Send message,composer -> Send message,Write/external execution,No,High,High,Observed disabled,Must never activate during this probe
+HyperAgent /threads/new,Open latest model catalog,Thread settings -> Model -> Latest models,Read-only inspection,Yes,None,None,Observed,8 model buttons; none selected
+HyperAgent /threads/new,Open Anthropic model group,Thread settings -> Model -> All models -> Anthropic,Read-only inspection,Yes,None,None,Observed,8 model buttons; none selected
+HyperAgent /threads/new,Open OpenAI model group,Thread settings -> Model -> All models -> OpenAI,Read-only inspection,Yes,None,None,Observed,4 model buttons; GPT 5.6 Luna pressed/current
+HyperAgent /threads/new,Open Other providers group,Thread settings -> Model -> All models -> Other providers,Read-only inspection,Yes,None,None,Observed,9 model buttons; none selected
+HyperAgent /threads/new,Open Open weights group,Thread settings -> Model -> All models -> Open weights,Read-only inspection,Yes,None,None,Observed,10 model buttons; none selected
+HyperAgent /threads/new,Inspect reasoning effort,Thread settings -> Reasoning effort -> Low/Medium/High/Extra high/Max,Read-only inspection,Yes,None,None,Observed,Medium current; no change made
+HyperAgent /threads/new,Inspect tool catalog,Thread settings -> Tools -> categories and buttons,Read-only inspection,Yes,None,None,Observed,18 named tool buttons displayed under Research/Browser/Data/Interactive/Media
+HyperAgent /threads/new,Inspect integrations,Thread settings -> Integrations -> providers/status,Read-only inspection,Yes,None,None,Observed,Gmail/Calendar/Drive/Slack/GitHub checked; Airtable Connect
+HyperAgent settings,Open full settings,Thread settings -> Open full settings -> /settings/agent-defaults,Read-only inspection,Yes,None,None,Observed,Stayed within same authenticated session
+HyperAgent settings,Inspect subagent model,Agent defaults -> Model & compute -> Subagents,Read-only inspection,Yes,None,None,Observed,DeepSeek V4 Flash; no change made
+HyperAgent settings,Inspect execution mode,Agent defaults -> Autonomy & safety -> Auto / Ask first,Read-only inspection,Yes,No invocation from inspection,No,Observed,Auto selected; no change made
+HyperAgent settings,Inspect turn timeout,Agent defaults -> Autonomy & safety -> 10/30/60/90 min/4 hours,Read-only inspection,Yes,No invocation from inspection,No,Observed,No change made
+HyperAgent settings,Inspect capabilities,Agent defaults -> Capabilities -> named capabilities and integration scope,Read-only inspection,Yes,Tool-specific,Tool-specific,Observed,13 active badge; no capability toggles changed
+HyperAgent settings,Inspect delegation scope,Agent defaults -> Home thread delegation -> scope combobox,Read-only inspection,Yes,Delegation risk if changed,Potential cost/execution,Observed,Options captured; current all-agent mode left unchanged
+HyperAgent settings,Inspect delegation approval,Agent defaults -> Home thread delegation -> Ask for approval,Read-only inspection,Yes,Delegation risk if changed,Potential cost/execution,Observed,Switch left unchanged

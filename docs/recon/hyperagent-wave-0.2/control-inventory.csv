@@ -2,18 +2,18 @@ Surface,Control,Nested path,Read/Write,Safe to automate,Model invocation risk,Co
 Chrome session,Claim most-recent user tab,openTabs -> claimTab,Read-only,Yes,None,None,Observed,Tab was ChatGPT conversation rather than HyperAgent
 ChatGPT conversation,Add files and more,composer -> Add files and more,Read-only inspection only,Yes,No if menu only,None,Observed,Not opened during initial bearings
 ChatGPT conversation,Model/effort button,composer -> High,Read-only inspection only,Yes,No if picker only,None,Observed,Not opened during initial bearings
-HyperAgent /threads/new,Add files or context,composer -> Add files or context,Read-only inspection only,Yes,No if menu only,None,Observed,Safe menu inspection pending
-HyperAgent /threads/new,Thread settings/model control,composer -> Thread settings (Opus 5 in DOM),Read-only inspection only,Yes,Picker inspection only,None,Observed,DOM and screenshot show model/effort control; not opened
-HyperAgent /threads/new,Use an agent,composer -> Use an agent,Read-only inspection only,Yes,Picker inspection only,None,Observed,Not opened
-HyperAgent /threads/new,Execute,composer -> Execute,Read-only inspection only,Yes,Unknown until menu inspected,Unknown until menu inspected,Observed,Not activated
-HyperAgent /threads/new,Quick action menu,composer -> More...,Read-only inspection only,Yes,Unknown until menu inspected,Unknown until menu inspected,Observed,Not opened
+HyperAgent /threads/new,Add files or context,composer -> Add files or context,Read-only inspection only,Yes,No if menu only,None,Observed,Root plus Skills/Memories/Assets/Output/Integrations/Project branches inspected; upload not activated
+HyperAgent /threads/new,Thread settings/model control,composer -> Thread settings,Read-only inspection only,Yes,Picker inspection only,None,Observed,Model-dependent reasoning branch compared; no default saved
+HyperAgent /threads/new,Use an agent,composer -> Use an agent,Read-only inspection only,Yes,Picker inspection only,None,Observed,User/team agents plus Create from scratch inspected
+HyperAgent /threads/new,Execute,composer -> Execute,Read-only inspection only,Yes,No invocation from menu inspection,None,Observed,Plan first and Execute choices captured; unchanged
+HyperAgent /threads/new,Quick action menu,composer -> More...,Read-only inspection only,Yes,Launch-point inspection only,None,Observed,Video/Audio/Slides/Map/Doc choices captured; not activated
 HyperAgent /threads/new,Send message,composer -> Send message,Write/external execution,No,High,High,Observed disabled,Must never activate during this probe
 HyperAgent /threads/new,Open latest model catalog,Thread settings -> Model -> Latest models,Read-only inspection,Yes,None,None,Observed,8 model buttons; none selected
 HyperAgent /threads/new,Open Anthropic model group,Thread settings -> Model -> All models -> Anthropic,Read-only inspection,Yes,None,None,Observed,8 model buttons; none selected
 HyperAgent /threads/new,Open OpenAI model group,Thread settings -> Model -> All models -> OpenAI,Read-only inspection,Yes,None,None,Observed,4 model buttons; GPT 5.6 Luna pressed/current
 HyperAgent /threads/new,Open Other providers group,Thread settings -> Model -> All models -> Other providers,Read-only inspection,Yes,None,None,Observed,9 model buttons; none selected
 HyperAgent /threads/new,Open Open weights group,Thread settings -> Model -> All models -> Open weights,Read-only inspection,Yes,None,None,Observed,10 model buttons; none selected
-HyperAgent /threads/new,Inspect reasoning effort,Thread settings -> Reasoning effort -> Low/Medium/High/Extra high/Max,Read-only inspection,Yes,None,None,Observed,Medium current; no change made
+HyperAgent /threads/new,Inspect reasoning effort,Thread settings -> Reasoning effort -> Low/Medium/High/Extra high/Max,Read-only inspection,Yes,None,None,Observed,Present on sampled GPT/Fable models; absent on sampled Gemini/Kimi/GLM Fast/Haiku
 HyperAgent /threads/new,Inspect tool catalog,Thread settings -> Tools -> categories and buttons,Read-only inspection,Yes,None,None,Observed,18 named tool buttons displayed under Research/Browser/Data/Interactive/Media
 HyperAgent /threads/new,Inspect integrations,Thread settings -> Integrations -> providers/status,Read-only inspection,Yes,None,None,Observed,Gmail/Calendar/Drive/Slack/GitHub checked; Airtable Connect
 HyperAgent settings,Open full settings,Thread settings -> Open full settings -> /settings/agent-defaults,Read-only inspection,Yes,None,None,Observed,Stayed within same authenticated session
@@ -23,3 +23,7 @@ HyperAgent settings,Inspect turn timeout,Agent defaults -> Autonomy & safety -> 
 HyperAgent settings,Inspect capabilities,Agent defaults -> Capabilities -> named capabilities and integration scope,Read-only inspection,Yes,Tool-specific,Tool-specific,Observed,13 active badge; no capability toggles changed
 HyperAgent settings,Inspect delegation scope,Agent defaults -> Home thread delegation -> scope combobox,Read-only inspection,Yes,Delegation risk if changed,Potential cost/execution,Observed,Options captured; current all-agent mode left unchanged
 HyperAgent settings,Inspect delegation approval,Agent defaults -> Home thread delegation -> Ask for approval,Read-only inspection,Yes,Delegation risk if changed,Potential cost/execution,Observed,Switch left unchanged
+HyperAgent /agents/new,Create-agent step flow,Use an agent -> Create from scratch,Read-only inspection,Yes,Create/save risk,Potential external execution,Observed,Identity/Model/Tools & Integrations reached; no input or Create Agent
+HyperAgent /agents/new,Agent model controls,Create-agent -> Model,Read-only inspection,Yes,Model cost/behavior risk,Potential cost/execution,Observed,Opus 5 agent model; Sonnet 4.6 default subagent; three switches off
+HyperAgent /agents/new,Agent tools,Create-agent -> Tools & Integrations,Read-only inspection,Yes,Tool selection risk,Potential execution/cost,Observed,18 tools active; All/None and Global tables checkbox left unchanged
+HyperAgent /agents/new,Integration catalog,Create-agent -> Tools & Integrations -> Add Integrations,Read-only inspection,Yes,OAuth/connect risk,Potential external access,Observed,Full connector catalog opened; no Connect/Add/Configure activated

@@ -1,6 +1,6 @@
 # Thread model catalog — observed on `/threads/new`
 
-Read-only inspection; no model was selected and no thread was sent.
+Read-only inspection; models were selected only in an unsent draft to reveal model-dependent controls. No default was saved and no thread was sent.
 
 ## Thread settings menu
 
@@ -96,6 +96,6 @@ The model submenu displayed:
 
 ## Boundary
 
-Clicking a model button would change the thread's selected model and may affect future cost/execution. It was intentionally not activated.
+The probe selected several models in an unsent draft and immediately inspected the resulting menu/settings branches. This did not invoke a model, send a thread, or save a default. Tool and integration controls were not toggled.
 
 Screenshot: `screenshots/model-catalog-latest.png`

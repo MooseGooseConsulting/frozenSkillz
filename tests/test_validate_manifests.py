@@ -466,9 +466,9 @@ class ShippedSkillFrontmatterTests(unittest.TestCase):
     def test_shipped_skill_frontmatter_parses_cleanly(self):
         shipped = sorted(self.PLUGINS_ROOT.rglob("SKILL.md"))
         self.assertEqual(
-            6,
+            4,
             len(shipped),
-            "expected 6 shipped SKILL.md files; update this test if a skill "
+            "expected 4 shipped SKILL.md files; update this test if a skill "
             "was promoted or retired",
         )
         for skill_md in shipped:

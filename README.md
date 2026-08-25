@@ -14,7 +14,7 @@ This repository is not a dumping ground for local client caches, raw external re
 | `codex-thread-organizer` | productivity | active, Codex-only | Dedicated Codex package for task-history organization; absent from other consumer catalogs. |
 | `skill-injector` | development | experimental, untested | UserPromptSubmit hook and subagent prompt quality gate for LLM-assisted skill suggestions. Review/test before enabling. |
 
-Historical reference/workflow skills remain gated in `_incubator/` until they pass the quality bar in `docs/skill-review/tracker.md`.
+`_incubator/` holds both gated promotion candidates and explicitly disabled retained snapshots. Consult `docs/skill-review/tracker.md` before loading, promoting, or treating any incubated skill as current.
 
 ## Skill Analysis Ownership
 

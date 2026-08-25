@@ -139,8 +139,9 @@ Determine which skills were used or could benefit:
 - Personal skills live in `~/.agents/skills/`; project skills in `.claude/skills/`.
   There is no full mirror at `~/.claude/skills/` — as of 2026-07-31 it holds only a
   couple of entries, and `~/.agents/skills/` skills appear there one at a time via
-  per-skill symlinks (currently just `project-docs`). A skill Claude Code should
-  discover needs its own entry there.
+  per-skill symlinks. `project-docs` is not one: it was retired and its Claude
+  junction was removed on 2026-08-24. Check actual client discovery rather than
+  relying on a static inventory.
 - The skill that *executed* the workflow — re-derived from the transcript per §0 —
   is the primary update target; the invoked/trigger skill is just the lens.
   Split the rest: process/method lessons → `retrospective`; domain helpers → the

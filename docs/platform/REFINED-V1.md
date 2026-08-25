@@ -147,7 +147,7 @@ Further evidence churn is not progress.
 | Risk | Mitigation |
 |---|---|
 | Native files diverge across clients with no schema | Accept in v1; document “commit what your clients read.” Add schema only after painful drift. |
-| Projects forget to commit MCP/skills | Convention + review checklist in project-docs/AGENTS; not a central renderer. |
+| Projects forget to commit MCP/skills | Convention + review checklist in the project's agent-authority docs; not a central renderer. |
 | Agents still invent `config.yaml` | This doc + router: meta-manifest is non-goal unless RV1-01 is explicitly reversed. |
 | Losing useful July 16 security thinking | Evidence pack archived in git history ([PR #49](https://github.com/Coldaine/frozenSkillz/pull/49), last on `main` at `069aeea`); recover it only if a deferred decision genuinely reopens. |
 

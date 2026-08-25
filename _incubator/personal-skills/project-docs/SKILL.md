@@ -10,6 +10,10 @@ description: >
 
 # Project Docs Authoring
 
+> Disabled 2026-08-24 at operator request. This retained incubator snapshot is
+> inert review material only; do not load, sync, promote, or treat it as
+> authoritative unless the operator explicitly re-enables the skill.
+
 ## Trigger Gate
 
 Use this skill only when the requested deliverable is an authority-document draft,
@@ -214,11 +218,12 @@ See `references/guardian-relationship.md`.
 #### What Failed
 - Teaching “movement, not deletion” into `docs/history/` — that was the sprawl machine (dated-record convention).
 - Keeping PROGRESS as a recommended primary while the owner was deleting it across repos.
-- Live `~/.agents/skills/project-docs` missing `SKILL.md` — skill undiscoverable despite intact references.
+- A live copy missing `SKILL.md` — skill undiscoverable despite intact references.
 
 #### Configuration Notes
-- Live canonical: `~/.agents/skills/project-docs/`. Gated evaluation copy: `frozenSkillz/_incubator/personal-skills/project-docs/`. Stay gated until promotion bar; do not auto-publish to marketplace.
-- Claude Code: junction `~/.claude/skills/project-docs` → `~/.agents/skills/project-docs`.
+- Disabled snapshot: `frozenSkillz/_incubator/personal-skills/project-docs/`. The
+  live personal copy and Claude Code junction were removed on 2026-08-24; do not
+  restore or publish this snapshot without an explicit operator request.
 
 ### 2026-06-29 (preserved — the guardrail behind promote-then-delete)
 - **Do not recommend deleting a doc that still reflects verified live state.** Recommending "delete PROGRESS" while it had just been reconciled to live secrets/cluster state (kubectl + helmfile diff) produced conflicting advice in the same session. Promote-then-delete removes *superseded/temporary* content — not the current, load-bearing handoff. Promote first; delete only once the lasting facts are in their living home. This is the scar that promote-then-delete is built around; keep it.

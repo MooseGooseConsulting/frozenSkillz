@@ -32,4 +32,3 @@ Picker contains a search box, six user agents (Memory Curator, Web Recon, Web Sc
 - `Execute` — act immediately without a plan.
 
 Neither mode was changed.
-

@@ -21,4 +21,3 @@ Read-only navigation from the authenticated session. I did not approve/deny inbo
 ## Current handoff
 
 The authenticated tab is back at `https://hyperagent.com/threads/new`. No external action was submitted during this sidebar pass.
-

@@ -16,4 +16,3 @@ AgentMail, Ahrefs, Airtable, Akiflow, Apify, Apollo.io, Atlassian, Attio, beehii
 - Footer: `All integrations 1`, `Manage` (settings/integrations), native support for more popular integrations is coming soon, `Browse skills`, and custom MCP-server guidance.
 
 The catalog is a broader agent-configuration surface than the compact composer menu. The compact menu only showed connected/available providers; the create-agent dialog exposed the full integration marketplace.
-

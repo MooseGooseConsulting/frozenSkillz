@@ -29,4 +29,3 @@ Reached safely from `Use an agent → Create from scratch`; no text was entered 
 ## Unexpanded steps
 
 Invocations and Knowledge were not opened, because doing so was not needed to answer the model/tools/integration question and the form had no user input to preserve.
-

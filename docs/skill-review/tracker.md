@@ -14,8 +14,6 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `delegation-contract` | gated | Demoted 2026-08-21: the skill imposed a broad ledger, briefing, return, and verification protocol but shipped no agent-launch or enforcement mechanism. The n=1 evaluation measured contract compliance rather than improved outcomes. Keep in `_incubator/` until its scope is reduced to an honest briefing reference or a complete operational delegation system is implemented and evaluated. |
 | `doppler` | active | Trigger narrowed 2026-08-10 to direct secret/injection work; opaque authentication through a trusted client or launcher is a non-trigger. |
 | `external-skill-intake` | active | None. |
-| `omc-reference` | active | None. |
-| `pdm-cli-operations` | active | Live-qualified 2026-07-20; 2026-08-10 removed mandatory Doppler handoff for trusted launchers with opaque authentication. |
 | `codex-thread-organizer` | active | Codex-only dedicated package; direct-rename contract (invocation = authorization; proposal gate removed 2026-07-31). Scope is the whole Codex-app sidebar: every conversation kind is inventoried and classified `title-mutable` / `not title-mutable`, and only the mutable ones are renamed. |
 | `skill-injector` | registered, dormant/untested | Qualify end-to-end or de-register; internal rename from skill-classifier unfinished. |
 | `plugin-authoring-guide` | gated | Rework; re-verify against current Claude Code docs. |

@@ -1,7 +1,7 @@
 {
   "name": "frozen-skills",
-  "description": "Installs reviewed Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
-  "version": "2.7.2",
+  "description": "Installs reviewed Doppler and external-skill-intake skills. Content under _incubator is not included.",
+  "version": "2.7.3",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
@@ -15,14 +15,6 @@
     {
       "name": "external-skill-intake",
       "path": "skills/external-skill-intake"
-    },
-    {
-      "name": "omc-reference",
-      "path": "skills/omc-reference"
-    },
-    {
-      "name": "pdm-cli-operations",
-      "path": "skills/pdm-cli-operations"
     }
   ]
 }

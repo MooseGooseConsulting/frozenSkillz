@@ -1,15 +1,15 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "frozen-skills",
-  "description": "Installs reviewed Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
-  "version": "2.7.2",
+  "description": "Installs reviewed Doppler and external-skill-intake skills. Content under _incubator is not included.",
+  "version": "2.7.3",
   "category": "reference",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
   },
   "license": "MIT",
-  "tags": ["secrets", "doppler", "intake", "omc", "proxmox", "pdm", "reference"],
+  "tags": ["secrets", "doppler", "intake", "reference"],
   "skills": [
     {
       "name": "doppler",
@@ -20,16 +20,6 @@
       "name": "external-skill-intake",
       "path": "skills/external-skill-intake",
       "description": "Evaluate external skill, plugin, agent, command, hook, config, template, eval, or documentation-pattern repos through scout snapshots, rubric scoring, live evals, and packaging decisions before promotion."
-    },
-    {
-      "name": "omc-reference",
-      "path": "skills/omc-reference",
-      "description": "Maintain Oh My ClaudeCode (OMC), a separate multi-agent plugin for Claude Code. Use from Codex only to install, configure, update, inspect, or troubleshoot OMC agents, skills, hooks, teams, and settings. Never apply it to ordinary Codex delegation, Git, commits, or unrelated skills."
-    },
-    {
-      "name": "pdm-cli-operations",
-      "path": "skills/pdm-cli-operations",
-      "description": "Operate Proxmox VE and PBS fleets with PDM as the primary centralized control plane. Use for fleet inventory, guest lifecycle, tasks, snapshots, migrations, PDM auth/trust, and deciding when to drill down to native PVE/PBS because PDM lacks the operation or is unavailable."
     }
   ]
 }

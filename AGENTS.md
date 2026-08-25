@@ -6,6 +6,7 @@ This file is only an entrypoint. Repository policy and procedures live in the do
 |---|---|
 | Understand the repository and package layout | `README.md` |
 | Check whether a skill is active, gated, or ready for promotion | `docs/skill-review/tracker.md` |
+| Handle project authority documents | Do not load or route the disabled `project-docs` skill; follow the repository's declared authority documents and task-specific workflow directly |
 | Change skill authority, packaging, distribution, synchronization, or promotion | `docs/workflows/skill-authority-and-frozen-sync.md`, then `plugins/distribution.json` |
 | Understand or change how a non-client runtime consumes skills | `docs/workflows/skill-authority-and-frozen-sync.md` → **Skill Consumer Shapes** |
 | Persist or set up agent configuration in a project repo | `docs/workflows/project-agent-config.md`, direction in `docs/platform/REFINED-V1.md` |

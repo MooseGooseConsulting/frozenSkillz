@@ -159,7 +159,7 @@ class ValidateManifestsTests(unittest.TestCase):
             {
                 "hermes-ops": {
                     "description": "bare-SKILL.md service runtime, not a client",
-                    "skills": ["doppler", "pdm-cli-operations"],
+                    "skills": ["doppler"],
                 }
             }
         )

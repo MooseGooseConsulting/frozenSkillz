@@ -20,4 +20,3 @@ Observed on authenticated `/threads/new` in an unsent draft. Each sample was sel
 - Non-default model selections exposed `Save as default`; the current GPT 5.6 Luna did not.
 - Across these samples, the visible tools badge/catalog and integration chooser did not change. This is an observation of the current UI, not proof that every model has identical backend permissions.
 - Full settings reflected the selected model family and exposed no reasoning control for the non-reasoning samples.
-

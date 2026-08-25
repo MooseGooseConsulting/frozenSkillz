@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Marketplace for consumer-scoped frozen-skills packages and experimental skill-injector. Each consumer installs only its own manifest-listed active skills; _incubator content is not installed.",
-    "version": "2.7.2",
+    "version": "2.7.3",
     "repository": "https://github.com/Coldaine/frozenSkillz",
     "license": "MIT"
   },
@@ -14,8 +14,8 @@
     {
       "name": "frozen-skills",
       "source": "./plugins/frozen-skills",
-      "description": "Installs reviewed Doppler, external-skill-intake, OMC maintenance, and official PDM operations skills. Content under _incubator is not included.",
-      "version": "2.7.2",
+      "description": "Installs reviewed delegation-contract, Doppler, and external-skill-intake skills. Content under _incubator is not included.",
+      "version": "2.7.3",
       "category": "reference"
     },
     {

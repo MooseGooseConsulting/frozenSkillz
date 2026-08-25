@@ -76,7 +76,7 @@ Claude Code can instead let its marketplace manage a client-specific plugin copy
 /plugin install frozen-skills@coldaine-skills
 ```
 
-That command auto-discovers the three shared skills in the `frozen-skills` package. It does not install the physically separate `codex-thread-organizer` package, populate a Codex skill root, or install anything from `_incubator/`.
+That command auto-discovers the two shared skills in the `frozen-skills` package. It does not install the physically separate `codex-thread-organizer` package, populate a Codex skill root, or install anything from `_incubator/`.
 
 The Codex marketplace separately exposes the valid `codex-thread-organizer` plugin package. Cursor and Gemini remain separately validated packaging surfaces. Manifest presence alone is not an installer; use `sync_frozen_skills.py --consumer <name>` for a verified local installation unless a specific client provides and documents its own plugin installer.
 

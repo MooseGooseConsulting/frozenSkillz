@@ -4,8 +4,8 @@ Use this workflow to learn how an existing skill behaves in ordinary work and ma
 smallest supported improvement. It is deliberately a qualitative learning loop, not a
 scorecard, gating system, or synthetic experiment.
 
-For external candidates before intake, use
-`plugins/frozen-skills/skills/external-skill-intake/references/evaluation-protocol.md`.
+For external candidates, establish a bounded source and test before deciding whether
+to adopt anything.
 
 ## What this produces
 

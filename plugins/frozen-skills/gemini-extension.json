@@ -1,7 +1,7 @@
 {
   "name": "frozen-skills",
-  "description": "Installs reviewed Doppler and external-skill-intake skills. Content under _incubator is not included.",
-  "version": "2.7.3",
+  "description": "Installs the reviewed Doppler skill. Content under _incubator is not included.",
+  "version": "2.7.4",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
@@ -11,10 +11,6 @@
     {
       "name": "doppler",
       "path": "skills/doppler"
-    },
-    {
-      "name": "external-skill-intake",
-      "path": "skills/external-skill-intake"
     }
   ]
 }

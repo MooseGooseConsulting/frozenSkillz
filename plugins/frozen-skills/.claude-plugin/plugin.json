@@ -1,25 +1,20 @@
 {
   "$schema": "https://anthropic.com/claude-code/plugin.schema.json",
   "name": "frozen-skills",
-  "description": "Installs reviewed Doppler and external-skill-intake skills. Content under _incubator is not included.",
-  "version": "2.7.3",
+  "description": "Installs the reviewed Doppler skill. Content under _incubator is not included.",
+  "version": "2.7.4",
   "category": "reference",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
   },
   "license": "MIT",
-  "tags": ["secrets", "doppler", "intake", "reference"],
+  "tags": ["secrets", "doppler", "reference"],
   "skills": [
     {
       "name": "doppler",
       "path": "skills/doppler",
       "description": "Doppler secrets management platform. Use when installing or configuring the Doppler CLI, setting up doppler.yaml, running commands with doppler run, adding CI service tokens, debugging secret injection without exposing values, using fallback files, mounting secrets, or managing dev/staging/production configs."
-    },
-    {
-      "name": "external-skill-intake",
-      "path": "skills/external-skill-intake",
-      "description": "Evaluate external skill, plugin, agent, command, hook, config, template, eval, or documentation-pattern repos through scout snapshots, rubric scoring, live evals, and packaging decisions before promotion."
     }
   ]
 }

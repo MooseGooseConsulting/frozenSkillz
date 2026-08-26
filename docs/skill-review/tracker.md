@@ -13,7 +13,6 @@ content, scripts actually run, no project-specific leakage, progressive disclosu
 | `agent-github-identity` | gated | Demoted 2026-08-24: the per-write skill adds prompt and operational overhead while GitHub attribution remains environment-specific. Retained under `_incubator/frozen-skills` for reference only; do not distribute or reactivate it without a demonstrated native identity path for each supported agent product. |
 | `delegation-contract` | gated | Demoted 2026-08-21: the skill imposed a broad ledger, briefing, return, and verification protocol but shipped no agent-launch or enforcement mechanism. The n=1 evaluation measured contract compliance rather than improved outcomes. Keep in `_incubator/` until its scope is reduced to an honest briefing reference or a complete operational delegation system is implemented and evaluated. |
 | `doppler` | active | Trigger narrowed 2026-08-10 to direct secret/injection work; opaque authentication through a trusted client or launcher is a non-trigger. |
-| `external-skill-intake` | active | None. |
 | `codex-thread-organizer` | active | Codex-only dedicated package; direct-rename contract (invocation = authorization; proposal gate removed 2026-07-31). Scope is the whole Codex-app sidebar: every conversation kind is inventoried and classified `title-mutable` / `not title-mutable`, and only the mutable ones are renamed. |
 | `skill-injector` | registered, dormant/untested | Qualify end-to-end or de-register; internal rename from skill-classifier unfinished. |
 | `plugin-authoring-guide` | gated | Rework; re-verify against current Claude Code docs. |
@@ -102,8 +101,7 @@ not rerunnable from this repository):
 sessions each, read by subagents):
 
 - **EARNS:** `babysit` (note: never user-invoked — cursor auto-fires it on "land the
-  PRs"-type prompts), `create-skill`, `skill-install`,
-  `external-skill-intake`; `rich-visual-responses` — prior "cosmetic cruft" verdict
+  PRs"-type prompts), `create-skill`, `skill-install`; `rich-visual-responses` — prior "cosmetic cruft" verdict
   **refuted** (23/44 firing sessions apply its formatting vs 2/127 baseline, zero owner
   complaints); `context7-mcp` when used — prior "meta-inflated" verdict **refuted**, real
   doc pulls shaped work, but 27/39 fires load-and-never-use and the service was

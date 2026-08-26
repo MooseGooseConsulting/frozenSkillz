@@ -7,7 +7,7 @@
   },
   "metadata": {
     "description": "Marketplace for consumer-scoped frozen-skills packages and experimental skill-injector. Each consumer installs only its own manifest-listed active skills; _incubator content is not installed.",
-    "version": "2.7.3",
+    "version": "2.7.4",
     "repository": "https://github.com/Coldaine/frozenSkillz",
     "license": "MIT"
   },
@@ -15,13 +15,13 @@
     {
       "name": "frozen-skills",
       "source": "./plugins/frozen-skills",
-      "description": "Installs reviewed Doppler and external-skill-intake skills. Content under _incubator is not included.",
-      "version": "2.7.3",
+      "description": "Installs the reviewed Doppler skill. Content under _incubator is not included.",
+      "version": "2.7.4",
       "category": "reference",
       "author": {
         "name": "Coldaine"
       },
-      "tags": ["secrets", "doppler", "intake", "reference"]
+      "tags": ["secrets", "doppler", "reference"]
     },
     {
       "name": "skill-injector",

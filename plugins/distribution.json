@@ -1,15 +1,11 @@
 {
   "schema": 1,
   "plugin": "frozen-skills",
-  "version": "2.7.3",
+  "version": "2.7.4",
   "shared": [
     {
       "name": "doppler",
       "path": "frozen-skills/skills/doppler"
-    },
-    {
-      "name": "external-skill-intake",
-      "path": "frozen-skills/skills/external-skill-intake"
     }
   ],
   "consumer_packages": {

@@ -14,7 +14,7 @@ none is embedded as prompt text in `config.toml`:
 |---|---|---|
 | `agents/chrome-pilot.toml` | `~/.codex/agents/chrome-pilot.toml` | Codex discovers the custom agent whose authoritative name is `chrome_pilot`. |
 | `agents/chat-history-researcher.toml` | `~/.codex/agents/chat-history-researcher.toml` | Codex discovers the optional `chat_history_researcher` specialist for bounded large-corpus retrieval and analysis. |
-| `AGENTS.browser-delegation.md` | Managed block in `~/.codex/AGENTS.md` | The primary agent is instructed to delegate browser work to `chrome_pilot`. |
+| `AGENTS.browser-delegation.md` | Managed block in `~/.codex/AGENTS.md` | The primary agent may use lower-cost `chrome_pilot` only for bounded interactive control of the user's existing Chrome profile, not web search or research. |
 | No source in this profile | `~/.codex/config.toml` | Unchanged. It owns global Codex settings, not durable natural-language instructions. |
 
 The activation chain is:
@@ -26,10 +26,10 @@ frozenSkillz reviewed sources
   |-- chat-history-researcher.toml -> ~/.codex/agents/chat-history-researcher.toml
   |                                  makes the named worker discoverable
   `-- browser delegation Markdown -> managed block in ~/.codex/AGENTS.md
-                                     tells the primary when to use that worker
+                                     gives the primary optional selection guidance
 ```
 
-The agent TOML files make workers available. The global Markdown supplies browser activation policy;
+The agent TOML files make workers available. The global Markdown supplies narrow browser-delegation guidance;
 the personal `chat-history` skill decides when a corpus is large enough to justify the optional
 `chat_history_researcher`. The worker follows the skill's source-neutral capability routing and does
 not impose its own provider order, retry policy, stage labels, or artifact format.

@@ -1,12 +1,13 @@
 name = "chrome_pilot"
-description = "Fast Chrome pilot for delegated browser tasks."
+description = "Optional, low-cost pilot for bounded interactive control of the user's existing Chrome profile; not web search or web research."
 
 model = "gpt-5.6-luna"
 model_reasoning_effort = "medium"
 service_tier = "fast"
 
 developer_instructions = """
-Complete the delegated task in Chrome within the stated scope and authorization boundary.
+Complete only the intentionally delegated browser task within the stated scope and authorization boundary.
+Do not use this agent for ordinary web search, documentation research, or HTTP/API fetches.
 Verify the requested end state in the browser before returning.
 Return the result and any genuine blocker concisely.
 """

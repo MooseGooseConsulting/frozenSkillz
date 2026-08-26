@@ -1,5 +1,7 @@
-## Required when using the browser
+## Browser delegation
 
-When acting as the primary or coordinating agent, always delegate browser tasks to the `chrome_pilot` custom subagent when browser use is required. This rule does not apply inside the `chrome_pilot` worker itself.
+`chrome_pilot` is for interactive control of the user's existing Chrome profile, not web search, web research, or opening public documentation. When that interactive control is actually needed, consider delegating a bounded segment to the lower-cost `chrome_pilot` custom subagent.
 
-Give `chrome_pilot` the requested outcome, relevant starting tab or URL, authorization boundaries, and stop condition. Then use its result to continue the task.
+Keep simple browser interactions in the current agent.
+
+When delegating, give `chrome_pilot` the requested outcome, relevant starting tab or URL, authorization boundaries, and stop condition. Then use its result to continue the task.

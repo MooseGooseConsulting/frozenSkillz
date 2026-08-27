@@ -1,0 +1,85 @@
+<div id="codex-sidebar-organizer-concept">
+  <div class="viz-controls" aria-label="Emoji density">
+    <span class="form-label">Emoji density</span>
+    <button type="button" class="btn btn-primary" data-density="1" aria-pressed="true">1</button>
+    <button type="button" class="btn" data-density="2" aria-pressed="false">2</button>
+    <button type="button" class="btn" data-density="3" aria-pressed="false">3</button>
+    <button type="button" class="btn" data-density="4" aria-pressed="false">4</button>
+    <button type="button" class="btn" data-density="5" aria-pressed="false">5</button>
+  </div>
+
+  <div class="viz-grid">
+    <section class="card" aria-labelledby="flat-sidebar-heading">
+      <h3 id="flat-sidebar-heading">Flat sidebar</h3>
+      <p><code>A previous agent produced…</code></p>
+      <p><code>Can you review and search…</code></p>
+      <p><code>pasted text file…</code></p>
+      <p><code>Check project status</code></p>
+    </section>
+
+    <section class="card" aria-labelledby="semantic-sidebar-heading">
+      <h3 id="semantic-sidebar-heading">Semantic sidebar</h3>
+      <p><code data-title="0">🌊 Crest Pruning — Broadside</code></p>
+      <p><code data-title="1">🛰️ AgentsView Placement — Homelab</code></p>
+      <p><code data-title="2">🔐 ColdVault Scope Drift</code></p>
+      <p><code data-title="3">🧪 Polaris Deployment Blockers</code></p>
+    </section>
+  </div>
+
+  <table class="table table-sm">
+    <thead>
+      <tr>
+        <th>Signal</th>
+        <th>Meaning</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Emoji 1</td><td>Domain or project family</td></tr>
+      <tr><td>Emoji 2</td><td>Work type or action</td></tr>
+      <tr><td>Emoji 3</td><td>Artifact or subsystem</td></tr>
+      <tr><td>Emoji 4</td><td>Lifecycle state</td></tr>
+      <tr><td>Emoji 5</td><td>Importance or exception</td></tr>
+      <tr><td>Words</td><td>Specific subject and outcome</td></tr>
+    </tbody>
+  </table>
+
+  <script>
+    (() => {
+      const root = document.getElementById('codex-sidebar-organizer-concept');
+      const titles = [
+        {
+          emoji: ['🌊', '🧹', '📚', '✅', '⭐'],
+          text: 'Crest Pruning — Broadside'
+        },
+        {
+          emoji: ['🛰️', '🏠', '🗄️', '🟡', '⭐'],
+          text: 'AgentsView Placement — Homelab'
+        },
+        {
+          emoji: ['🔐', '⚠️', '🤖', '🔴', '‼️'],
+          text: 'ColdVault Scope Drift'
+        },
+        {
+          emoji: ['🧪', '🚧', '📦', '🟡', '📌'],
+          text: 'Polaris Deployment Blockers'
+        }
+      ];
+
+      const render = (density) => {
+        root.querySelectorAll('[data-title]').forEach((element) => {
+          const item = titles[Number(element.dataset.title)];
+          element.textContent = `${item.emoji.slice(0, density).join('')} ${item.text}`;
+        });
+        root.querySelectorAll('[data-density]').forEach((button) => {
+          const selected = Number(button.dataset.density) === density;
+          button.setAttribute('aria-pressed', String(selected));
+          button.classList.toggle('btn-primary', selected);
+        });
+      };
+
+      root.querySelectorAll('[data-density]').forEach((button) => {
+        button.addEventListener('click', () => render(Number(button.dataset.density)));
+      });
+    })();
+  </script>
+</div>

@@ -17,6 +17,7 @@ Organize the conversations the Codex app exposes from their actual conversation 
 - Anything the Codex sidebar does not expose is out of scope; there is no other client's history to reach from here.
 - Packaging is Codex-only: the source lives in frozenSkillz's dedicated Codex package and is not auto-installed with every skill.
 - A periodic Codex automation is the mechanism for recurring organization; the skill is not a background daemon.
+- In the frozenSkillz repository, the 2026-07 discovery corpus from MooseGooseConsulting/codex-sidebar-organizer lives in this plugin's repository-local `docs/` directory; it is not shipped to Codex installs.
 
 ## Workflow
 

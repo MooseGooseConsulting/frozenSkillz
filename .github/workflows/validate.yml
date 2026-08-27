@@ -19,13 +19,18 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      # actions/setup-python ships only Ubuntu-built interpreters, so it fails on the
+      # self-hosted runner ("version '3.13' ... was not found for Garuda Soaring").
+      # uv is a static binary and fetches python-build-standalone, so this resolves
+      # identically on the self-hosted runner and on the hosted fork fallback.
       - name: Set up Python
-        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        uses: astral-sh/setup-uv@20cfd1bf945f4377ade1205e4dbc17946fc9a30d # v10.0.1
         with:
           python-version: "3.13"
+          activate-environment: true
 
       - name: Install validation dependencies
-        run: python -m pip install --disable-pip-version-check -r requirements-validation.txt
+        run: uv pip install -r requirements-validation.txt
 
       - name: Check for whitespace errors
         env:

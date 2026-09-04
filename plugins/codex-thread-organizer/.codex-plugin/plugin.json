@@ -1,7 +1,7 @@
 {
   "name": "codex-thread-organizer",
-  "version": "2.7.3",
-  "description": "Organize Codex task history with body-derived titles, cross-task completion review, and periodic maintenance workflows.",
+  "version": "2.8.0",
+  "description": "Organize Codex-sidebar or explicitly requested ChatGPT web conversations with body-derived titles and verified direct changes.",
   "author": {
     "name": "Coldaine",
     "url": "https://github.com/Coldaine"
@@ -12,13 +12,13 @@
   "skills": "./skills/",
   "interface": {
     "displayName": "Codex Thread Organizer",
-    "shortDescription": "Organize Codex task history",
-    "longDescription": "Read related Codex task bodies, identify current and continued work, apply sparse sidebar titles, and surface important unfinished tasks.",
+    "shortDescription": "Organize Codex and ChatGPT conversations",
+    "longDescription": "Read conversation bodies, keep Codex and ChatGPT surfaces distinct, apply semantic titles, and verify direct supported changes.",
     "developerName": "Coldaine",
     "category": "Productivity",
     "capabilities": ["Read", "Write"],
     "defaultPrompt": [
-      "Read my recent related Codex tasks, rename them with clear status-aware titles, and show me the important unfinished current owners."
+      "Organize my Codex sidebar from conversation bodies and apply three-emoji evidence-based titles."
     ]
   }
 }

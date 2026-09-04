@@ -15,7 +15,7 @@
       "name": "frozen-skills",
       "source": "./plugins/frozen-skills",
       "description": "Installs reviewed Doppler and external-skill-intake skills. Content under _incubator is not included.",
-      "version": "2.7.3",
+      "version": "2.8.0",
       "category": "reference"
     },
     {

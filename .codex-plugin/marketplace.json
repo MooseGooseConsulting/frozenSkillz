@@ -15,14 +15,14 @@
       "name": "frozen-skills",
       "source": "./plugins/frozen-skills",
       "description": "Installs reviewed Doppler and external-skill-intake skills. Content under _incubator is not included.",
-      "version": "2.7.3",
+      "version": "2.8.0",
       "category": "reference"
     },
     {
       "name": "codex-thread-organizer",
       "source": "./plugins/codex-thread-organizer",
       "description": "Codex-only task-history organization with body-derived titles, cross-task completion review, and periodic maintenance workflows.",
-      "version": "2.7.3",
+      "version": "2.8.0",
       "category": "productivity"
     },
     {

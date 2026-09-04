@@ -1,6 +1,6 @@
 {
   "skill": "codex-thread-organizer",
-  "notes": "Codex-app routing cases. Positives cover every conversation the Codex app's sidebar exposes, body-derived titles, same-repository relevance, and scheduled organization. A ChatGPT-history request triggers whether or not the user names the sidebar: the skill inventories those conversations and reports them as `not title-mutable` rather than staying silent and letting an agent improvise. Negatives protect other clients (Claude Code, Cursor, Gemini, browser tabs), generic Git cleanup, and ordinary conversation summaries. The held_out split is the final untouched test set, matching the repository's active-skill eval convention.",
+  "notes": "Codex Desktop routing cases. Positives cover the explicitly selected Codex-sidebar or ChatGPT-web surface, body-derived titles, same-workstream relevance, and recurring Codex-sidebar organization. A generic request that does not identify a surface needs a routing question, not a blended inventory. Negatives protect other clients, generic Git cleanup, ordinary single-chat summaries, and browser-extension work. The held_out split is the final untouched test set, matching the repository's active-skill eval convention.",
   "train": [
     {
       "query": "Review and rename my recent Codex tasks from the full conversation bodies",
@@ -35,6 +35,10 @@
       "should_trigger": true
     },
     {
+      "query": "Rename the body-reviewed chats on chatgpt.com and move the clear matches into existing Projects",
+      "should_trigger": true
+    },
+    {
       "query": "Add emoji names to my Claude Code sessions",
       "should_trigger": false
     }
@@ -62,6 +66,10 @@
     },
     {
       "query": "Archive old Gmail threads",
+      "should_trigger": false
+    },
+    {
+      "query": "Create a new sidebar section and move every recent chat into it",
       "should_trigger": false
     }
   ],

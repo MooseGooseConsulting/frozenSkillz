@@ -17,7 +17,8 @@ For every candidate, read enough to identify:
 - the delivered outcome;
 - every concrete required action still owed;
 - named branches, commits, pull requests, issues, files, and artifacts;
-- explicit continuation, duplication, correction, or replacement evidence.
+- explicit continuation, duplication, correction, replacement, or weaker
+  related-work evidence.
 
 ## Completion States
 
@@ -55,7 +56,8 @@ When the inventory contains several independent project clusters, assign one clu
 - latest relevant user request;
 - completion or remaining-action evidence;
 - current owner, predecessor, or successor IDs;
-- relationship: `continues`, `supersedes`, `duplicates`, `corrects`, or `independent`;
+- relationship: `continues`, `supersedes`, `duplicates`, `corrects`, `related`,
+  or `independent`;
 - archive-candidate judgment and reason.
 
 The main agent compares the cluster results, resolves overlaps, constructs titles, applies the renames, and reads them back.

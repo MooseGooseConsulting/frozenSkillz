@@ -11,7 +11,7 @@ This repository is not a dumping ground for local client caches, raw external re
 | Plugin | Category | Status | Purpose |
 |---|---|---|---|
 | `frozen-skills` | reference | active | Shared package for reviewed cross-consumer skills. |
-| `codex-thread-organizer` | productivity | active, Codex-only | Dedicated Codex package for task-history organization; absent from other consumer catalogs. |
+| `codex-thread-organizer` | productivity | active, Codex-only | Dedicated Codex package for body-derived Codex-sidebar and explicitly requested ChatGPT-web organization; absent from other consumer catalogs. |
 | `skill-injector` | development | experimental, untested | UserPromptSubmit hook and subagent prompt quality gate for LLM-assisted skill suggestions. Review/test before enabling. |
 
 Historical reference/workflow skills remain gated in `_incubator/` until they pass the quality bar in `docs/skill-review/tracker.md`.
@@ -87,7 +87,7 @@ The Codex marketplace separately exposes the valid `codex-thread-organizer` plug
 - `doppler`: Doppler CLI and secret-injection workflow guidance that avoids exposing secret values.
 - `external-skill-intake`: sandbox, inventory, score, evaluate, and package external skill/plugin/agent repos before any promotion.
 
-The dedicated `codex-thread-organizer` package is available to Codex only. It reads related task bodies, renames Codex tasks with sparse semantic titles, identifies the current owner of unfinished work, and supports periodic Codex organization runs.
+The dedicated `codex-thread-organizer` package is available to Codex only. It keeps Codex-sidebar and explicitly requested ChatGPT-web conversations distinct, reads their bodies before organization, applies verified direct title changes where supported, identifies the current owner of unfinished Codex work, and supports periodic Codex-sidebar runs.
 
 ## External Skill Intake
 

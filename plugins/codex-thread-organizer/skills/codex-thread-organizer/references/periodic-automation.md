@@ -10,7 +10,8 @@ Recurring organization is a periodic Codex automation that explicitly invokes `$
 2. Read the actual conversation bodies for every task whose state or title may change.
 3. Cluster by semantic workstream, treating the working directory as a routing clue rather than identity.
 4. Cross-read each cluster and identify `done`, `active-remaining`, `continued-elsewhere`, and `parked-unclear` tasks plus the current owner of each unfinished workstream.
-5. Construct sparse titles with `✅`, `🟡`, `🗄️`, and other useful markers.
+5. Construct three-to-five-emoji titles with a domain, work type, and a
+   body-evidenced state, relationship, retention role, or second precise domain.
 6. Rename only tasks whose bodies were actually read and classified; inaccessible
    and `parked-unclear` tasks keep their titles and go to the report instead.
    Apply through native Codex operations and read every title back.
